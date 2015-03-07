@@ -21,7 +21,7 @@ public class box : MonoBehaviour {
     void Start() { 
         StartCoroutine("IsInside");
         Collider = GameObject.Find("SphereCollider");
-        Physics.IgnoreCollision(gameObject.GetComponent<BoxCollider>(),Collider.collider);
+        Physics.IgnoreCollision(gameObject.GetComponent<BoxCollider>(),Collider.GetComponent<Collider>());
         shakeDetectionThreshold *= shakeDetectionThreshold;
         lowPassValue = Input.acceleration;
         lowPassFilterFactor = accelerometerUpdateInterval / lowPassKernelWidthInSeconds; 
@@ -36,7 +36,7 @@ public class box : MonoBehaviour {
 
         if (deltaAcceleration.sqrMagnitude >= shakeDetectionThreshold)
         {
-            rigidbody.AddForce(100*deltaAcceleration);
+            GetComponent<Rigidbody>().AddForce(100*deltaAcceleration);
         }
     }
     IEnumerator IsInside()
@@ -61,13 +61,13 @@ public class box : MonoBehaviour {
             else dir2 = Random.Range(-1250, -1000);
 
 			Vector3 Force = new Vector3(dir1, Random.Range(0, 400), dir2);
-			if (rigidbody.velocity.x + rigidbody.velocity.z < 200) {
-				rigidbody.AddForce(-(Force));
+			if (GetComponent<Rigidbody>().velocity.x + GetComponent<Rigidbody>().velocity.z < 200) {
+				GetComponent<Rigidbody>().AddForce(-(Force));
 				other.rigidbody.AddForce(Force);
 			}
 			else {
-				Vector3 CubeForce = new Vector3(rigidbody.velocity.x * Random.Range(3, 8), Random.Range(250, 1500), rigidbody.velocity.z * Random.Range(3, 8));
-				rigidbody.AddForce(CubeForce);
+				Vector3 CubeForce = new Vector3(GetComponent<Rigidbody>().velocity.x * Random.Range(3, 8), Random.Range(250, 1500), GetComponent<Rigidbody>().velocity.z * Random.Range(3, 8));
+				GetComponent<Rigidbody>().AddForce(CubeForce);
 				other.rigidbody.AddForce(Force + CubeForce);
 			}
         }
@@ -77,15 +77,15 @@ public class box : MonoBehaviour {
     {
         if (frozen == true)
         {
-            rigidbody.isKinematic = false;
-            rigidbody.velocity = Velocity;
+            GetComponent<Rigidbody>().isKinematic = false;
+            GetComponent<Rigidbody>().velocity = Velocity;
             frozen = false;
         }
         else
         {
-            Velocity = rigidbody.velocity;
-            rigidbody.velocity = Vector3.zero;
-            rigidbody.isKinematic = true;
+            Velocity = GetComponent<Rigidbody>().velocity;
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            GetComponent<Rigidbody>().isKinematic = true;
             frozen = true;
         }
     }

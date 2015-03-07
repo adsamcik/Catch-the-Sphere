@@ -3,8 +3,8 @@ using System.Collections;
 
 public class MenuBall : MonoBehaviour {
 	void Start () {
-        rigidbody.AddExplosionForce(Random.Range(-250,-1000), new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1)), 100f);
-        rigidbody.useGravity = true;   
+        GetComponent<Rigidbody>().AddExplosionForce(Random.Range(-250,-1000), new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1)), 100f);
+        GetComponent<Rigidbody>().useGravity = true;   
         StartCoroutine("Count");
 	}
     IEnumerator Count() {

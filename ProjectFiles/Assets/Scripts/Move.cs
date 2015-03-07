@@ -16,7 +16,7 @@ public class Move : MonoBehaviour
     void Start() {
         GameController = GameObject.Find("GameController").GetComponent<GameController>();
         Abilities = GetComponentInChildren<Abilities>(); 
-		rigidbody.drag = Random.Range(0, 2); 
+		GetComponent<Rigidbody>().drag = Random.Range(0, 2); 
         StartCoroutine("IsInside"); 
 	}
 
@@ -35,14 +35,14 @@ public class Move : MonoBehaviour
     {
         StopCoroutine("IsInside");
         if (frozen) GameController.AddScore(20 * (Mathf.Abs(Velocity.x) + Mathf.Abs(Velocity.z)));
-        else GameController.AddScore(10 * (Mathf.Abs(rigidbody.velocity.x) + Mathf.Abs(rigidbody.velocity.z) + Mathf.Abs(rigidbody.velocity.y / 2f)));
+        else GameController.AddScore(10 * (Mathf.Abs(GetComponent<Rigidbody>().velocity.x) + Mathf.Abs(GetComponent<Rigidbody>().velocity.z) + Mathf.Abs(GetComponent<Rigidbody>().velocity.y / 2f)));
         GameController.destroyed++;
         if (Abilities) { GetComponent<SphereCollider>().enabled = false; Abilities.Activate(); }
         else StartCoroutine("Puff");
     }
 
     IEnumerator Puff() {
-        collider.enabled = false;
+        GetComponent<Collider>().enabled = false;
         for (float i = 0.00f; i < 0.1f; i += Time.deltaTime) {
             transform.localScale -= new Vector3(Time.deltaTime * 10, Time.deltaTime * 10, Time.deltaTime * 10);
             yield return new WaitForFixedUpdate();
@@ -54,15 +54,15 @@ public class Move : MonoBehaviour
     {
         if (frozen == true)
         {
-            rigidbody.isKinematic = false;
-            rigidbody.velocity = Velocity;
+            GetComponent<Rigidbody>().isKinematic = false;
+            GetComponent<Rigidbody>().velocity = Velocity;
             frozen = false;
         }
         else
         {
-            Velocity = rigidbody.velocity;
-            rigidbody.velocity = Vector3.zero;
-            rigidbody.isKinematic = true;
+            Velocity = GetComponent<Rigidbody>().velocity;
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            GetComponent<Rigidbody>().isKinematic = true;
             frozen = true;
         }
     }
@@ -72,15 +72,15 @@ public class Move : MonoBehaviour
         paused = !paused;
         if (frozen == true)
         {
-            rigidbody.isKinematic = false;
-            rigidbody.velocity = Velocity;
+            GetComponent<Rigidbody>().isKinematic = false;
+            GetComponent<Rigidbody>().velocity = Velocity;
             frozen = false;
         }
         else
         {
-            Velocity = rigidbody.velocity;
-            rigidbody.velocity = Vector3.zero;
-            rigidbody.isKinematic = true;
+            Velocity = GetComponent<Rigidbody>().velocity;
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            GetComponent<Rigidbody>().isKinematic = true;
             frozen = true;
         }
     }

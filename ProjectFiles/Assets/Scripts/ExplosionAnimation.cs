@@ -13,6 +13,6 @@ public class ExplosionAnimation : MonoBehaviour {
         r *= correction;
         g *= correction;
         b *= correction;
-        renderer.material.SetVector("_ChannelFactor", new Vector4(r, g, b, 0));
+        GetComponent<Renderer>().material.SetVector("_ChannelFactor", new Vector4(r, g, b, 0));
 	}
 }

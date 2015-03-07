@@ -51,25 +51,25 @@ public class Abilities : MonoBehaviour
     }
 
     IEnumerator Explosion() {
-        parent.collider.enabled = false;
-        parent.renderer.enabled = false;
+        parent.GetComponent<Collider>().enabled = false;
+        parent.GetComponent<Renderer>().enabled = false;
         GetComponent<ParticleSystem>().Emit(100);
         CameraEffect.ShakeCamera(0.25f);
         foreach (GameObject sphere in colliding)
         {
-            sphere.rigidbody.AddExplosionForce(2000, gameObject.transform.position, 20f);
+            sphere.GetComponent<Rigidbody>().AddExplosionForce(2000, gameObject.transform.position, 20f);
         }
         yield return new WaitForSeconds(1);
         Destroy(parent.gameObject);
     }
 
     IEnumerator GravityField() {
-        gameObject.collider.enabled = false;
+        gameObject.GetComponent<Collider>().enabled = false;
         Transform parent = gameObject.transform.parent;
-        parent.rigidbody.freezeRotation = true;
-        parent.collider.enabled = false;
-        parent.renderer.enabled = false;
-        parent.rigidbody.isKinematic = true;
+        parent.GetComponent<Rigidbody>().freezeRotation = true;
+        parent.GetComponent<Collider>().enabled = false;
+        parent.GetComponent<Renderer>().enabled = false;
+        parent.GetComponent<Rigidbody>().isKinematic = true;
         StartCoroutine("SpriteField",gameObject.GetComponentInChildren<SpriteRenderer>());
 
 		foreach (GameObject sphere in colliding) {
@@ -87,9 +87,9 @@ public class Abilities : MonoBehaviour
     }
 
     IEnumerator LowerScore() {
-        parent.collider.enabled = false;
-        parent.renderer.enabled = false;
-        parent.GetComponent<Move>().GameController.AddScoreNoModifier(-((3*parent.rigidbody.velocity.y * 3*parent.rigidbody.velocity.x) + Mathf.Pow(parent.position.y, 3)));
+        parent.GetComponent<Collider>().enabled = false;
+        parent.GetComponent<Renderer>().enabled = false;
+        parent.GetComponent<Move>().GameController.AddScoreNoModifier(-((3*parent.GetComponent<Rigidbody>().velocity.y * 3*parent.GetComponent<Rigidbody>().velocity.x) + Mathf.Pow(parent.position.y, 3)));
         GetComponent<ParticleSystem>().Emit(100);
         CameraEffect.ShakeCamera(0.5f);
 

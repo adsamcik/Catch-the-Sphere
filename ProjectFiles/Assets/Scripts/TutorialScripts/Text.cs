@@ -200,7 +200,7 @@ public class Text : MonoBehaviour {
         Sphere.AddComponent<TutSphereController>();
 
         Sphere.GetComponent<TutSphereController>().phase = 2;
-        Sphere.rigidbody.AddForce(750, 500, 750);
+        Sphere.GetComponent<Rigidbody>().AddForce(750, 500, 750);
         yield return new WaitForSeconds(1f);
         while (Sphere) yield return new WaitForFixedUpdate();
         show = false;

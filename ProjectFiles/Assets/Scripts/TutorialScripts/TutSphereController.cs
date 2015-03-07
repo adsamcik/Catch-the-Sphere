@@ -18,7 +18,7 @@ public class TutSphereController : MonoBehaviour
     {
         GameController = GameObject.Find("Text").GetComponent<Text>();
         Abilities = GetComponentInChildren<Abilities>();
-        rigidbody.drag = Random.Range(0, 2);
+        GetComponent<Rigidbody>().drag = Random.Range(0, 2);
     }
 
     public void Touched() {
@@ -38,7 +38,7 @@ public class TutSphereController : MonoBehaviour
 
     IEnumerator Phase2()
     {
-        GameController.AddScore((10) * (Mathf.Abs(rigidbody.velocity.x) + Mathf.Abs(rigidbody.velocity.z)));
+        GameController.AddScore((10) * (Mathf.Abs(GetComponent<Rigidbody>().velocity.x) + Mathf.Abs(GetComponent<Rigidbody>().velocity.z)));
         GameController.destroyed++;
         StartCoroutine("Puff");
         yield return null;
@@ -46,7 +46,7 @@ public class TutSphereController : MonoBehaviour
 
     IEnumerator Phase3()
     {
-        GameController.AddScore((10) * (Mathf.Abs(rigidbody.velocity.x) + Mathf.Abs(rigidbody.velocity.z)));
+        GameController.AddScore((10) * (Mathf.Abs(GetComponent<Rigidbody>().velocity.x) + Mathf.Abs(GetComponent<Rigidbody>().velocity.z)));
         GameController.destroyed++;
         GetComponent<SphereCollider>().enabled = false; Abilities.Activate();
         yield return null;
@@ -54,7 +54,7 @@ public class TutSphereController : MonoBehaviour
 
     IEnumerator Puff()
     {
-        collider.enabled = false;
+        GetComponent<Collider>().enabled = false;
         for (float i = 0.00f; i < 0.1f; i += Time.deltaTime)
         {
             transform.localScale -= new Vector3(Time.deltaTime * 10, Time.deltaTime * 10, Time.deltaTime * 10);
@@ -67,15 +67,15 @@ public class TutSphereController : MonoBehaviour
     {
         if (frozen == true)
         {
-            rigidbody.isKinematic = false;
-            rigidbody.velocity = Velocity;
+            GetComponent<Rigidbody>().isKinematic = false;
+            GetComponent<Rigidbody>().velocity = Velocity;
             frozen = false;
         }
         else
         {
-            Velocity = rigidbody.velocity;
-            rigidbody.velocity = Vector3.zero;
-            rigidbody.isKinematic = true;
+            Velocity = GetComponent<Rigidbody>().velocity;
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            GetComponent<Rigidbody>().isKinematic = true;
             frozen = true;
         }
     }
