@@ -14,7 +14,7 @@ public class Move : MonoBehaviour
     public bool frozen { get; private set; }
     float punish;
     void Start() {
-        GameController = GameObject.Find("GameController").GetComponent<GameController>();
+        GameController = GameController.instance;
         Abilities = GetComponentInChildren<Abilities>(); 
 		GetComponent<Rigidbody>().drag = Random.Range(0, 2); 
         StartCoroutine("IsInside"); 

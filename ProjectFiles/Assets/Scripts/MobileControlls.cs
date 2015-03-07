@@ -12,9 +12,11 @@ public class MobileControlls : MonoBehaviour
 
     public GameController GameController;
 
+#if UNITY_ANDROID || UNITY_IOS
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) GameController.Pause();
+
         if (Input.GetTouch(0).phase == TouchPhase.Began && Input.GetTouch(0).deltaTime < 1f)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
@@ -27,20 +29,20 @@ public class MobileControlls : MonoBehaviour
     }
 }
 
+#else
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) GameController.Pause();
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-// PC controls
-//    void Update()
-//    {
-//        if (Input.GetKeyDown(KeyCode.Escape)) GameController.Pause();
-//        if (Input.GetMouseButtonDown(0))
-//        {
-//            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.SphereCast(ray, 0.4f, out hit, mask))
+            {
+                hit.transform.gameObject.GetComponent<Move>().Touched();
+            }
+        }
+    }
 
-//            if (Physics.SphereCast(ray, 0.4f, out hit, mask))
-//            {
-//                hit.transform.gameObject.GetComponent<Move>().Touched();
-//            }
-//        }
-//    }
-
-//}
+}
+#endif

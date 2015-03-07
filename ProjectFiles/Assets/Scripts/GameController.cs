@@ -5,6 +5,9 @@ using System.Security.Cryptography;
 
 
 public class GameController:MonoBehaviour{
+    //Instance - eliminates the requirement for lookups
+    public static GameController instance;
+
     static RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
 
 	/*Need to be set in editor*/
@@ -24,6 +27,10 @@ public class GameController:MonoBehaviour{
 
     /*Spheres with abilities*/
     public List<GameObject> AbilitySpheres = new List<GameObject>();
+
+    void Awake() {
+        instance = this;
+    }
 
 	void Start(){
         ChangeSeed();
@@ -55,7 +62,7 @@ public class GameController:MonoBehaviour{
 	IEnumerator Spawn() {
         if(QualitySettings.GetQualityLevel() < 2) sphere = Resources.Load("SphereLow") as GameObject;
         else if (QualitySettings.GetQualityLevel() == 2) sphere = Resources.Load("SphereMed") as GameObject;
-        else if (QualitySettings.GetQualityLevel() == 3) sphere = Resources.Load("SphereHigh") as GameObject;
+        else sphere = Resources.Load("SphereHigh") as GameObject;
 
 		while (true)
 		{
