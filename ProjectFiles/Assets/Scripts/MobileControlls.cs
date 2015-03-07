@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+//using UnityStandardAssets.CrossPlatformInput;
 
 public class MobileControlls : MonoBehaviour
 {
@@ -15,8 +16,7 @@ public class MobileControlls : MonoBehaviour
 #if UNITY_ANDROID || UNITY_IOS
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) GameController.Pause();
-
+        //if (CrossPlatformInputManager) GameController.Pause();
         if (Input.GetTouch(0).phase == TouchPhase.Began && Input.GetTouch(0).deltaTime < 1f)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
