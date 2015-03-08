@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Move : MonoBehaviour
-{
+public class Move : MonoBehaviour {
 
 
     RaycastHit hit;
-	public GameController GameController;
+    public GameController GameController;
     Abilities Abilities;
 
     Vector3 Velocity;
@@ -15,15 +14,13 @@ public class Move : MonoBehaviour
     float punish;
     void Start() {
         GameController = GameController.instance;
-        Abilities = GetComponentInChildren<Abilities>(); 
-		GetComponent<Rigidbody>().drag = Random.Range(0, 2); 
-        StartCoroutine("IsInside"); 
-	}
+        Abilities = GetComponentInChildren<Abilities>();
+        GetComponent<Rigidbody>().drag = Random.Range(0, 2);
+        StartCoroutine("IsInside");
+    }
 
-    IEnumerator IsInside()
-    {
-        while (true)
-        {
+    IEnumerator IsInside() {
+        while (true) {
             if (Mathf.Abs(transform.position.x) > 8 || Mathf.Abs(transform.position.z) > 8 || transform.position.y < -1) { Instantiate(gameObject, new Vector3(0, 6, 0), new Quaternion()); Destroy(gameObject); }
             yield return new WaitForSeconds(1);
         }
@@ -31,8 +28,7 @@ public class Move : MonoBehaviour
     }
 
 
-    public void Touched()
-    {
+    public void Touched() {
         StopCoroutine("IsInside");
         if (frozen) GameController.AddScore(20 * (Mathf.Abs(Velocity.x) + Mathf.Abs(Velocity.z)));
         else GameController.AddScore(10 * (Mathf.Abs(GetComponent<Rigidbody>().velocity.x) + Mathf.Abs(GetComponent<Rigidbody>().velocity.z) + Mathf.Abs(GetComponent<Rigidbody>().velocity.y / 2f)));
@@ -50,16 +46,13 @@ public class Move : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void Freeze()
-    {
-        if (frozen == true)
-        {
+    public void Freeze() {
+        if (frozen == true) {
             GetComponent<Rigidbody>().isKinematic = false;
             GetComponent<Rigidbody>().velocity = Velocity;
             frozen = false;
         }
-        else
-        {
+        else {
             Velocity = GetComponent<Rigidbody>().velocity;
             GetComponent<Rigidbody>().velocity = Vector3.zero;
             GetComponent<Rigidbody>().isKinematic = true;
@@ -67,17 +60,14 @@ public class Move : MonoBehaviour
         }
     }
 
-    public void Pause()
-    {
+    public void Pause() {
         paused = !paused;
-        if (frozen == true)
-        {
+        if (frozen == true) {
             GetComponent<Rigidbody>().isKinematic = false;
             GetComponent<Rigidbody>().velocity = Velocity;
             frozen = false;
         }
-        else
-        {
+        else {
             Velocity = GetComponent<Rigidbody>().velocity;
             GetComponent<Rigidbody>().velocity = Vector3.zero;
             GetComponent<Rigidbody>().isKinematic = true;

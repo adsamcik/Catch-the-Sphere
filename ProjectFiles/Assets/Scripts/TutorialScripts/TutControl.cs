@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TutControl : MonoBehaviour
-{
+public class TutControl : MonoBehaviour {
 
     GameObject go;
     float finger;
@@ -11,16 +10,13 @@ public class TutControl : MonoBehaviour
     Touch touch;
 
     public Text Text;
-    
-    void Update()
-    {
+
+    void Update() {
         if (Input.GetKeyDown(KeyCode.Escape)) Text.Pause();
-        if (Input.GetTouch(0).phase == TouchPhase.Began && Input.GetTouch(0).deltaTime < 1f)
-        {
+        if (Input.GetTouch(0).phase == TouchPhase.Began && Input.GetTouch(0).deltaTime < 1f) {
             Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
 
-            if (Physics.SphereCast(ray, 0.4f, out hit))
-            {
+            if (Physics.SphereCast(ray, 0.4f, out hit)) {
                 hit.transform.gameObject.GetComponent<TutSphereController>().Touched();
             }
         }
@@ -28,7 +24,7 @@ public class TutControl : MonoBehaviour
 
 }
 
-    // PC controls
+// PC controls
 //    void Update()
 //    {
 //        if (Input.GetMouseButtonDown(0))

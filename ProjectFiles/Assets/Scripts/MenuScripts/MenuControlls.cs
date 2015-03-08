@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-public class MenuControlls : MonoBehaviour
-{
+public class MenuControlls : MonoBehaviour {
 
     GameObject go;
     float finger;
@@ -57,14 +56,12 @@ public class MenuControlls : MonoBehaviour
     }
 
     void OnEnable() {
-        if (Application.loadedLevel == 2)
-        {
+        if (Application.loadedLevel == 2) {
             MobileController.SetActive(false);
             FinalResults.gameObject.SetActive(false);
             StartCoroutine("ChangeState", new Vector3(Camera.main.transform.position.x, 16, Camera.main.transform.position.z));
         }
-        else if (Application.loadedLevel == 1)
-        {
+        else if (Application.loadedLevel == 1) {
             MobileController.SetActive(false);
             StartCoroutine("ChangeState", new Vector3(Camera.main.transform.position.x, 16, Camera.main.transform.position.z));
         }
@@ -73,8 +70,7 @@ public class MenuControlls : MonoBehaviour
     IEnumerator ChangeState(Vector3 finpos) {
         float frac = 0;
         float i = 8;
-        while (transform.position != finpos)
-        {
+        while (transform.position != finpos) {
             Camera.main.transform.position = Vector3.Lerp(transform.position, finpos, frac);
             frac += Time.deltaTime * i;
             yield return new WaitForFixedUpdate();
@@ -89,40 +85,35 @@ public class MenuControlls : MonoBehaviour
         MobileController.SetActive(true);
         if (Application.loadedLevel == 2) { GameController.Pause(); FinalResults.gameObject.SetActive(true); }
         else GameObject.Find("Text").GetComponent<Text>().Pause();
-        
+
         gameObject.SetActive(false);
         yield return null;
     }
 
-    IEnumerator EndGame()
-    {
+    IEnumerator EndGame() {
         Application.LoadLevel(0);
         yield return null;
     }
 
     IEnumerator About() {
         float i = 0;
-        while (transform.position != AboutPos)
-        {
+        while (transform.position != AboutPos) {
             transform.position = Vector3.Lerp(transform.position, AboutPos, i);
-            i += Time.deltaTime*2;
+            i += Time.deltaTime * 2;
             yield return new WaitForFixedUpdate();
         }
     }
 
-    IEnumerator Home()
-    {
+    IEnumerator Home() {
         float i = 0;
-        while (transform.position != HomePos)
-        {
+        while (transform.position != HomePos) {
             transform.position = Vector3.Lerp(transform.position, HomePos, i);
             i += Time.deltaTime * 2;
             yield return new WaitForFixedUpdate();
         }
     }
 
-    IEnumerator Settings()
-    {
+    IEnumerator Settings() {
         gk = QualitySettings.GetQualityLevel();
         if (gk == 0) { GraphicsQuality.text = "No shadows"; LowSphere.SetActive(true); }
         else if (gk == 1) { GraphicsQuality.text = "Good"; LowSphere.SetActive(true); }
@@ -131,8 +122,7 @@ public class MenuControlls : MonoBehaviour
 
         float i = 0;
 
-        while (transform.position != SettingsPos)
-        {
+        while (transform.position != SettingsPos) {
             transform.position = Vector3.Lerp(transform.position, SettingsPos, i);
             i += Time.deltaTime * 2;
             yield return new WaitForFixedUpdate();
@@ -141,11 +131,16 @@ public class MenuControlls : MonoBehaviour
 
     }
 
-    IEnumerator Normal() { Application.LoadLevel(hit.transform.name); yield return null; }
-    IEnumerator Tutorial() { Application.LoadLevel(hit.transform.name); yield return null; }
+    IEnumerator Normal() {
+        Application.LoadLevel(hit.transform.name);
+        yield return null;
+    }
+    IEnumerator Tutorial() {
+        Application.LoadLevel(hit.transform.name);
+        yield return null;
+    }
 
-    IEnumerator Quality()
-    {
+    IEnumerator Quality() {
         if (gk == 0) { gk = 1; GraphicsQuality.text = "Good"; }
         else if (gk == 1) { gk = 2; GraphicsQuality.text = "Better"; LowSphere.SetActive(false); MedSphere.SetActive(true); }
         else if (gk == 2) { gk = 3; GraphicsQuality.text = "Excellent"; MedSphere.SetActive(false); HighSphere.SetActive(true); }
@@ -155,18 +150,15 @@ public class MenuControlls : MonoBehaviour
         yield return null;
     }
 
-    void Update()
-    {
+    void Update() {
         if (MobileController) { if (Input.GetKeyDown(KeyCode.Escape)) { StartCoroutine("Continue"); } }
         if (transform.position == SettingsPos || transform.position == AboutPos) { if (Input.GetKeyDown(KeyCode.Escape)) StartCoroutine("Home"); }
         else if (transform.position == HomePos) if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
 
-        if (Input.GetTouch(0).phase == TouchPhase.Began && Input.GetTouch(0).deltaTime < 1f)
-        {
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && Input.GetTouch(0).deltaTime < 1f) {
             Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
 
-            if (Physics.SphereCast(ray, 0.4f, out hit))
-            {
+            if (Physics.SphereCast(ray, 0.4f, out hit)) {
                 StartCoroutine(hit.transform.name, hit);
             }
         }
@@ -174,19 +166,19 @@ public class MenuControlls : MonoBehaviour
 
 
     // PC controls
-//    void Update()
-//    {
-//        if (MobileController) if (Input.GetKeyDown(KeyCode.Escape)) StartCoroutine("Continue");
-//        if (Input.GetMouseButtonDown(0))
-//        {
-//            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    //    void Update()
+    //    {
+    //        if (MobileController) if (Input.GetKeyDown(KeyCode.Escape)) StartCoroutine("Continue");
+    //        if (Input.GetMouseButtonDown(0))
+    //        {
+    //            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-//            if (Physics.SphereCast(ray, 0.4f, out hit))
-//            {
-//                StartCoroutine(hit.transform.name, hit);
-//            }
-//        }
-//    }
+    //            if (Physics.SphereCast(ray, 0.4f, out hit))
+    //            {
+    //                StartCoroutine(hit.transform.name, hit);
+    //            }
+    //        }
+    //    }
 
 }
 

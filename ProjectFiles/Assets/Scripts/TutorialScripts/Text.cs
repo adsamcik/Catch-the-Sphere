@@ -4,8 +4,8 @@ using System.Collections;
 public class Text : MonoBehaviour {
     bool writing;
     bool show;
-    int scoreget,combomodifier;
-    public int Active,destroyed;
+    int scoreget, combomodifier;
+    public int Active, destroyed;
 
     GameObject Cube;
     GameObject sphere;
@@ -22,7 +22,7 @@ public class Text : MonoBehaviour {
     private Vector3 acceleration;
     private Vector3 deltaAcceleration;
 
-	void Start () {
+    void Start() {
         Application.targetFrameRate = 60;
         StartCoroutine("Write", "This tutorial will guide you\nthrough basic mechanics of\nCatch the Sphere");
         StartCoroutine("Guide");
@@ -35,28 +35,24 @@ public class Text : MonoBehaviour {
 
         shakeDetectionThreshold *= shakeDetectionThreshold;
         lowPassValue = Input.acceleration;
-        lowPassFilterFactor = accelerometerUpdateInterval / lowPassKernelWidthInSeconds; 
-	}
+        lowPassFilterFactor = accelerometerUpdateInterval / lowPassKernelWidthInSeconds;
+    }
 
-    public void AddScore(float addscore)
-    {
+    public void AddScore(float addscore) {
         int scoretemp = Mathf.RoundToInt(addscore);
         scoreget += scoretemp;
         combomodifier = RoundDown(scoretemp);
     }
 
-    public void Pause()
-    {
+    public void Pause() {
         paused = !paused;
         PauseMenu.SetActive(!PauseMenu.activeSelf);
-        foreach (GameObject item in GameObject.FindGameObjectsWithTag("Sphere"))
-        {
+        foreach (GameObject item in GameObject.FindGameObjectsWithTag("Sphere")) {
             Move script = item.GetComponent<Move>();
             script.Pause();
         }
 
-        foreach (GameObject item in GameObject.FindGameObjectsWithTag("Cube"))
-        {
+        foreach (GameObject item in GameObject.FindGameObjectsWithTag("Cube")) {
             box script = item.GetComponent<box>();
             script.Freeze();
         }
@@ -66,15 +62,14 @@ public class Text : MonoBehaviour {
         writing = true;
         GetComponent<TextMesh>().text = "";
         int length = 1;
-        while (true)
-        {
+        while (true) {
             if (input.Length < 1) break;
             while (paused) yield return new WaitForEndOfFrame();
 
             if (input.Length > 1)
-            if (input.Substring(0, 2) == "/n") length = 2;
-            else length = 1;
-            GetComponent<TextMesh>().text += input.Substring(0,length);
+                if (input.Substring(0, 2) == "/n") length = 2;
+                else length = 1;
+            GetComponent<TextMesh>().text += input.Substring(0, length);
             input = input.Substring(length);
             yield return new WaitForFixedUpdate();
         }
@@ -82,8 +77,7 @@ public class Text : MonoBehaviour {
     }
 
     IEnumerator Guide() {
-        while (writing)
-        {
+        while (writing) {
             yield return new WaitForFixedUpdate();
         }
         yield return new WaitForSeconds(2.5f);
@@ -97,13 +91,13 @@ public class Text : MonoBehaviour {
         while (writing) yield return new WaitForFixedUpdate();
         while (paused) yield return new WaitForEndOfFrame();
 
-        while (deltaAcceleration.sqrMagnitude < shakeDetectionThreshold) { 
+        while (deltaAcceleration.sqrMagnitude < shakeDetectionThreshold) {
             acceleration = Input.acceleration;
             lowPassValue = Vector3.Lerp(lowPassValue, acceleration, lowPassFilterFactor);
             deltaAcceleration = acceleration - lowPassValue;
             yield return new WaitForFixedUpdate();
         }
-        
+
         yield return new WaitForSeconds(2.5f);
         StartCoroutine("Write", "Spheres are your main objective.\nThe faster they are,\nthe more points you get.");
 
@@ -116,15 +110,14 @@ public class Text : MonoBehaviour {
         StartCoroutine("Part1");
         while (show) yield return new WaitForFixedUpdate();
         StartCoroutine("Write", "That one was slow\ndon't you think?");
-        while (writing)
-        {
+        while (writing) {
             yield return new WaitForFixedUpdate();
         }
         yield return new WaitForSeconds(0.5f);
         StartCoroutine("Part2");
         while (show) yield return new WaitForFixedUpdate();
 
-        StartCoroutine("Write", "You would get " + scoreget + " score points\nfor this one and your modifier\nwould be "+combomodifier);
+        StartCoroutine("Write", "You would get " + scoreget + " score points\nfor this one and your modifier\nwould be " + combomodifier);
 
         while (writing) yield return new WaitForFixedUpdate();
         while (paused) yield return new WaitForEndOfFrame();
@@ -150,19 +143,16 @@ public class Text : MonoBehaviour {
 
         StartCoroutine("Write", "There are several types\n of special spheres\n(this one explodes)");
         StartCoroutine("Part3");
-        while (show)
-        {
+        while (show) {
             yield return new WaitForFixedUpdate();
         }
         StartCoroutine("Write", "Special spheres have\ndifferent colors and effects.\nTap when ready to\nstart the real game!");
-        while (writing)
-        {
+        while (writing) {
             yield return new WaitForFixedUpdate();
         }
         yield return new WaitForSeconds(0.5f);
 
-        while (Input.touchCount == 0 || Input.GetMouseButtonDown(0) & !paused)
-        {
+        while (Input.touchCount == 0 || Input.GetMouseButtonDown(0) & !paused) {
             yield return new WaitForFixedUpdate();
         }
 
@@ -170,8 +160,7 @@ public class Text : MonoBehaviour {
         Application.LoadLevel("Normal");
     }
 
-    IEnumerator Part0()
-    {
+    IEnumerator Part0() {
         show = true;
         Cube = Instantiate(Resources.Load("Cube")) as GameObject;
         show = false;
@@ -191,8 +180,7 @@ public class Text : MonoBehaviour {
         show = false;
     }
 
-    IEnumerator Part2()
-    {
+    IEnumerator Part2() {
         show = true;
         GameObject Sphere = Instantiate(sphere, new Vector3(0, 6, 0), new Quaternion()) as GameObject;
         Sphere.SetActive(true);
@@ -206,8 +194,7 @@ public class Text : MonoBehaviour {
         show = false;
     }
 
-    IEnumerator Part3()
-    {
+    IEnumerator Part3() {
         show = true;
         GameObject Sphere = Instantiate(Resources.Load("ExplodingTut")) as GameObject;
 
@@ -228,11 +215,10 @@ public class Text : MonoBehaviour {
         show = false;
     }
 
-    int RoundDown(float input)
-    {
+    int RoundDown(float input) {
         int rounded = Mathf.RoundToInt(input);
 
         if ((rounded / input) > 1) return Mathf.RoundToInt(rounded / 25) - 1;
-        else return Mathf.RoundToInt(rounded/25);
+        else return Mathf.RoundToInt(rounded / 25);
     }
 }
