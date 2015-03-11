@@ -6,7 +6,7 @@ public class TutSphereController : MonoBehaviour
 
 
     RaycastHit hit;
-    Text GameController;
+    TutorialText tutorialText;
     Abilities Abilities;
 
     Vector3 Velocity;
@@ -16,7 +16,7 @@ public class TutSphereController : MonoBehaviour
 
     void Start()
     {
-        GameController = GameObject.Find("Text").GetComponent<Text>();
+        tutorialText = GameObject.Find("Text").GetComponent<TutorialText>();
         Abilities = GetComponentInChildren<Abilities>();
         GetComponent<Rigidbody>().drag = Random.Range(0, 2);
     }
@@ -38,16 +38,16 @@ public class TutSphereController : MonoBehaviour
 
     IEnumerator Phase2()
     {
-        GameController.AddScore((10) * (Mathf.Abs(GetComponent<Rigidbody>().velocity.x) + Mathf.Abs(GetComponent<Rigidbody>().velocity.z)));
-        GameController.destroyed++;
+        tutorialText.AddScore((10) * (Mathf.Abs(GetComponent<Rigidbody>().velocity.x) + Mathf.Abs(GetComponent<Rigidbody>().velocity.z)));
+        tutorialText.destroyed++;
         StartCoroutine("Puff");
         yield return null;
     }
 
     IEnumerator Phase3()
     {
-        GameController.AddScore((10) * (Mathf.Abs(GetComponent<Rigidbody>().velocity.x) + Mathf.Abs(GetComponent<Rigidbody>().velocity.z)));
-        GameController.destroyed++;
+        tutorialText.AddScore((10) * (Mathf.Abs(GetComponent<Rigidbody>().velocity.x) + Mathf.Abs(GetComponent<Rigidbody>().velocity.z)));
+        tutorialText.destroyed++;
         GetComponent<SphereCollider>().enabled = false; Abilities.Activate();
         yield return null;
     }

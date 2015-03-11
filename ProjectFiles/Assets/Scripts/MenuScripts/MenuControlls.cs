@@ -80,21 +80,6 @@ public class MenuControlls : MonoBehaviour {
 
     IEnumerator Disable() { yield return null; }
 
-    IEnumerator Continue() {
-        Camera.main.transform.position = new Vector3(0, 12, 0);
-        MobileController.SetActive(true);
-        if (Application.loadedLevel == 2) { GameController.Pause(); FinalResults.gameObject.SetActive(true); }
-        else GameObject.Find("Text").GetComponent<Text>().Pause();
-
-        gameObject.SetActive(false);
-        yield return null;
-    }
-
-    IEnumerator EndGame() {
-        Application.LoadLevel(0);
-        yield return null;
-    }
-
     IEnumerator About() {
         float i = 0;
         while (transform.position != AboutPos) {

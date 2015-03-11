@@ -59,11 +59,12 @@
      <Compile Include="Assets\Scripts\MenuScripts\MenuControlls.cs" />
      <Compile Include="Assets\Scripts\MobileControlls.cs" />
      <Compile Include="Assets\Scripts\Move.cs" />
+     <Compile Include="Assets\Scripts\PauseMenu.cs" />
      <Compile Include="Assets\Scripts\PausedScore.cs" />
      <Compile Include="Assets\Scripts\Score.cs" />
-     <Compile Include="Assets\Scripts\TutorialScripts\Text.cs" />
      <Compile Include="Assets\Scripts\TutorialScripts\TutControl.cs" />
      <Compile Include="Assets\Scripts\TutorialScripts\TutSphereController.cs" />
+     <Compile Include="Assets\Scripts\TutorialScripts\TutorialText.cs" />
      <Compile Include="Assets\Scripts\Up.cs" />
      <Compile Include="Assets\Scripts\box.cs" />
      <Compile Include="Assets\Scripts\rotate.cs" />

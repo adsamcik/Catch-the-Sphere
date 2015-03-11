@@ -79,6 +79,7 @@ public class Abilities : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         while (GameController.paused) yield return new WaitForFixedUpdate();
+
         foreach (GameObject sphere in colliding)
         {
             if (sphere) sphere.GetComponent<Move>().Freeze();

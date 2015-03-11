@@ -9,7 +9,7 @@ public class TutControl : MonoBehaviour {
     public LayerMask mask;
     Touch touch;
 
-    public Text Text;
+    public TutorialText Text;
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.Escape)) Text.Pause();

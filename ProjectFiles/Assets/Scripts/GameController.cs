@@ -11,10 +11,10 @@ public class GameController : MonoBehaviour {
     static RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
 
     /*Need to be set in editor*/
-    public Score Score;
-    public GameObject FinalResults;
-    public GameObject SpawnInfo;
-    public GameObject PauseMenu;
+    public Score score;
+    public GameObject finalResults;
+    public GameObject spawnInfo;
+    public GameObject pauseMenu;
 
     /*Set automagically*/
     GameObject sphere;
@@ -23,7 +23,7 @@ public class GameController : MonoBehaviour {
     public int Active;
     public int destroyed;
 
-    public bool paused;
+    public static bool paused;
 
     /*Spheres with abilities*/
     public List<GameObject> AbilitySpheres = new List<GameObject>();
@@ -39,12 +39,20 @@ public class GameController : MonoBehaviour {
     }
 
     void Update() {
-        SpawnInfo.GetComponent<TextMesh>().text = destroyed + "/" + Active;
+        spawnInfo.GetComponent<TextMesh>().text = destroyed + "/" + Active;
     }
 
-    public void Pause() {
+    /// <summary>
+    /// Unity GUI does not support static methods
+    /// </summary>
+    public void uGUIPause() {
+        Pause();
+    }
+
+    public static void Pause() {
         paused = !paused;
-        PauseMenu.SetActive(!PauseMenu.activeSelf);
+        instance.pauseMenu.SetActive(paused);
+
         foreach (GameObject item in GameObject.FindGameObjectsWithTag("Sphere")) {
             Move script = item.GetComponent<Move>();
             script.Pause();
@@ -54,6 +62,10 @@ public class GameController : MonoBehaviour {
             box script = item.GetComponent<box>();
             script.Freeze();
         }
+    }
+
+    public void BackToMenu() {
+        Application.LoadLevel(0);
     }
 
     IEnumerator Spawn() {
@@ -81,8 +93,8 @@ public class GameController : MonoBehaviour {
     }
 
     public void Results() {
-        Score.resultsactive = true;
-        Score.Summary();
+        score.resultsactive = true;
+        score.Summary();
         StartCoroutine("RestartIn");
     }
 
@@ -91,16 +103,16 @@ public class GameController : MonoBehaviour {
         destroyed = 0;
         Active = 0;
         speed = 2;
-        FinalResults.GetComponent<TextMesh>().text = "";
-        Score.NoScore();
+        finalResults.GetComponent<TextMesh>().text = "";
+        score.NoScore();
     }
 
     public void AddScore(float scoresend) {
-        Score.AddScore(scoresend);
+        score.AddScore(scoresend);
     }
 
     public void AddScoreNoModifier(float scoresend) {
-        Score.AddScoreNoModifier(scoresend);
+        score.AddScoreNoModifier(scoresend);
     }
 
     void ChangeSeed() {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Text : MonoBehaviour {
+public class TutorialText : MonoBehaviour {
     bool writing;
     bool show;
     int scoreget, combomodifier;

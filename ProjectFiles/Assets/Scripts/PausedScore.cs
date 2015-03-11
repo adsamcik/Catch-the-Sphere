@@ -1,22 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PausedScore : MonoBehaviour {
-    public TextMesh HighscoreLight;
-    public TextMesh HighscoreDark;
-    public TextMesh ScoreLight;
-    public TextMesh ScoreDark;
+    public Text HighscoreText;
+    public Text ScoreText;
 
     public Score Score;
 
-    void OnEnable() {
+    void Awake() {
         int highscore = Score.GetHighscore();
         int score = Score.score;
 
-        //HighscoreDark.text = "Highscore " + highscore;
-        HighscoreLight.text = "Highscore " + highscore;
+        HighscoreText.text = "Highscore " + highscore;
 
-        ScoreLight.text = "Score " + score;
-        //ScoreDark.text = "Score " + score;
+        ScoreText.text = "Score " + score;
     }
 }
