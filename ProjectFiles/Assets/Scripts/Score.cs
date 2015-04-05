@@ -1,25 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Score : MonoBehaviour {
-    
+
     GameObject sphere;
-  
-    public GameObject FinalResults;
-    public GameObject Highscore;
-	public GameController GameController;
-    public GameObject ScoreToAdd;
 
-    int combomodifier;
+    public Text FinalResults;
+    public Text ScoreToAdd;
+    public Text ScoreText;
 
-    public int scoretemp { get; private set; }
+    public GameController GameController;
+
+    int comboModifier;
+
+    public int scoreTemp { get; private set; }
     public int score { get; private set; }
-    float comboscore, combotimer;
-    float ctimermax = 2f;
+    float comboScore, combotimer;
+    float cTimerMax = 2f;
 
-    string highscorekey;
+    string highScoreKey;
 
-	public bool resultsactive;
+    public bool resultsActive;
     Vector3 OrigPos;
 
     void Start() {
@@ -27,24 +29,21 @@ public class Score : MonoBehaviour {
         OrigPos = transform.position;
     }
 
-	void Update () {
-        if (GameController.destroyed == 20 && !resultsactive) {  
-            GameController.Results(); 
+    void Update() {
+        if (GameController.destroyed == 20 && !resultsActive) {
+            GameController.Results();
         }
-	}
-
-    public void CheckLevel()
-    {
-        string level = Application.loadedLevelName;
-        if (level == "Normal") { highscorekey = "hs_normal"; }
     }
 
-    bool SetHighscore()
-    {
+    public void CheckLevel() {
+        string level = Application.loadedLevelName;
+        if (level == "Normal") { highScoreKey = "hs_normal"; }
+    }
+
+    bool SetHighscore() {
         int highscore = score;
-        if (PlayerPrefs.GetInt(highscorekey) <= highscore)
-        {
-            PlayerPrefs.SetInt(highscorekey, highscore);
+        if (PlayerPrefs.GetInt(highScoreKey) <= highscore) {
+            PlayerPrefs.SetInt(highScoreKey, highscore);
             PlayerPrefs.Save();
             return true;
         }
@@ -52,53 +51,51 @@ public class Score : MonoBehaviour {
     }
 
     public int GetHighscore() {
-        return PlayerPrefs.GetInt(highscorekey);
+        return PlayerPrefs.GetInt(highScoreKey);
     }
 
-    public void NoScore() {score = 0; GetComponent<TextMesh>().text = "0"; resultsactive = false;}
+    public void NoScore() { score = 0; GetComponent<TextMesh>().text = "0"; resultsActive = false; }
     public void Summary() {
         StopCoroutine("ComboTimer");
-        CountScore(); 
-        FinalResults.GetComponent<TextMesh>().text = "\nYour final score is\n" + score + " points.\n\n";
-        if (SetHighscore()) { FinalResults.GetComponent<TextMesh>().text += "You are getting better!\nYou have beaten your\nhigh score"; }
-        else { FinalResults.GetComponent<TextMesh>().text += "You have " + (PlayerPrefs.GetInt(highscorekey) - score) + " left\n to beat your high score"; } 
+        CountScore();
+        FinalResults.text = "\nYour final score is\n" + score + " points.\n\n";
+        if (SetHighscore()) { FinalResults.text += "You are getting better!\nYou have beaten your\nhigh score"; }
+        else { FinalResults.text += "You have " + (PlayerPrefs.GetInt(highScoreKey) - score) + " left\n to beat your high score"; }
     }
 
-    public void AddScoreNoModifier(float spherescore)
-    {
-        scoretemp += Mathf.RoundToInt(spherescore);
-        combotimer = ctimermax;
-        ScoreToAdd.GetComponent<TextMesh>().text = "+" + scoretemp; 
+    public void AddScoreNoModifier(float spherescore) {
+        scoreTemp += Mathf.RoundToInt(spherescore);
+        combotimer = cTimerMax;
+        ScoreToAdd.text = "+" + scoreTemp;
     }
 
-    public void AddScore(float spherescore)
-    {
+    public void AddScore(float spherescore) {
         if (combotimer > 0) {
-            scoretemp += Mathf.RoundToInt(spherescore * combomodifier);
-            combomodifier = (combomodifier + RoundDown(spherescore / 25)) / 2; 
-            combotimer = ctimermax; 
-            ScoreToAdd.GetComponent<TextMesh>().text = "+" + scoretemp; 
+            scoreTemp += Mathf.RoundToInt(spherescore * comboModifier);
+            comboModifier = (comboModifier + RoundDown(spherescore / 25)) / 2;
+            combotimer = cTimerMax;
+            ScoreToAdd.text = "+" + scoreTemp;
         }
         else {
-            scoretemp += Mathf.RoundToInt(spherescore);
-            combomodifier = RoundDown(spherescore / 25); 
-            combotimer = ctimermax; 
-            StartCoroutine("ComboTimer"); 
-            ScoreToAdd.GetComponent<TextMesh>().text = "+" + scoretemp; 
+            scoreTemp += Mathf.RoundToInt(spherescore);
+            comboModifier = RoundDown(spherescore / 25);
+            combotimer = cTimerMax;
+            StartCoroutine("ComboTimer");
+            ScoreToAdd.text = "+" + scoreTemp;
         }
     }
 
     void SetScore(int stbs) {
         score += Mathf.RoundToInt(stbs);
-        GetComponent<TextMesh>().text = score.ToString();
-        if(stbs != 0) StartCoroutine("ScoreAddedAnim");
+        ScoreText.text = score.ToString();
+        if (stbs != 0) StartCoroutine("ScoreAddedAnim");
     }
 
     void CountScore() {
-        SetScore(scoretemp);
-        ScoreToAdd.GetComponent<TextMesh>().text = "";
-        scoretemp = 0;
-        combomodifier = 0;
+        SetScore(scoreTemp);
+        ScoreToAdd.text = "";
+        scoreTemp = 0;
+        comboModifier = 0;
         combotimer = 0;
     }
 
@@ -116,16 +113,13 @@ public class Score : MonoBehaviour {
         CountScore();
     }
 
-    IEnumerator ScoreAddedAnim()
-    { 
-        while (transform.position.y < OrigPos.y + 1)
-        {
+    IEnumerator ScoreAddedAnim() {
+        while (transform.position.y < OrigPos.y + 1) {
             transform.position += new Vector3(0, Time.deltaTime * 30, 0);
             yield return new WaitForFixedUpdate();
         }
 
-        while (transform.position.y > OrigPos.y)
-        {
+        while (transform.position.y > OrigPos.y) {
             transform.position -= new Vector3(0, Time.deltaTime * 30, 0);
             yield return new WaitForFixedUpdate();
         }
@@ -133,6 +127,6 @@ public class Score : MonoBehaviour {
         transform.position = OrigPos;
     }
 
-    
+
 
 }

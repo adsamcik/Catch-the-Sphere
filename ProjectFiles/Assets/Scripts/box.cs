@@ -18,13 +18,13 @@ public class box : MonoBehaviour {
     private Vector3 acceleration;
     private Vector3 deltaAcceleration;
 
-    void Start() { 
+    void Start() {
         StartCoroutine("IsInside");
         Collider = GameObject.Find("SphereCollider");
-        Physics.IgnoreCollision(gameObject.GetComponent<BoxCollider>(),Collider.GetComponent<Collider>());
+        Physics.IgnoreCollision(gameObject.GetComponent<BoxCollider>(), Collider.GetComponent<Collider>());
         shakeDetectionThreshold *= shakeDetectionThreshold;
         lowPassValue = Input.acceleration;
-        lowPassFilterFactor = accelerometerUpdateInterval / lowPassKernelWidthInSeconds; 
+        lowPassFilterFactor = accelerometerUpdateInterval / lowPassKernelWidthInSeconds;
     }
 
     void Update() {
@@ -34,55 +34,47 @@ public class box : MonoBehaviour {
 
         deltaAcceleration = acceleration - lowPassValue;
 
-        if (deltaAcceleration.sqrMagnitude >= shakeDetectionThreshold)
-        {
-            GetComponent<Rigidbody>().AddForce(100*deltaAcceleration);
+        if (deltaAcceleration.sqrMagnitude >= shakeDetectionThreshold) {
+            GetComponent<Rigidbody>().AddForce(100 * deltaAcceleration);
         }
     }
-    IEnumerator IsInside()
-    {
-        while (true)
-        {
+    IEnumerator IsInside() {
+        while (true) {
             if (transform.position.y < -10) { Instantiate(Resources.Load("Cube")); Destroy(gameObject); }
             yield return new WaitForSeconds(1);
         }
 
     }
 
-    void OnCollisionEnter(Collision other)
-    {
+    void OnCollisionEnter(Collision other) {
         float dir1, dir2;
-        if (other.gameObject.tag == "Sphere")
-        {
+        if (other.gameObject.tag == "Sphere") {
             if (Random.Range(0, 4) > 2) dir1 = Random.Range(1000, 1250);
             else dir1 = Random.Range(-1250, -1000);
 
             if (Random.Range(0, 4) > 2) dir2 = Random.Range(1000, 1250);
             else dir2 = Random.Range(-1250, -1000);
 
-			Vector3 Force = new Vector3(dir1, Random.Range(0, 400), dir2);
-			if (GetComponent<Rigidbody>().velocity.x + GetComponent<Rigidbody>().velocity.z < 200) {
-				GetComponent<Rigidbody>().AddForce(-(Force));
-				other.rigidbody.AddForce(Force);
-			}
-			else {
-				Vector3 CubeForce = new Vector3(GetComponent<Rigidbody>().velocity.x * Random.Range(3, 8), Random.Range(250, 1500), GetComponent<Rigidbody>().velocity.z * Random.Range(3, 8));
-				GetComponent<Rigidbody>().AddForce(CubeForce);
-				other.rigidbody.AddForce(Force + CubeForce);
-			}
+            Vector3 Force = new Vector3(dir1, Random.Range(0, 400), dir2);
+            if (GetComponent<Rigidbody>().velocity.x + GetComponent<Rigidbody>().velocity.z < 200) {
+                GetComponent<Rigidbody>().AddForce(-(Force));
+                other.rigidbody.AddForce(Force);
+            }
+            else {
+                Vector3 CubeForce = new Vector3(GetComponent<Rigidbody>().velocity.x * Random.Range(3, 8), Random.Range(250, 1500), GetComponent<Rigidbody>().velocity.z * Random.Range(3, 8));
+                GetComponent<Rigidbody>().AddForce(CubeForce);
+                other.rigidbody.AddForce(Force + CubeForce);
+            }
         }
     }
 
-    public void Freeze()
-    {
-        if (frozen == true)
-        {
+    public void Freeze() {
+        if (frozen == true) {
             GetComponent<Rigidbody>().isKinematic = false;
             GetComponent<Rigidbody>().velocity = Velocity;
             frozen = false;
         }
-        else
-        {
+        else {
             Velocity = GetComponent<Rigidbody>().velocity;
             GetComponent<Rigidbody>().velocity = Vector3.zero;
             GetComponent<Rigidbody>().isKinematic = true;

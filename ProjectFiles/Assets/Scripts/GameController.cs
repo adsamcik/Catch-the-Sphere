@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using UnityEngine.UI;
 
 
 public class GameController : MonoBehaviour {
@@ -12,16 +13,20 @@ public class GameController : MonoBehaviour {
 
     /*Need to be set in editor*/
     public Score score;
-    public GameObject finalResults;
-    public GameObject spawnInfo;
+    public Text finalResults;
+    public Text spawnInfo;
     public GameObject pauseMenu;
 
     /*Set automagically*/
     GameObject sphere;
 
     public float speed = 2;
-    public int Active;
-    public int destroyed;
+
+    int _spawned;
+    public int spawned { get { return _spawned; } set { _spawned = value; UpdateSphereCount(); } }
+
+    int _destroyed;
+    public int destroyed { get { return _destroyed; } set { _destroyed = value; UpdateSphereCount(); } }
 
     public static bool paused;
 
@@ -38,8 +43,8 @@ public class GameController : MonoBehaviour {
         Instantiate(Resources.Load("Cube"));
     }
 
-    void Update() {
-        spawnInfo.GetComponent<TextMesh>().text = destroyed + "/" + Active;
+    public void UpdateSphereCount() {
+        spawnInfo.text = destroyed + "/" + spawned;
     }
 
     /// <summary>
@@ -53,10 +58,7 @@ public class GameController : MonoBehaviour {
         paused = !paused;
         instance.pauseMenu.SetActive(paused);
         Time.timeScale = paused ? 0 : 1;
-    }
-
-    public void BackToMenu() {
-        Application.LoadLevel(0);
+        RenderSettings.fogDensity = paused ? 0.12f : 0;
     }
 
     IEnumerator Spawn() {
@@ -67,10 +69,10 @@ public class GameController : MonoBehaviour {
         while (true) {
             yield return new WaitForSeconds(speed);
             if (!paused) {
-                if (Active < 20 && (Active - destroyed) < 6) {
-                    Active++;
+                if (spawned < 20 && (spawned - destroyed) < 6) {
+                    spawned++;
                     Vector2 Circle = Random.insideUnitCircle * 5;
-                    if ((Active) % 7 == 0) Instantiate(Resources.Load(AbilitySpheres[Mathf.RoundToInt(Random.Range(0, AbilitySpheres.Count))].name), new Vector3(Circle.x, 6, Circle.y), new Quaternion());
+                    if ((spawned) % 7 == 0) Instantiate(Resources.Load(AbilitySpheres[Mathf.RoundToInt(Random.Range(0, AbilitySpheres.Count))].name), new Vector3(Circle.x, 6, Circle.y), new Quaternion());
                     else Instantiate(sphere, new Vector3(Circle.x, 6, Circle.y), new Quaternion());
                 }
             }
@@ -84,7 +86,7 @@ public class GameController : MonoBehaviour {
     }
 
     public void Results() {
-        score.resultsactive = true;
+        score.resultsActive = true;
         score.Summary();
         StartCoroutine("RestartIn");
     }
@@ -92,9 +94,9 @@ public class GameController : MonoBehaviour {
     void Restart() {
         ChangeSeed();
         destroyed = 0;
-        Active = 0;
+        spawned = 0;
         speed = 2;
-        finalResults.GetComponent<TextMesh>().text = "";
+        finalResults.text = "";
         score.NoScore();
     }
 
