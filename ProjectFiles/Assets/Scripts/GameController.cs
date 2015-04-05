@@ -52,16 +52,7 @@ public class GameController : MonoBehaviour {
     public static void Pause() {
         paused = !paused;
         instance.pauseMenu.SetActive(paused);
-
-        foreach (GameObject item in GameObject.FindGameObjectsWithTag("Sphere")) {
-            Move script = item.GetComponent<Move>();
-            script.Pause();
-        }
-
-        foreach (GameObject item in GameObject.FindGameObjectsWithTag("Cube")) {
-            box script = item.GetComponent<box>();
-            script.Freeze();
-        }
+        Time.timeScale = paused ? 0 : 1;
     }
 
     public void BackToMenu() {

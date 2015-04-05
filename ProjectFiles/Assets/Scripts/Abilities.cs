@@ -16,7 +16,7 @@ public class Abilities : MonoBehaviour
     void Start() {
         CameraEffect = Camera.main.GetComponent<CameraEffects>();
         parent = gameObject.transform.parent;
-        GameController = GameObject.Find("GameController").GetComponent<GameController>();
+        GameController = GameObject.Find("Mechanics").GetComponent<GameController>();
         SphereSettings();
     }
 
