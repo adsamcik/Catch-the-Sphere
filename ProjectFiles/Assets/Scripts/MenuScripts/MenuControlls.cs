@@ -7,9 +7,6 @@ public class MenuControlls : MonoBehaviour {
     RaycastHit hit = new RaycastHit();
     Touch touch;
 
-    public Vector3 HomePos;
-    public Vector3 AboutPos;
-    public Vector3 SettingsPos;
     Vector3 SpherePosition = new Vector3(-10, 1, 1.7f);
     Vector3 SphereScale = new Vector3(2.2f, 2.2f, 2.2f);
 
@@ -55,74 +52,12 @@ public class MenuControlls : MonoBehaviour {
 
     }
 
-    void OnEnable() {
-        if (Application.loadedLevel == 2) {
-            MobileController.SetActive(false);
-            FinalResults.gameObject.SetActive(false);
-            StartCoroutine("ChangeState", new Vector3(Camera.main.transform.position.x, 16, Camera.main.transform.position.z));
-        }
-        else if (Application.loadedLevel == 1) {
-            MobileController.SetActive(false);
-            StartCoroutine("ChangeState", new Vector3(Camera.main.transform.position.x, 16, Camera.main.transform.position.z));
-        }
-    }
-
-    IEnumerator ChangeState(Vector3 finpos) {
-        float frac = 0;
-        float i = 8;
-        while (transform.position != finpos) {
-            Camera.main.transform.position = Vector3.Lerp(transform.position, finpos, frac);
-            frac += Time.deltaTime * i;
-            yield return new WaitForFixedUpdate();
-            if (i > 1) i -= Time.deltaTime * 6;
-        }
-    }
-
-    IEnumerator Disable() { yield return null; }
-
-    IEnumerator About() {
-        float i = 0;
-        while (transform.position != AboutPos) {
-            transform.position = Vector3.Lerp(transform.position, AboutPos, i);
-            i += Time.deltaTime * 2;
-            yield return new WaitForFixedUpdate();
-        }
-    }
-
-    IEnumerator Home() {
-        float i = 0;
-        while (transform.position != HomePos) {
-            transform.position = Vector3.Lerp(transform.position, HomePos, i);
-            i += Time.deltaTime * 2;
-            yield return new WaitForFixedUpdate();
-        }
-    }
-
-    IEnumerator Settings() {
+    void SettingsInit() {
         gk = QualitySettings.GetQualityLevel();
         if (gk == 0) { GraphicsQuality.text = "No shadows"; LowSphere.SetActive(true); }
         else if (gk == 1) { GraphicsQuality.text = "Good"; LowSphere.SetActive(true); }
         else if (gk == 2) { GraphicsQuality.text = "Better"; MedSphere.SetActive(true); }
         else if (gk == 3) { GraphicsQuality.text = "Excellent"; HighSphere.SetActive(true); }
-
-        float i = 0;
-
-        while (transform.position != SettingsPos) {
-            transform.position = Vector3.Lerp(transform.position, SettingsPos, i);
-            i += Time.deltaTime * 2;
-            yield return new WaitForFixedUpdate();
-        }
-
-
-    }
-
-    IEnumerator Normal() {
-        Application.LoadLevel(hit.transform.name);
-        yield return null;
-    }
-    IEnumerator Tutorial() {
-        Application.LoadLevel(hit.transform.name);
-        yield return null;
     }
 
     IEnumerator Quality() {
@@ -136,10 +71,6 @@ public class MenuControlls : MonoBehaviour {
     }
 
     void Update() {
-        if (MobileController) { if (Input.GetKeyDown(KeyCode.Escape)) { StartCoroutine("Continue"); } }
-        if (transform.position == SettingsPos || transform.position == AboutPos) { if (Input.GetKeyDown(KeyCode.Escape)) StartCoroutine("Home"); }
-        else if (transform.position == HomePos) if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
-
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && Input.GetTouch(0).deltaTime < 1f) {
             Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
 
