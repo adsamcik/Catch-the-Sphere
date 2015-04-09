@@ -14,7 +14,7 @@ public class MobileControlls : MonoBehaviour {
 
     void Update() {
         if (CrossPlatformInputManager.GetButtonDown("Pause")) GameController.Pause();
-#if UNITY_ANDROID || UNITY_IOS
+#if (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && Input.GetTouch(0).deltaTime < 1f)
 #else
         if (Input.GetMouseButtonDown(0))
