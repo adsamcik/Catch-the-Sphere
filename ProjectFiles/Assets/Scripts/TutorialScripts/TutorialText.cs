@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
+[RequireComponent(typeof(Text))]
 public class TutorialText : MonoBehaviour {
     bool writing;
     bool show;
@@ -22,15 +24,15 @@ public class TutorialText : MonoBehaviour {
     private Vector3 acceleration;
     private Vector3 deltaAcceleration;
 
+	Text textObject;
+
     void Start() {
+		textObject = GetComponent<Text>();
         Application.targetFrameRate = 60;
         StartCoroutine("Write", "This tutorial will guide you\nthrough basic mechanics of\nCatch the Sphere");
         StartCoroutine("Guide");
 
-        if (QualitySettings.GetQualityLevel() < 2) sphere = Instantiate(Resources.Load("SphereLow")) as GameObject;
-        else if (QualitySettings.GetQualityLevel() == 2) sphere = Instantiate(Resources.Load("SphereMed")) as GameObject;
-        else if (QualitySettings.GetQualityLevel() == 3) sphere = Instantiate(Resources.Load("SphereHigh")) as GameObject;
-
+        sphere = Instantiate(Resources.Load("SphereMed")) as GameObject;
         sphere.SetActive(false);
 
         shakeDetectionThreshold *= shakeDetectionThreshold;
@@ -60,7 +62,7 @@ public class TutorialText : MonoBehaviour {
 
     IEnumerator Write(string input) {
         writing = true;
-        GetComponent<TextMesh>().text = "";
+        textObject.text = "";
         int length = 1;
         while (true) {
             if (input.Length < 1) break;
@@ -69,7 +71,7 @@ public class TutorialText : MonoBehaviour {
             if (input.Length > 1)
                 if (input.Substring(0, 2) == "/n") length = 2;
                 else length = 1;
-            GetComponent<TextMesh>().text += input.Substring(0, length);
+            textObject.text += input.Substring(0, length);
             input = input.Substring(length);
             yield return new WaitForFixedUpdate();
         }

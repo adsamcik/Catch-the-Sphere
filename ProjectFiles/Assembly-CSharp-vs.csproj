@@ -56,7 +56,7 @@
      <Compile Include="Assets\Scripts\MenuScripts\BillboardPlane.cs" />
      <Compile Include="Assets\Scripts\MenuScripts\HighscoreSet.cs" />
      <Compile Include="Assets\Scripts\MenuScripts\MenuBall.cs" />
-     <Compile Include="Assets\Scripts\MenuScripts\MenuControlls.cs" />
+     <Compile Include="Assets\Scripts\MenuScripts\MenuEventController.cs" />
      <Compile Include="Assets\Scripts\MobileControlls.cs" />
      <Compile Include="Assets\Scripts\Move.cs" />
      <Compile Include="Assets\Scripts\PauseMenu.cs" />

@@ -62,9 +62,7 @@ public class GameController : MonoBehaviour {
     }
 
     IEnumerator Spawn() {
-        if (QualitySettings.GetQualityLevel() < 2) sphere = Resources.Load("SphereLow") as GameObject;
-        else if (QualitySettings.GetQualityLevel() == 2) sphere = Resources.Load("SphereMed") as GameObject;
-        else sphere = Resources.Load("SphereHigh") as GameObject;
+        sphere = Resources.Load("SphereMed") as GameObject;
 
         while (true) {
             yield return new WaitForSeconds(speed);

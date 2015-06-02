@@ -3,14 +3,8 @@ using System.Collections;
 using UnityStandardAssets.CrossPlatformInput;
 
 public class MobileControlls : MonoBehaviour {
-
-    GameObject go;
-    float finger;
-    RaycastHit hit = new RaycastHit();
+    RaycastHit hit;
     public LayerMask mask;
-    Touch touch;
-
-    public GameController GameController;
 
     void Update() {
         if (CrossPlatformInputManager.GetButtonDown("Pause")) GameController.Pause();
@@ -23,7 +17,7 @@ public class MobileControlls : MonoBehaviour {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.SphereCast(ray, 0.4f, out hit, mask)) {
-                hit.transform.gameObject.GetComponent<Move>().Touched();
+                hit.transform.SendMessage("Touched");
             }
         }
     }
