@@ -26,7 +26,7 @@ public class GameController : MonoBehaviour {
     public int spawned { get { return _spawned; } set { _spawned = value; UpdateSphereCount(); } }
 
     int _destroyed;
-    public int destroyed { get { return _destroyed; } set { _destroyed = value; UpdateSphereCount(); } }
+    public static int destroyed { get { return instance._destroyed; } set { instance._destroyed = value; instance.UpdateSphereCount(); } }
 
     public static bool paused;
 
@@ -98,12 +98,12 @@ public class GameController : MonoBehaviour {
         score.NoScore();
     }
 
-    public void AddScore(float scoresend) {
-        score.AddScore(scoresend);
+    public static void AddScore(float scoresend) {
+        instance.score.AddScore(scoresend);
     }
 
-    public void AddScoreNoModifier(float scoresend) {
-        score.AddScoreNoModifier(scoresend);
+    public static void AddScoreNoModifier(float scoresend) {
+        instance.score.AddScoreNoModifier(scoresend);
     }
 
     void ChangeSeed() {

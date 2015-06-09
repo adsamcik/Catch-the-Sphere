@@ -17,7 +17,7 @@ public class MobileControlls : MonoBehaviour {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.SphereCast(ray, 0.4f, out hit, mask)) {
-                hit.transform.SendMessage("Touched");
+                hit.transform.SendMessage("Touched", SendMessageOptions.DontRequireReceiver);
             }
         }
     }

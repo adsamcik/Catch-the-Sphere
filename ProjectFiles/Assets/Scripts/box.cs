@@ -2,53 +2,15 @@
 using System.Collections;
 
 public class box : MonoBehaviour {
+    Rigidbody r;
 
-    GameObject Collider;
-
-    Vector3 Velocity;
-    bool frozen;
-
-    float accelerometerUpdateInterval = 1.0f / 60.0f;
-
-    // The greater the value of LowPassKernelWidthInSeconds, the slower the filtered value will converge towards current input sample (and vice versa).
-    float lowPassKernelWidthInSeconds = 1.0f;
-    float shakeDetectionThreshold = 1.5f;
-    private float lowPassFilterFactor;
-    private Vector3 lowPassValue = Vector3.zero;
-    private Vector3 acceleration;
-    private Vector3 deltaAcceleration;
-
-    void Start() {
-        StartCoroutine("IsInside");
-        Collider = GameObject.Find("SphereCollider");
-        Physics.IgnoreCollision(gameObject.GetComponent<BoxCollider>(), Collider.GetComponent<Collider>());
-        shakeDetectionThreshold *= shakeDetectionThreshold;
-        lowPassValue = Input.acceleration;
-        lowPassFilterFactor = accelerometerUpdateInterval / lowPassKernelWidthInSeconds;
-    }
-
-    void Update() {
-        acceleration = Input.acceleration;
-
-        lowPassValue = Vector3.Lerp(lowPassValue, acceleration, lowPassFilterFactor);
-
-        deltaAcceleration = acceleration - lowPassValue;
-
-        if (deltaAcceleration.sqrMagnitude >= shakeDetectionThreshold) {
-            GetComponent<Rigidbody>().AddForce(100 * deltaAcceleration);
-        }
-    }
-    IEnumerator IsInside() {
-        while (true) {
-            if (transform.position.y < -10) { Instantiate(Resources.Load("Cube")); Destroy(gameObject); }
-            yield return new WaitForSeconds(1);
-        }
-
+    void Awake() {
+        r = GetComponent<Rigidbody>();
     }
 
     void OnCollisionEnter(Collision other) {
         float dir1, dir2;
-        if (other.gameObject.tag == "Sphere") {
+        if (other.gameObject.CompareTag("Sphere")) {
             if (Random.Range(0, 4) > 2) dir1 = Random.Range(1000, 1250);
             else dir1 = Random.Range(-1250, -1000);
 
@@ -56,29 +18,15 @@ public class box : MonoBehaviour {
             else dir2 = Random.Range(-1250, -1000);
 
             Vector3 Force = new Vector3(dir1, Random.Range(0, 400), dir2);
-            if (GetComponent<Rigidbody>().velocity.x + GetComponent<Rigidbody>().velocity.z < 200) {
-                GetComponent<Rigidbody>().AddForce(-(Force));
+            if (r.velocity.x + r.velocity.z < 200) {
+               r.AddForce(-(Force));
                 other.rigidbody.AddForce(Force);
             }
             else {
-                Vector3 CubeForce = new Vector3(GetComponent<Rigidbody>().velocity.x * Random.Range(3, 8), Random.Range(250, 1500), GetComponent<Rigidbody>().velocity.z * Random.Range(3, 8));
-                GetComponent<Rigidbody>().AddForce(CubeForce);
+                Vector3 CubeForce = new Vector3(r.velocity.x * Random.Range(3, 8), Random.Range(250, 1500), r.velocity.z * Random.Range(3, 8));
+                r.AddForce(CubeForce);
                 other.rigidbody.AddForce(Force + CubeForce);
             }
-        }
-    }
-
-    public void Freeze() {
-        if (frozen == true) {
-            GetComponent<Rigidbody>().isKinematic = false;
-            GetComponent<Rigidbody>().velocity = Velocity;
-            frozen = false;
-        }
-        else {
-            Velocity = GetComponent<Rigidbody>().velocity;
-            GetComponent<Rigidbody>().velocity = Vector3.zero;
-            GetComponent<Rigidbody>().isKinematic = true;
-            frozen = true;
         }
     }
 }

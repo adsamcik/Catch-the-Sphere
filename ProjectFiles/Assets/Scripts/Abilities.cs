@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class Abilities : MonoBehaviour {
     CameraEffects CameraEffect;
-    GameController GameController;
     List<GameObject> colliding = new List<GameObject>();
     Transform parent;
 
@@ -15,12 +14,11 @@ public class Abilities : MonoBehaviour {
     void Start() {
         CameraEffect = Camera.main.GetComponent<CameraEffects>();
         parent = gameObject.transform.parent;
-        GameController = GameObject.Find("Mechanics").GetComponent<GameController>();
         SphereSettings();
     }
 
     void SphereSettings() {
-        if (gameObject.name == "LowerScore") { Score = GameObject.Find("Score").GetComponent<Score>(); StartCoroutine("DestroyIn", Random.Range(7, 15)); }
+        if (gameObject.name == "LowerScore") { Score = GameObject.Find("Score").GetComponent<Score>(); StartCoroutine("DestroyIn", Random.Range(6, 10)); }
         else if (gameObject.name == "Teleport") { StartCoroutine("Teleporting"); }
     }
     void OnTriggerEnter(Collider other) {
@@ -29,6 +27,7 @@ public class Abilities : MonoBehaviour {
 
     void OnTriggerExit(Collider other) {
         colliding.Remove(other.gameObject);
+        Debug.Log("Exit");
     }
 
     IEnumerator DestroyIn(float time) {
@@ -72,10 +71,10 @@ public class Abilities : MonoBehaviour {
     IEnumerator GravityField() {
         gameObject.GetComponent<Collider>().enabled = false;
         Transform parent = gameObject.transform.parent;
-        parent.GetComponent<Rigidbody>().freezeRotation = true;
         parent.GetComponent<Collider>().enabled = false;
         parent.GetComponent<Renderer>().enabled = false;
         parent.GetComponent<Rigidbody>().isKinematic = true;
+        parent.GetComponent<Rigidbody>().velocity = new Vector3(0,-1,0);
         StartCoroutine("SpriteField", gameObject.GetComponentInChildren<SpriteRenderer>());
 
         foreach (GameObject sphere in colliding) {
@@ -95,7 +94,8 @@ public class Abilities : MonoBehaviour {
     IEnumerator LowerScore() {
         parent.GetComponent<Collider>().enabled = false;
         parent.GetComponent<Renderer>().enabled = false;
-        parent.GetComponent<Move>().GameController.AddScoreNoModifier(-((3 * parent.GetComponent<Rigidbody>().velocity.y * 3 * parent.GetComponent<Rigidbody>().velocity.x) + Mathf.Pow(parent.position.y, 3)));
+        Vector3 velocity = parent.GetComponent<Rigidbody>().velocity;
+        GameController.AddScoreNoModifier(-((3 * velocity.y * 3 * velocity.x) + Mathf.Pow(parent.position.y, 3)));
         GetComponent<ParticleSystem>().Emit(100);
         CameraEffect.ShakeCamera(0.5f);
 
@@ -105,28 +105,29 @@ public class Abilities : MonoBehaviour {
 
     IEnumerator Teleporting() {
         float ttt = -1; // Time To Teleport
-        float maxttt = 0;
+        float maxttt = 0.75f;
         float score = 0;
         Vector3 SphereRand;
         while (!touched) {
             SphereRand = Random.insideUnitSphere * 5;
-            if (ttt < 0) { parent.position = new Vector3(SphereRand.x, SphereRand.y + 6, SphereRand.z); ttt = 0.75f; maxttt = ttt; score = 1000 / ttt; }
-            score = 2000 * (ttt / maxttt);
+            if (ttt < 0) { parent.position = new Vector3(SphereRand.x, SphereRand.y + 6, SphereRand.z); ttt = maxttt;}
             ttt -= Time.deltaTime;
             yield return new WaitForFixedUpdate();
         }
-        score = score / (maxttt - 0.25f);
-        parent.GetComponent<Move>().GameController.AddScoreNoModifier(score);
+        score = 3500 * (ttt / maxttt);
+        GameController.AddScore(score);
         Destroy(parent.gameObject);
     }
 
     IEnumerator Teleport() {
         touched = true;
+        Destroy(parent.gameObject);
         yield return null;
     }
 
     IEnumerator Invisibility() {
-        parent.GetComponent<Move>().GameController.AddScoreNoModifier(2 * Mathf.Pow(parent.position.y, 3));
+        GameController.AddScoreNoModifier(2 * Mathf.Pow(parent.position.y, 3));
+        Destroy(parent.gameObject);
         yield return null;
     }
 
