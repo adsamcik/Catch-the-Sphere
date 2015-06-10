@@ -12,7 +12,6 @@ public class GameController : MonoBehaviour {
     static RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
 
     /*Need to be set in editor*/
-    public Score score;
     public Text finalResults;
     public Text spawnInfo;
     public GameObject pauseMenu;
@@ -26,7 +25,7 @@ public class GameController : MonoBehaviour {
     public int spawned { get { return _spawned; } set { _spawned = value; UpdateSphereCount(); } }
 
     int _destroyed;
-    public static int destroyed { get { return instance._destroyed; } set { instance._destroyed = value; instance.UpdateSphereCount(); } }
+    public static int destroyed { get { return instance._destroyed; } set { instance._destroyed = value; instance.UpdateSphereCount(); if (value >= 20) instance.Results(); } }
 
     public static bool paused;
 
@@ -35,6 +34,7 @@ public class GameController : MonoBehaviour {
 
     void Awake() {
         instance = this;
+        paused = false;
     }
 
     void Start() {
@@ -84,8 +84,8 @@ public class GameController : MonoBehaviour {
     }
 
     public void Results() {
-        score.resultsActive = true;
-        score.Summary();
+        Score.resultsActive = true;
+        Score.Summary();
         StartCoroutine("RestartIn");
     }
 
@@ -95,15 +95,15 @@ public class GameController : MonoBehaviour {
         spawned = 0;
         speed = 2;
         finalResults.text = "";
-        score.NoScore();
+        Score.NoScore();
     }
 
     public static void AddScore(float scoresend) {
-        instance.score.AddScore(scoresend);
+        Score.AddScore(scoresend);
     }
 
     public static void AddScoreNoModifier(float scoresend) {
-        instance.score.AddScoreNoModifier(scoresend);
+        Score.AddScoreNoModifier(scoresend);
     }
 
     void ChangeSeed() {

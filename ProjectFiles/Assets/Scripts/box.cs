@@ -19,7 +19,7 @@ public class box : MonoBehaviour {
 
             Vector3 Force = new Vector3(dir1, Random.Range(0, 400), dir2);
             if (r.velocity.x + r.velocity.z < 200) {
-               r.AddForce(-(Force));
+                r.AddForce(-(Force));
                 other.rigidbody.AddForce(Force);
             }
             else {

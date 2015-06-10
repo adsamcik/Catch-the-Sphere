@@ -7,8 +7,6 @@ public class Abilities : MonoBehaviour {
     List<GameObject> colliding = new List<GameObject>();
     Transform parent;
 
-    Score Score;
-
     bool touched;
 
     void Start() {
@@ -18,8 +16,8 @@ public class Abilities : MonoBehaviour {
     }
 
     void SphereSettings() {
-        if (gameObject.name == "LowerScore") { Score = GameObject.Find("Score").GetComponent<Score>(); StartCoroutine("DestroyIn", Random.Range(6, 10)); }
-        else if (gameObject.name == "Teleport") { StartCoroutine("Teleporting"); }
+        if (gameObject.name == "LowerScore") StartCoroutine("DestroyIn", Random.Range(6, 10));
+        else if (gameObject.name == "Teleport") StartCoroutine("Teleporting");
     }
     void OnTriggerEnter(Collider other) {
         if (other.tag == "Sphere") colliding.Add(other.gameObject);
@@ -27,28 +25,33 @@ public class Abilities : MonoBehaviour {
 
     void OnTriggerExit(Collider other) {
         colliding.Remove(other.gameObject);
-        Debug.Log("Exit");
     }
 
     IEnumerator DestroyIn(float time) {
-        int scoretoadd = 0;
+        int scoreToAdd = 0;
         int previous = 0;
-        int scoretemp;
+        int scoreTemp;
         while (time > 0) {
-            scoretemp = Score.scoreTemp;
-            if (scoretemp > previous) scoretoadd = scoretemp;
-            else if (scoretemp < previous) { scoretoadd += previous; previous = 0; }
+            scoreTemp = Score.scoreTemp;
+
+            if (scoreTemp > previous)
+                scoreToAdd += scoreTemp - previous;
+            else if (scoreTemp < previous)
+                scoreToAdd += scoreTemp;
+
+            previous = scoreTemp;
             time -= 0.5f;
             yield return new WaitForSeconds(0.5f);
         }
 
-        Score.AddScoreNoModifier(scoretoadd + previous);
+        Score.AddScoreNoModifier(scoreToAdd + previous);
         GameController.destroyed++;
 
         Destroy(parent.gameObject);
     }
 
     IEnumerator Explosion() {
+        GameController.AddScore(2000);
         parent.GetComponent<Collider>().enabled = false;
         Destroy(parent.GetComponent<Rigidbody>());
         CameraEffect.ShakeCamera(0.25f);
@@ -69,12 +72,12 @@ public class Abilities : MonoBehaviour {
     }
 
     IEnumerator GravityField() {
+        GameController.AddScore(2000);
         gameObject.GetComponent<Collider>().enabled = false;
         Transform parent = gameObject.transform.parent;
-        parent.GetComponent<Collider>().enabled = false;
         parent.GetComponent<Renderer>().enabled = false;
         parent.GetComponent<Rigidbody>().isKinematic = true;
-        parent.GetComponent<Rigidbody>().velocity = new Vector3(0,-1,0);
+        parent.GetComponent<Rigidbody>().velocity = new Vector3(0, -1, 0);
         StartCoroutine("SpriteField", gameObject.GetComponentInChildren<SpriteRenderer>());
 
         foreach (GameObject sphere in colliding) {
@@ -92,10 +95,9 @@ public class Abilities : MonoBehaviour {
     }
 
     IEnumerator LowerScore() {
-        parent.GetComponent<Collider>().enabled = false;
         parent.GetComponent<Renderer>().enabled = false;
         Vector3 velocity = parent.GetComponent<Rigidbody>().velocity;
-        GameController.AddScoreNoModifier(-((3 * velocity.y * 3 * velocity.x) + Mathf.Pow(parent.position.y, 3)));
+        GameController.AddScore(-((3 * velocity.y * 3 * velocity.x) + Mathf.Pow(parent.position.y, 3)));
         GetComponent<ParticleSystem>().Emit(100);
         CameraEffect.ShakeCamera(0.5f);
 
@@ -106,27 +108,26 @@ public class Abilities : MonoBehaviour {
     IEnumerator Teleporting() {
         float ttt = -1; // Time To Teleport
         float maxttt = 0.75f;
-        float score = 0;
         Vector3 SphereRand;
         while (!touched) {
             SphereRand = Random.insideUnitSphere * 5;
-            if (ttt < 0) { parent.position = new Vector3(SphereRand.x, SphereRand.y + 6, SphereRand.z); ttt = maxttt;}
-            ttt -= Time.deltaTime;
+            if (ttt < 0) { parent.position = new Vector3(SphereRand.x, SphereRand.y + 6, SphereRand.z); ttt = maxttt; }
+            ttt -= Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
-        score = 3500 * (ttt / maxttt);
-        GameController.AddScore(score);
+
+        Debug.Log(ttt + "/" + maxttt);
+        GameController.AddScore(3500 * (ttt / maxttt));
         Destroy(parent.gameObject);
     }
 
     IEnumerator Teleport() {
         touched = true;
-        Destroy(parent.gameObject);
         yield return null;
     }
 
     IEnumerator Invisibility() {
-        GameController.AddScoreNoModifier(2 * Mathf.Pow(parent.position.y, 3));
+        GameController.AddScore(2 * Mathf.Pow(parent.position.y, 3));
         Destroy(parent.gameObject);
         yield return null;
     }

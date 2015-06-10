@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Text))]
 public class TutorialText : MonoBehaviour {
@@ -9,33 +10,21 @@ public class TutorialText : MonoBehaviour {
     int scoreget, combomodifier;
     public int Active, destroyed;
 
-    GameObject Cube;
+    GameObject cube;
     GameObject sphere;
 
-    public GameObject PauseMenu;
+    List<GameObject> instances = new List<GameObject>();
 
-    float accelerometerUpdateInterval = 1.0f / 60.0f;
-    float lowPassKernelWidthInSeconds = 1.0f;
-    float shakeDetectionThreshold = 1.5f;
-    private float lowPassFilterFactor;
-    private Vector3 lowPassValue = Vector3.zero;
-    private Vector3 acceleration;
-    private Vector3 deltaAcceleration;
+    Text textObject;
 
-	Text textObject;
-
-    void Start() {
-		textObject = GetComponent<Text>();
+    void Awake() {
+        textObject = GetComponent<Text>();
         Application.targetFrameRate = 60;
-        StartCoroutine("Write", "This tutorial will guide you\nthrough basic mechanics of\nCatch the Sphere");
+        StartCoroutine("Write", "This tutorial will guide you through basic mechanics of Catch the Sphere");
         StartCoroutine("Guide");
 
-        sphere = Instantiate(Resources.Load("SphereMed")) as GameObject;
-        sphere.SetActive(false);
-
-        shakeDetectionThreshold *= shakeDetectionThreshold;
-        lowPassValue = Input.acceleration;
-        lowPassFilterFactor = accelerometerUpdateInterval / lowPassKernelWidthInSeconds;
+        sphere = (GameObject)Resources.Load("SphereMed");
+        cube = (GameObject)Resources.Load("Cube");
     }
 
     public void AddScore(float addscore) {
@@ -66,29 +55,19 @@ public class TutorialText : MonoBehaviour {
             yield return new WaitForFixedUpdate();
         }
         yield return new WaitForSeconds(2.5f);
-        StartCoroutine("Write", "In normal mode, you have cube\nthat randomly pushes\nspheres around");
+        StartCoroutine("Write", "In normal mode, you have cube that randomly pushes spheres around");
         StartCoroutine("Part0");
         while (writing) yield return new WaitForFixedUpdate();
-        yield return new WaitForSeconds(2f);
-
-        StartCoroutine("Write", "If your cube is slow or stucked\n just shake your device.\nTry it now.");
-        while (writing) yield return new WaitForFixedUpdate();
-
-        while (deltaAcceleration.sqrMagnitude < shakeDetectionThreshold) {
-            acceleration = Input.acceleration;
-            lowPassValue = Vector3.Lerp(lowPassValue, acceleration, lowPassFilterFactor);
-            deltaAcceleration = acceleration - lowPassValue;
-            yield return new WaitForFixedUpdate();
-        }
 
         yield return new WaitForSeconds(2.5f);
-        StartCoroutine("Write", "Spheres are your main objective.\nThe faster they are,\nthe more points you get.");
+        DestroyAll();
+        StartCoroutine("Write", "Spheres are your main objective. The faster they are, the more points you get.");
 
         while (writing) yield return new WaitForFixedUpdate();
 
         yield return new WaitForSeconds(5f);
+
         StartCoroutine("Write", "Let's try it.");
-        Destroy(Cube);
         StartCoroutine("Part1");
         while (show) yield return new WaitForFixedUpdate();
         StartCoroutine("Write", "That one was slow\ndon't you think?");
@@ -99,39 +78,39 @@ public class TutorialText : MonoBehaviour {
         StartCoroutine("Part2");
         while (show) yield return new WaitForFixedUpdate();
 
-        StartCoroutine("Write", "You would get " + scoreget + " score points\nfor this one and your modifier\nwould be " + combomodifier);
+        StartCoroutine("Write", "You would get " + scoreget + " score points for this one and your modifier would be " + combomodifier);
 
         while (writing) yield return new WaitForFixedUpdate();
         yield return new WaitForSeconds(4f);
 
-        StartCoroutine("Write", "Modifier multiplies the score\nyou get from next sphere.\nModifier is not shown to you");
+        StartCoroutine("Write", "Modifier multiplies the score you get from next sphere. Modifier is not shown to you");
 
         while (writing) yield return new WaitForFixedUpdate();
         yield return new WaitForSeconds(3.5f);
 
-        StartCoroutine("Write", "However I'll tell you it's\nsphere score divided by 25\nrounded down");
+        StartCoroutine("Write", "However I'll tell you it's sphere score divided by 25 rounded down");
 
         while (writing) yield return new WaitForFixedUpdate();
         yield return new WaitForSeconds(3f);
 
-        StartCoroutine("Write", "It's reseted every 2 seconds\nand if you hit multiple spheres\n modifier is the average of those");
+        StartCoroutine("Write", "It's reseted every 2 seconds and if you hit multiple spheres modifier is the average of those");
 
         while (writing) yield return new WaitForFixedUpdate();
         yield return new WaitForSeconds(4f);
 
-        StartCoroutine("Write", "There are several types\n of special spheres\n(this one explodes)");
+        StartCoroutine("Write", "There are several types  of special spheres (this one explodes)");
         StartCoroutine("Part3");
         while (show) {
             yield return new WaitForFixedUpdate();
         }
-        StartCoroutine("Write", "Special spheres have\ndifferent colors and effects.\nTap when ready to\nstart the real game!");
+        StartCoroutine("Write", "Special spheres have different colors and effects. Tap when ready to start the real game!");
         while (writing) {
             yield return new WaitForFixedUpdate();
         }
         yield return new WaitForSeconds(0.5f);
 
-        while (Input.touchCount == 0 || Input.GetMouseButtonDown(0)) {
-            yield return new WaitForFixedUpdate();
+        while (Input.touchCount == 0 || !Input.GetMouseButtonDown(0)) {
+            yield return new WaitForEndOfFrame();
         }
 
 
@@ -140,7 +119,7 @@ public class TutorialText : MonoBehaviour {
 
     IEnumerator Part0() {
         show = true;
-        Cube = Instantiate(Resources.Load("Cube")) as GameObject;
+        instances.Add(Instantiate(cube));
         show = false;
         yield return null;
     }
@@ -191,5 +170,13 @@ public class TutorialText : MonoBehaviour {
         yield return new WaitForSeconds(1f);
         while (Sphere) yield return new WaitForFixedUpdate();
         show = false;
+    }
+
+    void DestroyAll() {
+        for (int i = 0; i < instances.Count; i++) {
+            Destroy(instances[i]);
+        }
+
+        instances.Clear();
     }
 }

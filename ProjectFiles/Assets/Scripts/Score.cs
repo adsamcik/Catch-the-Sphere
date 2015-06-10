@@ -3,44 +3,41 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class Score : MonoBehaviour {
+    static Score instance;
+    static GameObject sphere;
 
-    GameObject sphere;
+    public static Text FinalResults;
+    public static Text ScoreToAdd;
+    public static Text ScoreText;
 
-    public Text FinalResults;
-    public Text ScoreToAdd;
-    public Text ScoreText;
+    static int comboModifier;
 
-    public GameController GameController;
+    public static int scoreTemp { get; private set; }
+    public static int score { get; private set; }
+    static float comboScore, combotimer;
+    static float cTimerMax = 2f;
 
-    int comboModifier;
+    static string highScoreKey;
 
-    public int scoreTemp { get; private set; }
-    public int score { get; private set; }
-    float comboScore, combotimer;
-    float cTimerMax = 2f;
-
-    string highScoreKey;
-
-    public bool resultsActive;
-    Vector3 OrigPos;
+    public static bool resultsActive;
+    static Vector3 OrigPos;
 
     void Start() {
+        instance = this;
         CheckLevel();
         OrigPos = transform.position;
+
+        FinalResults = transform.parent.Find("Results").GetComponent<Text>();
+        ScoreToAdd = transform.Find("ScoreToAdd").GetComponent<Text>();
+        ScoreText = transform.Find("ScoreValue").GetComponent<Text>();
     }
 
-    void Update() {
-        if (GameController.destroyed == 20 && !resultsActive) {
-            GameController.Results();
-        }
-    }
-
-    public void CheckLevel() {
+    public static void CheckLevel() {
         string level = Application.loadedLevelName;
         if (level == "Normal") { highScoreKey = "hs_normal"; }
     }
 
-    bool SetHighscore() {
+    static bool SetHighscore() {
         int highscore = score;
         if (PlayerPrefs.GetInt(highScoreKey) <= highscore) {
             PlayerPrefs.SetInt(highScoreKey, highscore);
@@ -50,59 +47,52 @@ public class Score : MonoBehaviour {
         return false;
     }
 
-    public int GetHighscore() {
+    public static int GetHighscore() {
         return PlayerPrefs.GetInt(highScoreKey);
     }
 
-    public void NoScore() { score = 0; GetComponent<TextMesh>().text = "0"; resultsActive = false; }
-    public void Summary() {
-        StopCoroutine("ComboTimer");
+    public static void NoScore() { score = 0; ScoreText.text = "0"; resultsActive = false; }
+    public static void Summary() {
+        instance.StopCoroutine("ComboTimer");
         CountScore();
         FinalResults.text = "\nYour final score is\n" + score + " points.\n\n";
         if (SetHighscore()) { FinalResults.text += "You are getting better!\nYou have beaten your\nhigh score"; }
         else { FinalResults.text += "You have " + (PlayerPrefs.GetInt(highScoreKey) - score) + " left\n to beat your high score"; }
     }
 
-    public void AddScoreNoModifier(float spherescore) {
+    public static void AddScoreNoModifier(float spherescore) {
         scoreTemp += Mathf.RoundToInt(spherescore);
         combotimer = cTimerMax;
         ScoreToAdd.text = "+" + scoreTemp;
     }
 
-    public void AddScore(float spherescore) {
+    public static void AddScore(float spherescore) {
         if (combotimer > 0) {
             scoreTemp += Mathf.RoundToInt(spherescore * comboModifier);
-            comboModifier = (comboModifier + RoundDown(spherescore / 25)) / 2;
+            comboModifier = (comboModifier + Mathf.FloorToInt(spherescore / 25)) / 2;
             combotimer = cTimerMax;
-            ScoreToAdd.text = "+" + scoreTemp;
         }
         else {
             scoreTemp += Mathf.RoundToInt(spherescore);
-            comboModifier = RoundDown(spherescore / 25);
+            comboModifier = Mathf.FloorToInt(spherescore / 25);
             combotimer = cTimerMax;
-            StartCoroutine("ComboTimer");
-            ScoreToAdd.text = "+" + scoreTemp;
+            instance.StartCoroutine("ComboTimer");
         }
+        ScoreToAdd.text = (scoreTemp > 0 ? "+" : "") + scoreTemp;
     }
 
-    void SetScore(int stbs) {
+    static void SetScore(int stbs) {
         score += Mathf.RoundToInt(stbs);
         ScoreText.text = score.ToString();
-        if (stbs != 0) StartCoroutine("ScoreAddedAnim");
+        if (stbs != 0) instance.StartCoroutine("ScoreAddedAnim");
     }
 
-    void CountScore() {
+    static void CountScore() {
         SetScore(scoreTemp);
         ScoreToAdd.text = "";
         scoreTemp = 0;
         comboModifier = 0;
         combotimer = 0;
-    }
-
-    int RoundDown(float input) {
-        int rounded = Mathf.RoundToInt(input);
-        if ((rounded / input) > 1) return rounded - 1;
-        else return rounded;
     }
 
     IEnumerator ComboTimer() {

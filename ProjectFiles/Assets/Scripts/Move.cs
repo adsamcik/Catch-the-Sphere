@@ -31,13 +31,16 @@ public class Move : MonoBehaviour {
 
     public void Touched() {
         StopCoroutine("IsInside");
-        GameController.AddScore(10 * (Mathf.Abs(frozen ? velocity.x : r.velocity.x) + Mathf.Abs(frozen ? velocity.z : r.velocity.z) + Mathf.Abs((frozen ? velocity.y : r.velocity.y) / 2f)));
         GameController.destroyed++;
         GetComponent<SphereCollider>().enabled = false;
+        this.enabled = false;
 
         Abilities a = GetComponentInChildren<Abilities>();
         if (a != null) a.Activate();
-        else StartCoroutine("Puff");
+        else {
+            GameController.AddScore(10 * (Mathf.Abs(frozen ? velocity.x : r.velocity.x) + Mathf.Abs(frozen ? velocity.z : r.velocity.z) + Mathf.Abs((frozen ? velocity.y : r.velocity.y) / 2f)));
+            StartCoroutine("Puff");
+        }
     }
 
     IEnumerator Puff() {
