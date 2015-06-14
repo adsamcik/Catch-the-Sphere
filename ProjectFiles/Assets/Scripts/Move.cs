@@ -31,7 +31,8 @@ public class Move : MonoBehaviour {
 
     public void Touched() {
         StopCoroutine("IsInside");
-        GameController.destroyed++;
+        if (GameController.instance != null)
+            GameController.destroyed++;
         GetComponent<SphereCollider>().enabled = false;
         this.enabled = false;
 

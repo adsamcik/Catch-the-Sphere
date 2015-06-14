@@ -25,7 +25,16 @@ public class GameController : MonoBehaviour {
     public int spawned { get { return _spawned; } set { _spawned = value; UpdateSphereCount(); } }
 
     int _destroyed;
-    public static int destroyed { get { return instance._destroyed; } set { instance._destroyed = value; instance.UpdateSphereCount(); if (value >= 20) instance.Results(); } }
+    public static int destroyed {
+        get {
+            return instance._destroyed;
+        }
+        set {
+            instance._destroyed = value;
+            instance.UpdateSphereCount();
+            if (value >= 20) instance.Results();
+        }
+    }
 
     public static bool paused;
 

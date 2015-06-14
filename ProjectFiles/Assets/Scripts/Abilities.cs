@@ -51,7 +51,8 @@ public class Abilities : MonoBehaviour {
     }
 
     IEnumerator Explosion() {
-        GameController.AddScore(2000);
+        if (GameController.instance != null)
+            GameController.AddScore(2000);
         parent.GetComponent<Collider>().enabled = false;
         Destroy(parent.GetComponent<Rigidbody>());
         CameraEffect.ShakeCamera(0.25f);

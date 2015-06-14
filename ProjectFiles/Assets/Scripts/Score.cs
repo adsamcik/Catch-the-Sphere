@@ -78,7 +78,9 @@ public class Score : MonoBehaviour {
             combotimer = cTimerMax;
             instance.StartCoroutine("ComboTimer");
         }
-        ScoreToAdd.text = (scoreTemp > 0 ? "+" : "") + scoreTemp;
+
+        if(ScoreToAdd != null)
+            ScoreToAdd.text = (scoreTemp > 0 ? "+" : "") + scoreTemp;
     }
 
     static void SetScore(int stbs) {

@@ -83,20 +83,10 @@ public class TutorialText : MonoBehaviour {
         while (writing) yield return new WaitForFixedUpdate();
         yield return new WaitForSeconds(4f);
 
-        StartCoroutine("Write", "Modifier multiplies the score you get from next sphere. Modifier is not shown to you");
+        StartCoroutine("Write", "Modifier multiplies the score you get from next sphere and it's value is not shown to you");
 
         while (writing) yield return new WaitForFixedUpdate();
         yield return new WaitForSeconds(3.5f);
-
-        StartCoroutine("Write", "However I'll tell you it's sphere score divided by 25 rounded down");
-
-        while (writing) yield return new WaitForFixedUpdate();
-        yield return new WaitForSeconds(3f);
-
-        StartCoroutine("Write", "It's reseted every 2 seconds and if you hit multiple spheres modifier is the average of those");
-
-        while (writing) yield return new WaitForFixedUpdate();
-        yield return new WaitForSeconds(4f);
 
         StartCoroutine("Write", "There are several types  of special spheres (this one explodes)");
         StartCoroutine("Part3");
@@ -153,7 +143,7 @@ public class TutorialText : MonoBehaviour {
 
     IEnumerator Part3() {
         show = true;
-        GameObject Sphere = Instantiate(Resources.Load("ExplodingTut")) as GameObject;
+        GameObject Sphere = Instantiate(Resources.Load("Exploding Sphere")) as GameObject;
 
         GameObject Sphere1 = Instantiate(sphere, new Vector3(1, 6, 0), new Quaternion()) as GameObject;
         GameObject Sphere2 = Instantiate(sphere, new Vector3(0, 6, 1), new Quaternion()) as GameObject;
@@ -166,9 +156,8 @@ public class TutorialText : MonoBehaviour {
         Destroy(Sphere3.GetComponent<Move>());
         Sphere3.SetActive(true);
 
-        Sphere.GetComponent<TutSphereController>().phase = 3;
         yield return new WaitForSeconds(1f);
-        while (Sphere) yield return new WaitForFixedUpdate();
+        while (Sphere != null) yield return new WaitForFixedUpdate();
         show = false;
     }
 
