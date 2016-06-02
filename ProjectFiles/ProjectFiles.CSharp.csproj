@@ -76,6 +76,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Abilities.cs" />
+    <Compile Include="Assets\Scripts\Abilities\Ability.cs" />
+    <Compile Include="Assets\Scripts\Abilities\Standard.cs" />
     <Compile Include="Assets\Scripts\CameraEffects.cs" />
     <Compile Include="Assets\Scripts\CheckIfInside.cs" />
     <Compile Include="Assets\Scripts\ExplosionAnimation.cs" />
