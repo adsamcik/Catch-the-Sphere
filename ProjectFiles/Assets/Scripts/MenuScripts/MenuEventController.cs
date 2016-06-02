@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class MenuEventController : MonoBehaviour {
 	public UnityEngine.UI.Text HighscoreText;
@@ -9,6 +10,6 @@ public class MenuEventController : MonoBehaviour {
 	}
 
 	public void LoadLevel(string name) {
-		Application.LoadLevel(name);
+        SceneManager.LoadScene(name);
 	}
 }

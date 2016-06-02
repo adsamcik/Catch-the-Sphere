@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Score : MonoBehaviour {
     static Score instance;
@@ -33,7 +34,7 @@ public class Score : MonoBehaviour {
     }
 
     public static void CheckLevel() {
-        string level = Application.loadedLevelName;
+        string level = SceneManager.GetActiveScene().name;
         if (level == "Normal") { highScoreKey = "hs_normal"; }
     }
 

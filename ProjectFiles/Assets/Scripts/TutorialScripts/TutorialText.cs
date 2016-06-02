@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Text))]
 public class TutorialText : MonoBehaviour {
@@ -103,8 +104,7 @@ public class TutorialText : MonoBehaviour {
             yield return new WaitForEndOfFrame();
         }
 
-
-        Application.LoadLevel("Normal");
+        SceneManager.LoadScene("Normal");
     }
 
     IEnumerator Part0() {
