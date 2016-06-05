@@ -82,7 +82,7 @@ public class Abilities : MonoBehaviour {
         StartCoroutine("SpriteField", gameObject.GetComponentInChildren<SpriteRenderer>());
 
         foreach (GameObject sphere in colliding) {
-            if (sphere) sphere.GetComponent<Move>().Freeze();
+            if (sphere) sphere.GetComponent<Move>().ToggleFreeze();
         }
 
         yield return new WaitForSeconds(1.5f);
@@ -90,7 +90,7 @@ public class Abilities : MonoBehaviour {
         while (GameController.paused) yield return new WaitForFixedUpdate();
 
         foreach (GameObject sphere in colliding) {
-            if (sphere) sphere.GetComponent<Move>().Freeze();
+            if (sphere) sphere.GetComponent<Move>().ToggleFreeze();
         }
         Destroy(parent.gameObject);
     }
