@@ -8,11 +8,10 @@ public class GravityField: Ability {
     GameObject gameObject;
 
     public void FixedUpdate(Rigidbody rigidbody) {
-        throw new NotImplementedException();
     }
 
     public int Pop() {
-        return 2000;
+        return 200;
     }
 
     public IEnumerator PopAnimation() {
