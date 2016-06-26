@@ -20,11 +20,11 @@ public class GravityField: Ability {
     }
 
     public void OnFieldEnter(GameObject g) {
-        throw new NotImplementedException();
+        colliding.Add(g);
     }
 
     public void OnFieldExit(GameObject g) {
-        throw new NotImplementedException();
+        colliding.Remove(g);
     }
 
     public IEnumerator PopAnimation(Action func) {
