@@ -38,12 +38,13 @@ public class Standard : Ability {
 
     }
 
-    public IEnumerator PopAnimation() {
+    public IEnumerator PopAnimation(System.Action func) {
         float mod = transform.localScale.x / POP_ANIMATION_LENGTH;
         while (transform.localScale.x > 0) {
             float val = Time.deltaTime * mod;
             transform.localScale -= new Vector3(val, val, val);
             yield return new WaitForEndOfFrame();
         }
+        func();
     }
 }

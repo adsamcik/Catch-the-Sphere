@@ -14,7 +14,20 @@ public class GravityField: Ability {
         return 200;
     }
 
-    public IEnumerator PopAnimation() {
+    public void Initialize(GameObject g) {
+        gameObject = g;
+        g.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Materials/Gravity");
+    }
+
+    public void OnFieldEnter(GameObject g) {
+        throw new NotImplementedException();
+    }
+
+    public void OnFieldExit(GameObject g) {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerator PopAnimation(Action func) {
         GameController.AddScore(2000);
         gameObject.GetComponent<Collider>().enabled = false;
         Transform parent = gameObject.transform.parent;
@@ -33,19 +46,6 @@ public class GravityField: Ability {
         foreach (GameObject sphere in colliding)
             if (sphere) sphere.GetComponent<Move>().ToggleFreeze();
 
-        UnityEngine.Object.Destroy(parent.gameObject);
-    }
-
-    public void Initialize(GameObject g) {
-        gameObject = g;
-        g.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Materials/Gravity");
-    }
-
-    public void OnFieldEnter(GameObject g) {
-        throw new NotImplementedException();
-    }
-
-    public void OnFieldExit(GameObject g) {
-        throw new NotImplementedException();
+        func();
     }
 }

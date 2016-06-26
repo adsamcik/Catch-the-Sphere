@@ -7,5 +7,5 @@ public interface Ability {
     void OnFieldExit(GameObject g);
     int Pop();
     void FixedUpdate(Rigidbody rigidbody);
-    IEnumerator PopAnimation();
+    IEnumerator PopAnimation(System.Action func);
 }

@@ -1,15 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class Move : MonoBehaviour {
     Rigidbody r;
     Vector3 velocity;
-    Ability ability;
+    List<Ability> abilities;
+    ushort activeAbilities;
 
     void Start() {
         StartCoroutine("IsInside");
         r = GetComponent<Rigidbody>();
+    }
+
+    public void AddAbility(Ability a) {
+        abilities.Add(a);
+        activeAbilities++;
     }
 
     IEnumerator IsInside() {
@@ -23,7 +30,9 @@ public class Move : MonoBehaviour {
     }
 
     public void FixedUpdate() {
-        ability.FixedUpdate(r);
+        foreach (var ability in abilities) {
+            ability.FixedUpdate(r);
+        }
     }
 
     public void Touched() {
@@ -31,10 +40,17 @@ public class Move : MonoBehaviour {
         GetComponent<SphereCollider>().enabled = false;
         enabled = false;
 
-        GameController.AddScore(ability.Pop());
-        ability.PopAnimation();
+        foreach (var ability in abilities) {
+            GameController.AddScore(ability.Pop());
+            StartCoroutine(ability.PopAnimation(AbilityRemoved));
+        }
 
         GameController.destroyed++;
+    }
+
+    void AbilityRemoved() {
+        if (--activeAbilities == 0)
+            Destroy(gameObject);
     }
 
     public void ToggleFreeze() {
