@@ -6,7 +6,7 @@ using System;
 public class Move : MonoBehaviour {
     Rigidbody r;
     Vector3 velocity;
-    List<Ability> abilities;
+    List<Ability> abilities = new List<Ability>();
     ushort activeAbilities;
 
     void Start() {
