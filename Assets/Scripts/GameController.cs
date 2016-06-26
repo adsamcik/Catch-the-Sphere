@@ -118,7 +118,7 @@ public class GameController : MonoBehaviour {
     void ChangeSeed() {
         byte[] data = new byte[4];
         rng.GetBytes(data);
-        Random.seed = System.BitConverter.ToInt32(data, 0);
+        Random.InitState(System.BitConverter.ToInt32(data, 0));
     }
 }
 
