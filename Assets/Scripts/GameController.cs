@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 
 public class GameController : MonoBehaviour {
+    public static Light sun;
     //Instance - eliminates the requirement for lookups
     public static GameController instance;
 
@@ -39,7 +40,7 @@ public class GameController : MonoBehaviour {
     public static bool paused;
 
     /*Spheres with abilities*/
-    public List<GameObject> AbilitySpheres = new List<GameObject>();
+    public List<Pair<Ability, bool>> AbilitySpheres = new List<Pair<Ability, bool>>();
 
     void Awake() {
         instance = this;
@@ -79,8 +80,8 @@ public class GameController : MonoBehaviour {
                 if (spawned < 20 && (spawned - destroyed) < 6) {
                     spawned++;
                     Vector2 Circle = Random.insideUnitCircle * 5;
-                    if ((spawned) % 7 == 0) Instantiate(Resources.Load(AbilitySpheres[Mathf.RoundToInt(Random.Range(0, AbilitySpheres.Count))].name), new Vector3(Circle.x, 6, Circle.y), new Quaternion());
-                    else Instantiate(sphere, new Vector3(Circle.x, 6, Circle.y), new Quaternion());
+                    //if ((spawned) % 7 == 0) Instantiate(Resources.Load(AbilitySpheres[Mathf.RoundToInt(Random.Range(0, AbilitySpheres.Count))].name), new Vector3(Circle.x, 6, Circle.y), new Quaternion());
+                    //else Instantiate(sphere, new Vector3(Circle.x, 6, Circle.y), new Quaternion());
                 }
             }
         }
