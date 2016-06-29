@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
-using System;
 
 public class Move : MonoBehaviour {
     const float MAX_SPEED = 20;
@@ -30,6 +28,7 @@ public class Move : MonoBehaviour {
     public void FixedUpdate() {
         if(r.velocity.sqrMagnitude > MAX_SPEED_SQR)
             r.AddForce(-r.velocity.normalized);
+
         foreach (var ability in s.abilities)
             ability.FixedUpdate(r);
     }

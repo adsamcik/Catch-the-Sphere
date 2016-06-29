@@ -10,35 +10,19 @@ public class Standard : Ability {
     Transform transform;
     float sqrspeed;
 
-    void FixedUpdate() {
-        //if (rigidbody.velocity.sqrMagnitude < sqrspeed)
-            //rigidbody.AddForce(rigidbody.velocity.normalized, ForceMode.Impulse);
-    }
-
-    public void Initialize(GameObject g) {
+    public override void Initialize(GameObject g) {
+        base.Initialize(g);
         rigidbody = g.GetComponent<Rigidbody>();
         transform = g.transform;
         float speed = Random.Range(MIN_SPEED, MAX_SPEED);
         sqrspeed = speed * speed;
     }
 
-    public void OnFieldEnter(GameObject g) {
-
-    }
-
-    public void OnFieldExit(GameObject g) {
-
-    }
-
-    public int Pop() {
+    public override int Pop() {
         return Mathf.RoundToInt(sqrspeed);
     }
 
-    public void FixedUpdate(Rigidbody rigidbody) {
-
-    }
-
-    public IEnumerator PopAnimation(System.Action func) {
+    public override IEnumerator PopAnimation(System.Action func) {
         float mod = transform.localScale.x / POP_ANIMATION_LENGTH;
         while (transform.localScale.x > 0) {
             float val = Time.deltaTime * mod;
@@ -48,7 +32,7 @@ public class Standard : Ability {
         func();
     }
 
-    public Ability Clone() {
+    public override Ability Clone() {
         return new Standard();
     }
 }

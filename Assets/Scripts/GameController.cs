@@ -44,7 +44,7 @@ public class GameController : MonoBehaviour {
     public static bool paused;
 
     /*Spheres with abilities*/
-    public List<Pair<Ability, bool>> AbilitySpheres = new List<Pair<Ability, bool>>();
+    public List<AbilityInfo> AbilitySpheres = new List<AbilityInfo>();
 
     const float INCREASE_CHANCE_BY = 0.1f;
     const float BASE_CHANCE_TO_SPAWN_SPECIAL = 0.1f;
@@ -62,7 +62,7 @@ public class GameController : MonoBehaviour {
           .Select(x => System.Activator.CreateInstance(x));
         foreach (var ability in all) {
             if (AbilitySpheres.FindIndex(x => x.first.GetType() == ability.GetType()) == -1) {
-                AbilitySpheres.Add(new Pair<Ability, bool>((Ability)ability, true));
+                AbilitySpheres.Add(new AbilityInfo((Ability)ability, true));
             }
         }
     }
@@ -103,7 +103,7 @@ public class GameController : MonoBehaviour {
                     Vector3 spawnPos = transform.position + Random.insideUnitSphere * spawnRadius;
                     if (Random.value <= chanceToSpawnSpecial) {
                         GameObject g = (GameObject)Instantiate(sphere, spawnPos, new Quaternion());
-                        Move m = g.GetComponent<Move>();
+                        Stats s = g.GetComponent<Stats>();
                         float abilityChance = 1f;
                         List<Ability> ab = new List<Ability>();
                         foreach (var ability in AbilitySpheres) 
@@ -114,7 +114,7 @@ public class GameController : MonoBehaviour {
                             Debug.Log("ability");
                             if (Random.value <= abilityChance) {
                                 int rand = Random.Range(0, ab.Count);
-                                m.AddAbility(ab[rand]);
+                                s.AddAbility(ab[rand]);
                                 ab.RemoveAt(rand);
                             }
                             else break;

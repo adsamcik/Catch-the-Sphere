@@ -5,29 +5,25 @@ using System.Collections.Generic;
 
 public class GravityField: Ability {
     List<GameObject> colliding = new List<GameObject>();
-    GameObject gameObject;
 
-    public void FixedUpdate(Rigidbody rigidbody) {
-    }
-
-    public int Pop() {
+    public override int Pop() {
         return 200;
     }
 
-    public void Initialize(GameObject g) {
-        gameObject = g;
+    public override void Initialize(GameObject g) {
+        base.Initialize(g);
         g.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Materials/Gravity");
     }
 
-    public void OnFieldEnter(GameObject g) {
+    public override void OnFieldEnter(GameObject g) {
         colliding.Add(g);
     }
 
-    public void OnFieldExit(GameObject g) {
+    public override void OnFieldExit(GameObject g) {
         colliding.Remove(g);
     }
 
-    public IEnumerator PopAnimation(Action func) {
+    public override IEnumerator PopAnimation(Action func) {
         GameController.AddScore(2000);
         gameObject.GetComponent<Collider>().enabled = false;
         gameObject.GetComponent<Renderer>().enabled = false;
@@ -48,7 +44,7 @@ public class GravityField: Ability {
         func();
     }
 
-    public Ability Clone() {
+    public override Ability Clone() {
         return new GravityField();
     }
 }

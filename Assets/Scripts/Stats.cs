@@ -19,7 +19,7 @@ public class Stats : MonoBehaviour {
             StartCoroutine(ability.PopAnimation(AbilityRemoved));
         }
         value *= multiplier;
-        return value;
+        return (int)value;
     }
 
     public void AddAbility(Ability a) {

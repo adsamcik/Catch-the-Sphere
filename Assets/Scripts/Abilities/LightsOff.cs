@@ -6,11 +6,8 @@ public class LightsOff : Ability {
     Color aColor;
     Light light;
 
-    public void FixedUpdate(Rigidbody rigidbody) {
-
-    }
-
-    public void Initialize(GameObject g) {
+    public override void Initialize(GameObject g) {
+        base.Initialize(g);
         aColor = RenderSettings.ambientLight;
         RenderSettings.ambientLight = Color.black;
         GameController.sun.enabled = false;
@@ -20,19 +17,11 @@ public class LightsOff : Ability {
         light.range = 5;
     }
 
-    public void OnFieldEnter(GameObject g) {
-
-    }
-
-    public void OnFieldExit(GameObject g) {
-
-    }
-
-    public int Pop() {
+    public override int Pop() {
         return 500;
     }
 
-    public IEnumerator PopAnimation(Action func) {
+    public override IEnumerator PopAnimation(Action func) {
         float val = 0;
         while (RenderSettings.ambientLight != aColor) {
             if ((val += Time.deltaTime) > 1)
@@ -43,11 +32,11 @@ public class LightsOff : Ability {
         GameController.sun.enabled = true;
     }
 
-    public Ability Clone() {
+    public override Ability Clone() {
         return new LightsOff();
     }
 
-    public int GetBonus() {
-        return 0;
+    public override int GetBonus() {
+        return 200;
     }
 }

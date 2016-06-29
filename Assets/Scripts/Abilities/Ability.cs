@@ -2,9 +2,21 @@
 using System.Collections;
 
 public abstract class Ability {
-    public abstract void Initialize(GameObject g);
-    public abstract void OnFieldEnter(GameObject g);
-    public abstract void OnFieldExit(GameObject g);
+    protected GameObject gameObject;
+    /// <summary>
+    /// Called when Ability is added
+    /// </summary>
+    /// <param name="g">gameobject</param>
+    public virtual void Initialize(GameObject g) {
+        gameObject = g;
+    }
+    public virtual void OnFieldEnter(GameObject g) { }
+    public virtual void OnFieldExit(GameObject g) { }
+
+    /// <summary>
+    /// Called when sphere is destroyed
+    /// </summary>
+    /// <returns>Score for the sphere to award</returns>
     public abstract int Pop();
 
     /// <summary>
