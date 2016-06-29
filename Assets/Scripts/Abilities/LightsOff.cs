@@ -37,13 +37,17 @@ public class LightsOff : Ability {
         while (RenderSettings.ambientLight != aColor) {
             if ((val += Time.deltaTime) > 1)
                 val = 1;
-            Color.Lerp(RenderSettings.ambientLight, aColor, val);
+            RenderSettings.ambientLight = Color.Lerp(RenderSettings.ambientLight, aColor, val);
+            yield return new WaitForEndOfFrame();
         }
         GameController.sun.enabled = true;
-        yield return new WaitForEndOfFrame();
     }
 
     public Ability Clone() {
         return new LightsOff();
+    }
+
+    public int GetBonus() {
+        return 0;
     }
 }

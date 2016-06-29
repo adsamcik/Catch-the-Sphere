@@ -30,10 +30,9 @@ public class GravityField: Ability {
     public IEnumerator PopAnimation(Action func) {
         GameController.AddScore(2000);
         gameObject.GetComponent<Collider>().enabled = false;
-        Transform parent = gameObject.transform.parent;
-        parent.GetComponent<Renderer>().enabled = false;
-        parent.GetComponent<Rigidbody>().isKinematic = true;
-        parent.GetComponent<Rigidbody>().velocity = new Vector3(0, -1, 0);
+        gameObject.GetComponent<Renderer>().enabled = false;
+        gameObject.GetComponent<Rigidbody>().isKinematic = true;
+        gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, -1, 0);
         //StartCoroutine("SpriteField", gameObject.GetComponentInChildren<SpriteRenderer>());
 
         foreach (GameObject sphere in colliding)

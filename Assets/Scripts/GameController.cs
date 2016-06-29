@@ -50,6 +50,8 @@ public class GameController : MonoBehaviour {
     const float BASE_CHANCE_TO_SPAWN_SPECIAL = 0.1f;
     float chanceToSpawnSpecial = BASE_CHANCE_TO_SPAWN_SPECIAL;
 
+    float spawnRadius;
+
     public void Awake() {
         instance = this;
         paused = false;
@@ -66,6 +68,7 @@ public class GameController : MonoBehaviour {
     }
 
     void Start() {
+        spawnRadius = transform.localScale.x - 0.5f;
         ChangeSeed();
         StartCoroutine("Spawn");
         //Instantiate(Resources.Load("Cube"));
@@ -97,9 +100,9 @@ public class GameController : MonoBehaviour {
             if (!paused) {
                 if (spawned < 20 && (spawned - destroyed) < 6) {
                     spawned++;
-                    Vector2 Circle = Random.insideUnitCircle * 5;
+                    Vector3 spawnPos = transform.position + Random.insideUnitSphere * spawnRadius;
                     if (Random.value <= chanceToSpawnSpecial) {
-                        GameObject g = (GameObject)Instantiate(sphere, new Vector3(Circle.x, 6, Circle.y), new Quaternion());
+                        GameObject g = (GameObject)Instantiate(sphere, spawnPos, new Quaternion());
                         Move m = g.GetComponent<Move>();
                         float abilityChance = 1f;
                         List<Ability> ab = new List<Ability>();
@@ -122,7 +125,7 @@ public class GameController : MonoBehaviour {
                         chanceToSpawnSpecial = BASE_CHANCE_TO_SPAWN_SPECIAL; 
                     }
                     else {
-                        Instantiate(sphere, new Vector3(Circle.x, 6, Circle.y), new Quaternion());
+                        Instantiate(sphere, spawnPos, new Quaternion());
                         chanceToSpawnSpecial += INCREASE_CHANCE_BY;
                     }
                     Debug.Log(chanceToSpawnSpecial);

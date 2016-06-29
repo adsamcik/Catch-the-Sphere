@@ -16,6 +16,7 @@ public class Explosion : Ability {
         gameObject = g;
         SphereCollider sc = gameObject.AddComponent<SphereCollider>();
         sc.radius = maxDist;
+        sc.isTrigger = true;
         g.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Materials/Exploding");
     }
 
@@ -40,5 +41,9 @@ public class Explosion : Ability {
 
     public Ability Clone() {
         return new Explosion();
+    }
+
+    public int GetBonus() {
+        return 0;
     }
 }

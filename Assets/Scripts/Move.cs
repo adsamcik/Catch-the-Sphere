@@ -4,23 +4,17 @@ using System.Collections.Generic;
 using System;
 
 public class Move : MonoBehaviour {
+    const float MAX_SPEED = 20;
+    const float MAX_SPEED_SQR = MAX_SPEED * MAX_SPEED;
+
     Rigidbody r;
+    Stats s;
     Vector3 velocity;
-    List<Ability> abilities = new List<Ability>();
-    ushort activeAbilities;
 
     void Start() {
         StartCoroutine("IsInside");
         r = GetComponent<Rigidbody>();
-    }
-
-    public void AddAbility(Ability a) {
-        Ability ability = a.Clone();
-        abilities.Add(ability);
-        ability.Initialize(gameObject);
-        Debug.Log("Added ability " + a.GetType().Name);
-        activeAbilities++;
-        name += a.GetType().Name;
+        s = GetComponent<Stats>();
     }
 
     IEnumerator IsInside() {
@@ -34,27 +28,10 @@ public class Move : MonoBehaviour {
     }
 
     public void FixedUpdate() {
-        foreach (var ability in abilities) {
+        if(r.velocity.sqrMagnitude > MAX_SPEED_SQR)
+            r.AddForce(-r.velocity.normalized);
+        foreach (var ability in s.abilities)
             ability.FixedUpdate(r);
-        }
-    }
-
-    public void Touched() {
-        StopCoroutine("IsInside");
-        GetComponent<SphereCollider>().enabled = false;
-        enabled = false;
-
-        foreach (var ability in abilities) {
-            GameController.AddScore(ability.Pop());
-            StartCoroutine(ability.PopAnimation(AbilityRemoved));
-        }
-
-        GameController.destroyed++;
-    }
-
-    void AbilityRemoved() {
-        if (--activeAbilities == 0)
-            Destroy(gameObject);
     }
 
     public void ToggleFreeze() {
