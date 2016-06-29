@@ -3,30 +3,47 @@ using System.Collections;
 using System;
 
 public class LightsOff : Ability {
-    float prevIntensity;
+    Color aColor;
+    Light light;
+
     public void FixedUpdate(Rigidbody rigidbody) {
-        throw new NotImplementedException();
+
     }
 
     public void Initialize(GameObject g) {
-        prevIntensity = RenderSettings.ambientIntensity;
-        RenderSettings.ambientIntensity = 0;
-        
+        aColor = RenderSettings.ambientLight;
+        RenderSettings.ambientLight = Color.black;
+        GameController.sun.enabled = false;
+        light = g.AddComponent<Light>();
+        light.type = LightType.Point;
+        light.intensity = 8;
+        light.range = 5;
     }
 
     public void OnFieldEnter(GameObject g) {
-        throw new NotImplementedException();
+
     }
 
     public void OnFieldExit(GameObject g) {
-        throw new NotImplementedException();
+
     }
 
     public int Pop() {
-        throw new NotImplementedException();
+        return 500;
     }
 
     public IEnumerator PopAnimation(Action func) {
-        throw new NotImplementedException();
+        float val = 0;
+        while (RenderSettings.ambientLight != aColor) {
+            if ((val += Time.deltaTime) > 1)
+                val = 1;
+            Color.Lerp(RenderSettings.ambientLight, aColor, val);
+        }
+        GameController.sun.enabled = true;
+        yield return new WaitForEndOfFrame();
+    }
+
+    public Ability Clone() {
+        return new LightsOff();
     }
 }

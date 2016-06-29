@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class Explosion : Ability {
     const float maxDist = 25;
 
-    List<GameObject> inRange;
+    List<GameObject> inRange = new List<GameObject>();
     GameObject gameObject;
     public void FixedUpdate(Rigidbody rigidbody) {
         
@@ -15,6 +16,7 @@ public class Explosion : Ability {
         gameObject = g;
         SphereCollider sc = gameObject.AddComponent<SphereCollider>();
         sc.radius = maxDist;
+        g.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Materials/Exploding");
     }
 
     public void OnFieldEnter(GameObject g) {
@@ -34,5 +36,9 @@ public class Explosion : Ability {
 
     public IEnumerator PopAnimation(System.Action func) {
         yield return new WaitForEndOfFrame();
+    }
+
+    public Ability Clone() {
+        return new Explosion();
     }
 }

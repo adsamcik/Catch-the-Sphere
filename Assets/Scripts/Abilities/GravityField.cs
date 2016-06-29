@@ -48,4 +48,8 @@ public class GravityField: Ability {
 
         func();
     }
+
+    public Ability Clone() {
+        return new GravityField();
+    }
 }

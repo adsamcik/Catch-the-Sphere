@@ -15,8 +15,12 @@ public class Move : MonoBehaviour {
     }
 
     public void AddAbility(Ability a) {
-        abilities.Add(a);
+        Ability ability = a.Clone();
+        abilities.Add(ability);
+        ability.Initialize(gameObject);
+        Debug.Log("Added ability " + a.GetType().Name);
         activeAbilities++;
+        name += a.GetType().Name;
     }
 
     IEnumerator IsInside() {

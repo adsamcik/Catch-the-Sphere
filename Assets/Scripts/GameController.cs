@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine.UI;
-
+using System.Linq;
 
 public class GameController : MonoBehaviour {
-    public static Light sun;
+    public static Light sun { get { return instance._sun; } set { instance._sun = value; } }
+    public Light _sun;
     //Instance - eliminates the requirement for lookups
     public static GameController instance;
 
@@ -26,11 +27,14 @@ public class GameController : MonoBehaviour {
     public int spawned { get { return _spawned; } set { _spawned = value; UpdateSphereCount(); } }
 
     int _destroyed;
-    public static int destroyed {
-        get {
+    public static int destroyed
+    {
+        get
+        {
             return instance._destroyed;
         }
-        set {
+        set
+        {
             instance._destroyed = value;
             instance.UpdateSphereCount();
             if (value >= 20) instance.Results();
@@ -42,15 +46,29 @@ public class GameController : MonoBehaviour {
     /*Spheres with abilities*/
     public List<Pair<Ability, bool>> AbilitySpheres = new List<Pair<Ability, bool>>();
 
-    void Awake() {
+    const float INCREASE_CHANCE_BY = 0.1f;
+    const float BASE_CHANCE_TO_SPAWN_SPECIAL = 0.1f;
+    float chanceToSpawnSpecial = BASE_CHANCE_TO_SPAWN_SPECIAL;
+
+    public void Awake() {
         instance = this;
         paused = false;
+        var interfaceType = typeof(Ability);
+        var all = System.AppDomain.CurrentDomain.GetAssemblies()
+          .SelectMany(x => x.GetTypes())
+          .Where(x => interfaceType.IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)
+          .Select(x => System.Activator.CreateInstance(x));
+        foreach (var ability in all) {
+            if (AbilitySpheres.FindIndex(x => x.first.GetType() == ability.GetType()) == -1) {
+                AbilitySpheres.Add(new Pair<Ability, bool>((Ability)ability, true));
+            }
+        }
     }
 
     void Start() {
         ChangeSeed();
         StartCoroutine("Spawn");
-        Instantiate(Resources.Load("Cube"));
+        //Instantiate(Resources.Load("Cube"));
     }
 
     public void UpdateSphereCount() {
@@ -80,6 +98,34 @@ public class GameController : MonoBehaviour {
                 if (spawned < 20 && (spawned - destroyed) < 6) {
                     spawned++;
                     Vector2 Circle = Random.insideUnitCircle * 5;
+                    if (Random.value <= chanceToSpawnSpecial) {
+                        GameObject g = (GameObject)Instantiate(sphere, new Vector3(Circle.x, 6, Circle.y), new Quaternion());
+                        Move m = g.GetComponent<Move>();
+                        float abilityChance = 1f;
+                        List<Ability> ab = new List<Ability>();
+                        foreach (var ability in AbilitySpheres) 
+                            if (ability.second == true)
+                                ab.Add(ability.first);
+   
+                        while (ab.Count > 0) {
+                            Debug.Log("ability");
+                            if (Random.value <= abilityChance) {
+                                int rand = Random.Range(0, ab.Count);
+                                m.AddAbility(ab[rand]);
+                                ab.RemoveAt(rand);
+                            }
+                            else break;
+
+                            abilityChance /= 4;
+
+                        }
+                        chanceToSpawnSpecial = BASE_CHANCE_TO_SPAWN_SPECIAL; 
+                    }
+                    else {
+                        Instantiate(sphere, new Vector3(Circle.x, 6, Circle.y), new Quaternion());
+                        chanceToSpawnSpecial += INCREASE_CHANCE_BY;
+                    }
+                    Debug.Log(chanceToSpawnSpecial);
                     //if ((spawned) % 7 == 0) Instantiate(Resources.Load(AbilitySpheres[Mathf.RoundToInt(Random.Range(0, AbilitySpheres.Count))].name), new Vector3(Circle.x, 6, Circle.y), new Quaternion());
                     //else Instantiate(sphere, new Vector3(Circle.x, 6, Circle.y), new Quaternion());
                 }

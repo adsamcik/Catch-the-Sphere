@@ -11,8 +11,8 @@ public class Standard : Ability {
     float sqrspeed;
 
     void FixedUpdate() {
-        if (rigidbody.velocity.sqrMagnitude < sqrspeed)
-            rigidbody.AddForce(rigidbody.velocity.normalized, ForceMode.Impulse);
+        //if (rigidbody.velocity.sqrMagnitude < sqrspeed)
+            //rigidbody.AddForce(rigidbody.velocity.normalized, ForceMode.Impulse);
     }
 
     public void Initialize(GameObject g) {
@@ -46,5 +46,9 @@ public class Standard : Ability {
             yield return new WaitForEndOfFrame();
         }
         func();
+    }
+
+    public Ability Clone() {
+        return new Standard();
     }
 }

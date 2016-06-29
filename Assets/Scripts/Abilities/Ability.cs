@@ -7,5 +7,6 @@ public interface Ability {
     void OnFieldExit(GameObject g);
     int Pop();
     void FixedUpdate(Rigidbody rigidbody);
+    Ability Clone();
     IEnumerator PopAnimation(System.Action func);
 }
