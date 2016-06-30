@@ -61,8 +61,8 @@ public class GameController : MonoBehaviour {
           .Where(x => interfaceType.IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)
           .Select(x => System.Activator.CreateInstance(x));
         foreach (var ability in all) {
-            if (AbilitySpheres.FindIndex(x => x.first.GetType() == ability.GetType()) == -1) {
-                AbilitySpheres.Add(new AbilityInfo((Ability)ability, true));
+            if (AbilitySpheres.FindIndex(x => x.ability.GetType() == ability.GetType()) == -1) {
+                AbilitySpheres.Add(new AbilityInfo((Ability)ability, 1, true));
             }
         }
     }
@@ -105,16 +105,16 @@ public class GameController : MonoBehaviour {
                         GameObject g = (GameObject)Instantiate(sphere, spawnPos, new Quaternion());
                         Stats s = g.GetComponent<Stats>();
                         float abilityChance = 1f;
-                        List<Ability> ab = new List<Ability>();
+                        List<AbilityInfo> ab = new List<AbilityInfo>();
                         foreach (var ability in AbilitySpheres) 
-                            if (ability.second == true)
-                                ab.Add(ability.first);
+                            if (ability.enabled == true)
+                                ab.Add(ability);
    
                         while (ab.Count > 0) {
                             Debug.Log("ability");
                             if (Random.value <= abilityChance) {
                                 int rand = Random.Range(0, ab.Count);
-                                s.AddAbility(ab[rand]);
+                                s.AddAbility(ab[rand].ability);
                                 ab.RemoveAt(rand);
                             }
                             else break;
