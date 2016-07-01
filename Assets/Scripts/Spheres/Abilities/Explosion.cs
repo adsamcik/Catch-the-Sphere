@@ -29,15 +29,16 @@ namespace Abilities {
         public override int Pop() {
             int val = 0;
             foreach (var item in inRange) {
-                val += Mathf.RoundToInt(MAX_DIST - Vector3.Distance(item.transform.position, gameObject.transform.position));
-                item.GetComponent<Rigidbody>().AddExplosionForce(EXPLOSION_FORCE, gameObject.transform.position, MAX_DIST);
+                if (item.gameObject != null) {
+                    val += Mathf.RoundToInt(MAX_DIST - Vector3.Distance(item.transform.position, gameObject.transform.position));
+                    item.GetComponent<Rigidbody>().AddExplosionForce(EXPLOSION_FORCE, gameObject.transform.position, MAX_DIST);
+                }
             }
             return val;
         }
 
         public override IEnumerator PopAnimation(Action func) {
             gameObject.GetComponent<Collider>().enabled = false;
-            UnityEngine.Object.Destroy(gameObject.GetComponent<Rigidbody>());
             Camera.main.GetComponent<CameraEffects>().ShakeCamera(0.25f);
 
             MeshRenderer mr = gameObject.GetComponent<MeshRenderer>();

@@ -32,13 +32,17 @@ public class Stats : MonoBehaviour {
     }
 
     public void OnTriggerEnter(Collider other) {
-        foreach (var ability in abilities)
-            ability.OnFieldEnter(other);
+        if (other.gameObject.layer == 8) {
+            foreach (var ability in abilities)
+                ability.OnFieldEnter(other);
+        }
     }
 
     public void OnTriggerExit(Collider other) {
-        foreach (var ability in abilities)
-            ability.OnFieldExit(other);
+        if (other.gameObject.layer == 8) {
+            foreach (var ability in abilities)
+                ability.OnFieldExit(other);
+        }
     }
 
     void AbilityRemoved() {

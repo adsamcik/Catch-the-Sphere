@@ -71,7 +71,7 @@ public class GameController : MonoBehaviour {
         foreach (var ability in all) {
             if (standard == null && ability.GetType() == typeof(Standard))
                 standard = (Standard)ability;
-            else  if (abilities.FindIndex(x => x.ability.GetType() == ability.GetType()) == -1)
+            else if (abilities.FindIndex(x => x.ability.GetType() == ability.GetType()) == -1)
                 abilities.Add(new AbilityInfo((Ability)ability, 1, true));
         }
 
@@ -110,38 +110,36 @@ public class GameController : MonoBehaviour {
         while (true) {
             yield return new WaitForSeconds(speed);
             if (!paused) {
-                if (spawned < 20 && (spawned - destroyed) < 6) {
-                    spawned++;
-                    GameObject g = (GameObject)Instantiate(sphere, randomPositionInSphere, new Quaternion());
-                    Stats s = g.GetComponent<Stats>();
-                    if (Random.value <= chanceToSpawnSpecial) {
-                        float abilityChance = 1f;
-                        List<AbilityInfo> ab = new List<AbilityInfo>();
-                        foreach (var ability in abilities)
-                            if (ability.enabled == true)
-                                ab.Add(ability);
+                spawned++;
+                GameObject g = (GameObject)Instantiate(sphere, randomPositionInSphere, new Quaternion());
+                Stats s = g.GetComponent<Stats>();
+                if (Random.value <= chanceToSpawnSpecial) {
+                    float abilityChance = 1f;
+                    List<AbilityInfo> ab = new List<AbilityInfo>();
+                    foreach (var ability in abilities)
+                        if (ability.enabled == true)
+                            ab.Add(ability);
 
-                        while (ab.Count > 0) {
-                            if (Random.value <= abilityChance) {
-                                int rand = Random.Range(0, ab.Count);
-                                s.AddAbility(ab[rand].ability);
-                                ab.RemoveAt(rand);
-                            }
-                            else break;
-
-                            abilityChance /= 4;
-
+                    while (ab.Count > 0) {
+                        if (Random.value <= abilityChance) {
+                            int rand = Random.Range(0, ab.Count);
+                            s.AddAbility(ab[rand].ability);
+                            ab.RemoveAt(rand);
                         }
-                        chanceToSpawnSpecial = BASE_CHANCE_TO_SPAWN_SPECIAL;
+                        else break;
+
+                        abilityChance /= 4;
+
                     }
-                    else {
-                        s.AddAbility(standard);
-                        chanceToSpawnSpecial += INCREASE_CHANCE_BY;
-                    }
-                    Debug.Log(chanceToSpawnSpecial);
-                    //if ((spawned) % 7 == 0) Instantiate(Resources.Load(AbilitySpheres[Mathf.RoundToInt(Random.Range(0, AbilitySpheres.Count))].name), new Vector3(Circle.x, 6, Circle.y), new Quaternion());
-                    //else Instantiate(sphere, new Vector3(Circle.x, 6, Circle.y), new Quaternion());
+                    chanceToSpawnSpecial = BASE_CHANCE_TO_SPAWN_SPECIAL;
                 }
+                else {
+                    s.AddAbility(standard);
+                    chanceToSpawnSpecial += INCREASE_CHANCE_BY;
+                }
+                Debug.Log(chanceToSpawnSpecial);
+                //if ((spawned) % 7 == 0) Instantiate(Resources.Load(AbilitySpheres[Mathf.RoundToInt(Random.Range(0, AbilitySpheres.Count))].name), new Vector3(Circle.x, 6, Circle.y), new Quaternion());
+                //else Instantiate(sphere, new Vector3(Circle.x, 6, Circle.y), new Quaternion());
             }
         }
     }
