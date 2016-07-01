@@ -112,9 +112,9 @@ public class GameController : MonoBehaviour {
             if (!paused) {
                 if (spawned < 20 && (spawned - destroyed) < 6) {
                     spawned++;
+                    GameObject g = (GameObject)Instantiate(sphere, randomPositionInSphere, new Quaternion());
+                    Stats s = g.GetComponent<Stats>();
                     if (Random.value <= chanceToSpawnSpecial) {
-                        GameObject g = (GameObject)Instantiate(sphere, randomPositionInSphere, new Quaternion());
-                        Stats s = g.GetComponent<Stats>();
                         float abilityChance = 1f;
                         List<AbilityInfo> ab = new List<AbilityInfo>();
                         foreach (var ability in abilities)
@@ -135,7 +135,7 @@ public class GameController : MonoBehaviour {
                         chanceToSpawnSpecial = BASE_CHANCE_TO_SPAWN_SPECIAL;
                     }
                     else {
-                        Instantiate(sphere, randomPositionInSphere, new Quaternion());
+                        s.AddAbility(standard);
                         chanceToSpawnSpecial += INCREASE_CHANCE_BY;
                     }
                     Debug.Log(chanceToSpawnSpecial);
