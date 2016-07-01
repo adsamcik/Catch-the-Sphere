@@ -35,8 +35,22 @@ namespace Abilities {
             return val;
         }
 
-        public override IEnumerator PopAnimation(System.Action func) {
-            yield return new WaitForEndOfFrame();
+        public override IEnumerator PopAnimation(Action func) {
+            gameObject.GetComponent<Collider>().enabled = false;
+            UnityEngine.Object.Destroy(gameObject.GetComponent<Rigidbody>());
+            Camera.main.GetComponent<CameraEffects>().ShakeCamera(0.25f);
+
+            MeshRenderer mr = gameObject.GetComponent<MeshRenderer>();
+            Material m = new Material(mr.material);
+            mr.material = m;
+
+            for (float i = m.GetVector("_ChannelFactor").x; i < 2; i += Time.deltaTime) {
+                m.SetFloat("_Displacement", i);
+                m.SetVector("_ChannelFactor", new Vector4(i, i, i, 1));
+                yield return new WaitForEndOfFrame();
+            }
+
+            func();
         }
 
         public override Ability Clone() {
