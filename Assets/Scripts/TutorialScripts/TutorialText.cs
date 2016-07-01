@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Text))]
 public class TutorialText : MonoBehaviour {
-    bool writing;
+  /*  bool writing;
     bool show;
     int scoreget, combomodifier;
     public int Active, destroyed;
@@ -167,5 +167,5 @@ public class TutorialText : MonoBehaviour {
         }
 
         instances.Clear();
-    }
+    }*/
 }

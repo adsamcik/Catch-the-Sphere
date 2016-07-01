@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Abilities;
 
 public class Stats : MonoBehaviour {
     const int LIFE_MULTIPLIER = 25;

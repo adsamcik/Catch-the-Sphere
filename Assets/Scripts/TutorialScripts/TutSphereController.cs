@@ -4,7 +4,7 @@ using System.Collections;
 public class TutSphereController : MonoBehaviour
 {
 
-
+/*
     RaycastHit hit;
     TutorialText tutorialText;
     Abilities Abilities;
@@ -79,5 +79,5 @@ public class TutSphereController : MonoBehaviour
             frozen = true;
         }
     }
-
+    */
 }

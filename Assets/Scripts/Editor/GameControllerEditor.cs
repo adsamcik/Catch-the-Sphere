@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine.UI;
 using UnityEditor.SceneManagement;
 using UnityEditorInternal;
+using Abilities;
 
 [CustomEditor(typeof(GameController))]
 public class GameControllerEditor : Editor {

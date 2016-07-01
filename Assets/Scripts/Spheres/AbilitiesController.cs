@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Abilities : MonoBehaviour {
+public class AbilitiesController : MonoBehaviour {
     CameraEffects CameraEffect;
     List<GameObject> colliding = new List<GameObject>();
     Transform parent;

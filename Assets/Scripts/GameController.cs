@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine.UI;
 using System.Linq;
+using Abilities;
 
 public class GameController : MonoBehaviour {
     public static Light sun { get { return instance._sun; } set { instance._sun = value; } }
