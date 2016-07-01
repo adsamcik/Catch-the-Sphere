@@ -5,7 +5,7 @@ namespace Abilities {
     public class Standard : Ability {
         const int MAX_SPEED = 50;
         const int MIN_SPEED = 10;
-        const float POP_ANIMATION_LENGTH = 0.5f;
+        const float POP_ANIMATION_LENGTH = 0.1f;
 
         Rigidbody rigidbody;
         Transform transform;
