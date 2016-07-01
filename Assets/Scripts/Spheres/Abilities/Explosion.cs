@@ -18,12 +18,12 @@ namespace Abilities {
             g.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Materials/Exploding");
         }
 
-        public override void OnFieldEnter(GameObject g) {
-            inRange.Add(g);
+        public override void OnFieldEnter(Collider c) {
+            inRange.Add(c.gameObject);
         }
 
-        public override void OnFieldExit(GameObject g) {
-            inRange.Add(g);
+        public override void OnFieldExit(Collider c) {
+            inRange.Add(c.gameObject);
         }
 
         public override int Pop() {

@@ -31,6 +31,15 @@ public class Stats : MonoBehaviour {
         name += a.GetType().Name;
     }
 
+    public void OnTriggerEnter(Collider other) {
+        foreach (var ability in abilities)
+            ability.OnFieldEnter(other);
+    }
+
+    public void OnTriggerExit(Collider other) {
+        foreach (var ability in abilities)
+            ability.OnFieldExit(other);
+    }
 
     void AbilityRemoved() {
         if (--activeAbilities == 0)

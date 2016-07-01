@@ -11,8 +11,8 @@ namespace Abilities {
         public virtual void Initialize(GameObject g) {
             gameObject = g;
         }
-        public virtual void OnFieldEnter(GameObject g) { }
-        public virtual void OnFieldExit(GameObject g) { }
+        public virtual void OnFieldEnter(Collider g) { }
+        public virtual void OnFieldExit(Collider g) { }
 
         /// <summary>
         /// Called when sphere is destroyed

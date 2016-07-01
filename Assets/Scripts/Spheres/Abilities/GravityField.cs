@@ -16,12 +16,12 @@ namespace Abilities {
             g.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Materials/Gravity");
         }
 
-        public override void OnFieldEnter(GameObject g) {
-            colliding.Add(g);
+        public override void OnFieldEnter(Collider c) {
+            colliding.Add(c.gameObject);
         }
 
-        public override void OnFieldExit(GameObject g) {
-            colliding.Remove(g);
+        public override void OnFieldExit(Collider c) {
+            colliding.Remove(c.gameObject);
         }
 
         public override IEnumerator PopAnimation(Action func) {
