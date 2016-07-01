@@ -14,7 +14,7 @@ public class GameControllerEditor : Editor {
         var obj = (GameController)target;
         obj.Awake();
 
-        abilityList = new ReorderableList(obj.AbilitySpheres, typeof(AbilityInfo), true, true, true, true);
+        abilityList = new ReorderableList(obj.abilities, typeof(AbilityInfo), true, true, true, true);
 
         // This could be used aswell, but I only advise this your class inherrits from UnityEngine.Object or has a CustomPropertyDrawer
         // Since you'll find your item using: serializedObject.FindProperty("list").GetArrayElementAtIndex(index).objectReferenceValue
@@ -54,7 +54,7 @@ public class GameControllerEditor : Editor {
     /// <param name="active"></param>
     /// <param name="focused"></param>
     private void DrawElement(Rect rect, int index, bool active, bool focused) {
-        AbilityInfo item = ((GameController)target).AbilitySpheres[index];
+        AbilityInfo item = ((GameController)target).abilities[index];
 
         EditorGUI.BeginChangeCheck();
         item.enabled = EditorGUI.Toggle(new Rect(rect.x, rect.y, 15, rect.height), item.enabled);
@@ -70,13 +70,13 @@ public class GameControllerEditor : Editor {
     }
 
     private void AddItem(ReorderableList list) {
-        ((GameController)target).AbilitySpheres.Add(new AbilityInfo());
+        ((GameController)target).abilities.Add(new AbilityInfo());
 
         EditorUtility.SetDirty(target);
     }
 
     private void RemoveItem(ReorderableList list) {
-        ((GameController)target).AbilitySpheres.RemoveAt(list.index);
+        ((GameController)target).abilities.RemoveAt(list.index);
 
         EditorUtility.SetDirty(target);
     }

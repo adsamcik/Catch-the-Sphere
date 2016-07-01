@@ -43,8 +43,15 @@ public class GameController : MonoBehaviour {
 
     public static bool paused;
 
+    public static Vector3 randomPositionInSphere
+    {
+        get { return instance.transform.position + Random.insideUnitSphere * instance.spawnRadius; }
+    }
+
     /*Spheres with abilities*/
-    public List<AbilityInfo> AbilitySpheres = new List<AbilityInfo>();
+    public List<AbilityInfo> abilities = new List<AbilityInfo>();
+    Standard standard;
+    float totalSpawnValue;
 
     const float INCREASE_CHANCE_BY = 0.1f;
     const float BASE_CHANCE_TO_SPAWN_SPECIAL = 0.1f;
@@ -61,10 +68,14 @@ public class GameController : MonoBehaviour {
           .Where(x => interfaceType.IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)
           .Select(x => System.Activator.CreateInstance(x));
         foreach (var ability in all) {
-            if (AbilitySpheres.FindIndex(x => x.ability.GetType() == ability.GetType()) == -1) {
-                AbilitySpheres.Add(new AbilityInfo((Ability)ability, 1, true));
-            }
+            if (standard == null && ability.GetType() == typeof(Standard))
+                standard = (Standard)ability;
+            else  if (abilities.FindIndex(x => x.ability.GetType() == ability.GetType()) == -1)
+                abilities.Add(new AbilityInfo((Ability)ability, 1, true));
         }
+
+        foreach (var ability in abilities)
+            totalSpawnValue += ability.chanceToSpawn;
     }
 
     void Start() {
@@ -100,18 +111,16 @@ public class GameController : MonoBehaviour {
             if (!paused) {
                 if (spawned < 20 && (spawned - destroyed) < 6) {
                     spawned++;
-                    Vector3 spawnPos = transform.position + Random.insideUnitSphere * spawnRadius;
                     if (Random.value <= chanceToSpawnSpecial) {
-                        GameObject g = (GameObject)Instantiate(sphere, spawnPos, new Quaternion());
+                        GameObject g = (GameObject)Instantiate(sphere, randomPositionInSphere, new Quaternion());
                         Stats s = g.GetComponent<Stats>();
                         float abilityChance = 1f;
                         List<AbilityInfo> ab = new List<AbilityInfo>();
-                        foreach (var ability in AbilitySpheres) 
+                        foreach (var ability in abilities)
                             if (ability.enabled == true)
                                 ab.Add(ability);
-   
+
                         while (ab.Count > 0) {
-                            Debug.Log("ability");
                             if (Random.value <= abilityChance) {
                                 int rand = Random.Range(0, ab.Count);
                                 s.AddAbility(ab[rand].ability);
@@ -122,10 +131,10 @@ public class GameController : MonoBehaviour {
                             abilityChance /= 4;
 
                         }
-                        chanceToSpawnSpecial = BASE_CHANCE_TO_SPAWN_SPECIAL; 
+                        chanceToSpawnSpecial = BASE_CHANCE_TO_SPAWN_SPECIAL;
                     }
                     else {
-                        Instantiate(sphere, spawnPos, new Quaternion());
+                        Instantiate(sphere, randomPositionInSphere, new Quaternion());
                         chanceToSpawnSpecial += INCREASE_CHANCE_BY;
                     }
                     Debug.Log(chanceToSpawnSpecial);

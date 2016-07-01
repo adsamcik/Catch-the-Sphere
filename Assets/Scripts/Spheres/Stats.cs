@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class Stats : MonoBehaviour {
@@ -10,7 +9,7 @@ public class Stats : MonoBehaviour {
     public float lifeLeft = LIFE_LENGTH;
 
     public List<Ability> abilities = new List<Ability>();
-    ushort activeAbilities;
+    ushort activeAbilities = 0;
 
     public int Pop() {
         double value = lifeLeft * LIFE_MULTIPLIER;
