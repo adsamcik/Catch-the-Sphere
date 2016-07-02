@@ -2,6 +2,7 @@
 using System.Collections;
 
 namespace Abilities {
+    [System.Serializable]
     public class AbilityInfo {
         public Ability ability;
         public bool enabled;

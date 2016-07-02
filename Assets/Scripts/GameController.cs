@@ -57,7 +57,7 @@ public class GameController : MonoBehaviour {
 
     /*Spheres with abilities*/
     public List<AbilityInfo> abilities = new List<AbilityInfo>();
-    Standard standard;
+    public Standard standard;
     float totalSpawnValue;
 
     const float INCREASE_CHANCE_BY = 0.1f;
@@ -69,18 +69,6 @@ public class GameController : MonoBehaviour {
     public void Awake() {
         instance = this;
         paused = false;
-
-        var interfaceType = typeof(Ability);
-        var all = System.AppDomain.CurrentDomain.GetAssemblies()
-          .SelectMany(x => x.GetTypes())
-          .Where(x => interfaceType.IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)
-          .Select(x => System.Activator.CreateInstance(x));
-        foreach (var ability in all) {
-            if (standard == null && ability.GetType() == typeof(Standard))
-                standard = (Standard)ability;
-            else if (abilities.FindIndex(x => x.ability.GetType() == ability.GetType()) == -1)
-                abilities.Add(new AbilityInfo((Ability)ability, 1, true));
-        }
 
         foreach (var ability in abilities)
             totalSpawnValue += ability.chanceToSpawn;
