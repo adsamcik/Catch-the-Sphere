@@ -9,6 +9,8 @@ public class Stats : MonoBehaviour {
     public float multiplier = 1;
     public float lifeLeft = LIFE_LENGTH;
 
+    public float bonus;
+
     public List<Ability> abilities = new List<Ability>();
     ushort activeAbilities = 0;
 
