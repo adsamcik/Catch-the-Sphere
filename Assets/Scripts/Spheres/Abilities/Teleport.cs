@@ -25,6 +25,7 @@ namespace Abilities {
 
         public override IEnumerator PopAnimation(Action func) {
             yield return new WaitForEndOfFrame();
+            func();
         }
     }
 }

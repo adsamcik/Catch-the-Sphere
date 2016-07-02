@@ -5,7 +5,7 @@ using System;
 
 namespace Abilities {
     public class Explosion : Ability {
-        const float EXPLOSION_FORCE = 10;
+        const float EXPLOSION_FORCE = 1000;
         const float MAX_DIST = 25;
 
         List<GameObject> inRange = new List<GameObject>();
@@ -39,6 +39,7 @@ namespace Abilities {
 
         public override IEnumerator PopAnimation(Action func) {
             gameObject.GetComponent<Collider>().enabled = false;
+            gameObject.GetComponent<Rigidbody>().Sleep();
             Camera.main.GetComponent<CameraEffects>().ShakeCamera(0.25f);
 
             MeshRenderer mr = gameObject.GetComponent<MeshRenderer>();
