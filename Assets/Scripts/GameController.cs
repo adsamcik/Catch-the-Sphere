@@ -7,6 +7,12 @@ using System.Linq;
 using Abilities;
 
 public class GameController : MonoBehaviour {
+    public static Color ambientLight { get { return _aLight; } }
+    static Color _aLight;
+
+    public static Color sunLight { get { return _sLight; } }
+    static Color _sLight;
+
     public static Light sun { get { return instance._sun; } set { instance._sun = value; } }
     public Light _sun;
     //Instance - eliminates the requirement for lookups
@@ -63,6 +69,7 @@ public class GameController : MonoBehaviour {
     public void Awake() {
         instance = this;
         paused = false;
+
         var interfaceType = typeof(Ability);
         var all = System.AppDomain.CurrentDomain.GetAssemblies()
           .SelectMany(x => x.GetTypes())
@@ -83,6 +90,9 @@ public class GameController : MonoBehaviour {
         spawnRadius = transform.localScale.x - 0.5f;
         ChangeSeed();
         StartCoroutine("Spawn");
+
+        _aLight = RenderSettings.ambientLight;
+        _sLight = sun.color;
         //Instantiate(Resources.Load("Cube"));
     }
 

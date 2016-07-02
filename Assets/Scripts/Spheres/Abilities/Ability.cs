@@ -33,5 +33,7 @@ namespace Abilities {
         public virtual int GetBonus() { return 0; }
         public abstract Ability Clone();
         public abstract IEnumerator PopAnimation(System.Action func);
+
+        public virtual void OnRemove() {}
     }
 }

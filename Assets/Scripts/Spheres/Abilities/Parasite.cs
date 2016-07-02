@@ -5,8 +5,11 @@ using System.Collections.Generic;
 
 namespace Abilities {
     public class Parasite : Ability {
+        const float PARASITE_SPEED = 20;
         const int VALUE_MAX = 10000;
         const int SPHERE_VALUE = 1000;
+        const float SPREAD_RADIUS = 5;
+
         static int value;
         static int active;
 
@@ -38,17 +41,15 @@ namespace Abilities {
                     UnityEngine.Object.Destroy(item);
             }
             SphereCollider sc = gameObject.AddComponent<SphereCollider>();
-            sc.radius = 10;
+            sc.radius = SPREAD_RADIUS;
             sc.isTrigger = true;
         }
 
         public override int Pop() {
             active--;
             foreach (var item in inRange) {
-                Stats s = item.GetComponent<Stats>();
-                s.abilities.Clear();
-                s.abilities.Add(new Parasite(item));
-                value -= SPHERE_VALUE;
+                if (item != null && !item.GetComponent<Stats>().hasAbility(this))
+                    value -= SPHERE_VALUE;
             }
 
             return active == 0 ? value : active;
@@ -65,7 +66,35 @@ namespace Abilities {
                 else
                     Debug.LogWarning("Sphere has more than one non-trigger collider");
             }
-            yield return new WaitForEndOfFrame();
+
+            //Pair<Parasite, Target>
+            List<Pair<Transform, Transform>> parasiteSpreads = new List<Pair<Transform, Transform>>();
+
+            foreach (var item in inRange)
+                if (item != null && !item.GetComponent<Stats>().hasAbility(this))
+                    parasiteSpreads.Add(new Pair<Transform, Transform>(((GameObject)UnityEngine.Object.Instantiate(Resources.Load<GameObject>("ParasiteSpread"), gameObject.transform.position, new Quaternion())).transform, item.transform));
+
+            while (parasiteSpreads.Count > 0) {
+                for (int i = 0; i < parasiteSpreads.Count; i++) {
+                    var pair = parasiteSpreads[i];
+                    var parasite = pair.first;
+                    var target = pair.second;
+                    var posDif = target.position - parasite.position;
+                    var dir = (posDif).normalized * PARASITE_SPEED * Time.deltaTime;
+                    if (dir.sqrMagnitude > posDif.sqrMagnitude) {
+                        Stats s = target.GetComponent<Stats>();
+                        s.RemoveAllAbilities();
+                        s.AddCustomAbility(new Parasite(target.gameObject));
+                        UnityEngine.Object.Destroy(parasite.gameObject);
+                        parasiteSpreads.RemoveAt(i);
+                        i--;
+                    }
+                    else
+                        parasite.position += dir;
+
+                }
+                yield return new WaitForEndOfFrame();
+            }
             func();
         }
 

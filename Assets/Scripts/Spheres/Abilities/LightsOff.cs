@@ -45,5 +45,10 @@ namespace Abilities {
         public override int GetBonus() {
             return 200;
         }
+
+        public override void OnRemove() {
+            RenderSettings.ambientLight = GameController.ambientLight;
+            GameController.sun.color = GameController.sunLight;
+        }
     }
 }

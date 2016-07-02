@@ -29,8 +29,7 @@ public class Move : MonoBehaviour {
         if(r.velocity.sqrMagnitude > MAX_SPEED_SQR)
             r.AddForce(-r.velocity.normalized);
 
-        foreach (var ability in s.abilities)
-            ability.FixedUpdate(r);
+        s.AbilityUpdate(r);
     }
 
     public void ToggleFreeze() {

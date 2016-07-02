@@ -14,6 +14,11 @@ public class Stats : MonoBehaviour {
     public List<Ability> abilities = new List<Ability>();
     ushort activeAbilities = 0;
 
+    public void AbilityUpdate(Rigidbody r) {
+        foreach (var ability in abilities)
+            ability.FixedUpdate(r);
+    }
+
     public int Pop() {
         double value = lifeLeft * LIFE_MULTIPLIER;
         foreach (var ability in abilities) {
@@ -28,7 +33,12 @@ public class Stats : MonoBehaviour {
         Ability ability = a.Clone();
         abilities.Add(ability);
         ability.Initialize(gameObject);
-        Debug.Log("Added ability " + a.GetType().Name);
+        activeAbilities++;
+        name += a.GetType().Name;
+    }
+
+    public void AddCustomAbility(Ability a) {
+        abilities.Add(a);
         activeAbilities++;
         name += a.GetType().Name;
     }
@@ -50,5 +60,17 @@ public class Stats : MonoBehaviour {
     void AbilityRemoved() {
         if (--activeAbilities == 0)
             Destroy(gameObject);
+    }
+
+    public bool hasAbility(Ability a) {
+        return abilities.Find(x => x.GetType() == a.GetType()) != null;
+    }
+
+    public void RemoveAllAbilities() {
+        foreach (var ability in abilities)
+            ability.OnRemove();
+        abilities.Clear();
+        activeAbilities = 0;
+        name.Remove(0);
     }
 }
