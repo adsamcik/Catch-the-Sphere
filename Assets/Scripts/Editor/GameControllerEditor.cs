@@ -17,9 +17,6 @@ public class GameControllerEditor : Editor {
 
         obj.Initialize();
 
-        if (GameController.abilityList == null)
-            return;
-
         if (!Application.isPlaying) {
             if (obj.abilities != null) {
                 IEnumerable<Ability> newAbilities;
@@ -85,10 +82,6 @@ public class GameControllerEditor : Editor {
     void Save() {
         StreamWriter sw = new StreamWriter("Assets/Resources/" + GameController.ABILITY_FILE + ".json");
         sw.Write(Newtonsoft.Json.JsonConvert.SerializeObject(((GameController)target).abilities));
-        /*sw.Write("[");
-        foreach (var item in ((GameController)target).abilities)
-            sw.Write(item.ToJson());
-        sw.Write("]");*/
         sw.Close();
     }
 

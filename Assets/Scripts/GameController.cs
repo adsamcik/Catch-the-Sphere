@@ -22,7 +22,6 @@ public class GameController : MonoBehaviour {
     public static GameController instance;
 
     public static Ability[] abilityList;
-    bool initialized = false;
 
     static RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
 
@@ -82,10 +81,10 @@ public class GameController : MonoBehaviour {
     }
 
     public void Initialize() {
-        if (initialized)
+        if (abilityList != null)
             return;
         abilities.Clear();
-        abilityList = System.Reflection.Assembly.GetExecutingAssembly().GetTypes()
+        abilityList = System.Reflection.Assembly.GetAssembly(typeof(Ability)).GetTypes()
           .Where(x => typeof(Ability).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract && x != typeof(Standard))
           .Select(x => (Ability)System.Activator.CreateInstance(x)).ToArray();
 
@@ -104,8 +103,6 @@ public class GameController : MonoBehaviour {
         else {
             throw new System.Exception("ABILITY DATA ARE NULL");
         }
-
-        initialized = true;
     }
 
     void Start() {
