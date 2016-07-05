@@ -96,15 +96,10 @@ public class GameController : MonoBehaviour {
         var list = LoadAbilities();
 
         if (list != null) {
-            if (!Application.isPlaying) {
+            if (!Application.isPlaying)
                 abilities.AddRange(list);
-                var newAbilities = abilityList.Where(x => list.FirstOrDefault(y => x.GetType() == y.ability.GetType()) == default(AbilityInfo));
-                foreach (var a in newAbilities)
-                    abilities.Add(new AbilityInfo(a, 1, true));
-            }
-            else {
+            else
                 abilities.AddRange(list.Where(x => x.enabled == true).ToArray());
-            }
         }
         else if (!Application.isPlaying) {
             foreach (var a in abilityList)

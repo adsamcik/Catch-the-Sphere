@@ -17,9 +17,23 @@ public class GameControllerEditor : Editor {
 
         obj.Initialize();
 
-        abilityList = new ReorderableList(obj.abilities, typeof(AbilityInfo), true, true, false, false);
+        if (!Application.isPlaying) {
+            IEnumerable<Ability> newAbilities;
+            if (obj.abilities != null) {
+                newAbilities = GameController.abilityList.Where(x => obj.abilities.FirstOrDefault(y => x.GetType() == y.ability.GetType()) == default(AbilityInfo));
+                foreach (var a in newAbilities)
+                    obj.abilities.Add(new AbilityInfo(a, 1, true));
+                if (newAbilities.Count() > 0)
+                    Save();
+            }
+            else {
+                foreach (var a in GameController.abilityList)
+                    obj.abilities.Add(new AbilityInfo(a, 1, true));
+                Save();
+            }
+        }
 
-        Save();
+        abilityList = new ReorderableList(obj.abilities, typeof(AbilityInfo), true, true, false, false);
 
         // Add listeners to draw events
         abilityList.drawHeaderCallback += DrawHeader;
