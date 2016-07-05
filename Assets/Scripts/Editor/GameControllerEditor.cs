@@ -17,9 +17,12 @@ public class GameControllerEditor : Editor {
 
         obj.Initialize();
 
+        if (GameController.abilityList == null)
+            return;
+
         if (!Application.isPlaying) {
-            IEnumerable<Ability> newAbilities;
             if (obj.abilities != null) {
+                IEnumerable<Ability> newAbilities;
                 newAbilities = GameController.abilityList.Where(x => obj.abilities.FirstOrDefault(y => x.GetType() == y.ability.GetType()) == default(AbilityInfo));
                 foreach (var a in newAbilities)
                     obj.abilities.Add(new AbilityInfo(a, 1, true));

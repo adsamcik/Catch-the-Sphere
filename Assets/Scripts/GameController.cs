@@ -22,7 +22,7 @@ public class GameController : MonoBehaviour {
     public static GameController instance;
 
     public static Ability[] abilityList;
-    static bool initialized = false;
+    bool initialized = false;
 
     static RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
 
@@ -63,7 +63,7 @@ public class GameController : MonoBehaviour {
 
     /*Spheres with abilities*/
     public List<AbilityInfo> abilities = new List<AbilityInfo>();
-    public Standard standard;
+    public Standard standard = new Standard();
     float totalSpawnValue;
 
     const float INCREASE_CHANCE_BY = 0.1f;
@@ -146,13 +146,14 @@ public class GameController : MonoBehaviour {
     }
 
     Ability GetRandomAbility(List<AbilityInfo> al, ref float spawnValue) {
-        var rand = Random.Range(0, totalSpawnValue);
+        var rand = Random.Range(0, spawnValue);
         float currentValue = 0;
         for (int i = 0; i < al.Count; i++) {
             var a = al[i];
             currentValue += a.chanceToSpawn;
-            if (currentValue <= rand) {
+            if (currentValue >= rand) {
                 spawnValue -= a.chanceToSpawn;
+                al.RemoveAt(i);
                 return a.ability;
             }
         }
@@ -187,7 +188,6 @@ public class GameController : MonoBehaviour {
                     s.AddAbility(standard);
                     chanceToSpawnSpecial += INCREASE_CHANCE_BY;
                 }
-                Debug.Log(chanceToSpawnSpecial);
                 //if ((spawned) % 7 == 0) Instantiate(Resources.Load(AbilitySpheres[Mathf.RoundToInt(Random.Range(0, AbilitySpheres.Count))].name), new Vector3(Circle.x, 6, Circle.y), new Quaternion());
                 //else Instantiate(sphere, new Vector3(Circle.x, 6, Circle.y), new Quaternion());
             }
