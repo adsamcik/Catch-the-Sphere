@@ -61,7 +61,7 @@ public class GameController : MonoBehaviour {
     }
 
     /*Spheres with abilities*/
-    public List<AbilityInfo> abilities = new List<AbilityInfo>();
+    public List<AbilityInfo> abilities;
     public Standard standard = new Standard();
     float totalSpawnValue;
 
@@ -81,9 +81,11 @@ public class GameController : MonoBehaviour {
     }
 
     public void Initialize() {
-        if (abilityList != null)
+        if (
+        
+            abilities != null)
             return;
-        abilities.Clear();
+        abilities = new List<AbilityInfo>();
         abilityList = System.Reflection.Assembly.GetAssembly(typeof(Ability)).GetTypes()
           .Where(x => typeof(Ability).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract && x != typeof(Standard))
           .Select(x => (Ability)System.Activator.CreateInstance(x)).ToArray();
