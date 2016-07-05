@@ -43,6 +43,7 @@ namespace Abilities {
             SphereCollider sc = gameObject.AddComponent<SphereCollider>();
             sc.radius = SPREAD_RADIUS;
             sc.isTrigger = true;
+            gameObject.GetComponent<Stats>().IncreaseLife(999999);
         }
 
         public override int Pop() {

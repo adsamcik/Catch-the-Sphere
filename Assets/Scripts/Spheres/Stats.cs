@@ -4,7 +4,7 @@ using Abilities;
 
 public class Stats : MonoBehaviour {
     const int LIFE_MULTIPLIER = 25;
-    const int LIFE_LENGTH = 10;
+    const int LIFE_LENGTH = 15;
 
     public float multiplier = 1;
     public float lifeLeft = LIFE_LENGTH;
@@ -17,6 +17,16 @@ public class Stats : MonoBehaviour {
     public void AbilityUpdate(Rigidbody r) {
         foreach (var ability in abilities)
             ability.FixedUpdate(r);
+    }
+
+    void Update() {
+        lifeLeft -= Time.deltaTime;
+        if (lifeLeft <= 0)
+            Destroy(gameObject);
+    }
+
+    public void IncreaseLife(float value) {
+        lifeLeft += value;
     }
 
     public int Pop() {
