@@ -26,8 +26,8 @@ public class Move : MonoBehaviour {
     }
 
     public void FixedUpdate() {
-        if(r.velocity.sqrMagnitude > MAX_SPEED_SQR)
-            r.AddForce(-r.velocity.normalized);
+        if (r.velocity.sqrMagnitude > MAX_SPEED_SQR)
+            r.velocity *= 0.99f;
 
         s.AbilityUpdate(r);
     }
