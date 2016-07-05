@@ -8,7 +8,7 @@ namespace Abilities {
         const float PARASITE_SPEED = 20;
         const int VALUE_MAX = 10000;
         const int SPHERE_VALUE = 1000;
-        const float SPREAD_RADIUS = 6f;
+        const float SPREAD_RADIUS = 4;
 
         static int value;
         static int active;

@@ -83,7 +83,7 @@ public class GameControllerEditor : Editor {
     }
 
     void Save() {
-        StreamWriter sw = new StreamWriter(GameController.ABILITY_FILE);
+        StreamWriter sw = new StreamWriter("Assets/Resources/" + GameController.ABILITY_FILE);
         sw.Write(Newtonsoft.Json.JsonConvert.SerializeObject(((GameController)target).abilities));
         /*sw.Write("[");
         foreach (var item in ((GameController)target).abilities)

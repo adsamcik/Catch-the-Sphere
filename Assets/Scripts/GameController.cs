@@ -8,7 +8,7 @@ using Abilities;
 using System.IO;
 
 public class GameController : MonoBehaviour {
-    public const string ABILITY_FILE = "Assets/Resources/abilities.json";
+    public const string ABILITY_FILE = "abilities";
 
     public static Color ambientLight { get { return _aLight; } }
     static Color _aLight;
@@ -78,18 +78,14 @@ public class GameController : MonoBehaviour {
     }
 
     AbilityInfo[] LoadAbilities() {
-        StreamReader sr = new StreamReader(ABILITY_FILE);
-        var ret = Newtonsoft.Json.JsonConvert.DeserializeObject<AbilityInfo[]>(sr.ReadToEnd());
-        sr.Close();
-        return ret;
+        return Newtonsoft.Json.JsonConvert.DeserializeObject<AbilityInfo[]>(Resources.Load<TextAsset>(ABILITY_FILE).text);
     }
 
     public void Initialize() {
         if (initialized)
             return;
         abilities.Clear();
-        abilityList = System.AppDomain.CurrentDomain.GetAssemblies()
-          .SelectMany(x => x.GetTypes())
+        abilityList = System.Reflection.Assembly.GetExecutingAssembly().GetTypes()
           .Where(x => typeof(Ability).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract && x != typeof(Standard))
           .Select(x => (Ability)System.Activator.CreateInstance(x)).ToArray();
 
