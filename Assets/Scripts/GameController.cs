@@ -90,7 +90,7 @@ public class GameController : MonoBehaviour {
         abilities.Clear();
         abilityList = System.AppDomain.CurrentDomain.GetAssemblies()
           .SelectMany(x => x.GetTypes())
-          .Where(x => typeof(Ability).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract && x.GetType() != typeof(Standard))
+          .Where(x => typeof(Ability).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract && x != typeof(Standard))
           .Select(x => (Ability)System.Activator.CreateInstance(x)).ToArray();
 
         var list = LoadAbilities();
