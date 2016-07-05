@@ -171,8 +171,12 @@ public class GameController : MonoBehaviour {
                     float spawnValue = totalSpawnValue;      
 
                     while (ab.Count > 0) {
-                        if (Random.value <= abilityChance)
-                            s.AddAbility(GetRandomAbility(ab, ref spawnValue));
+                        if (Random.value <= abilityChance) {
+                            Ability a = GetRandomAbility(ab, ref spawnValue);
+                            s.AddAbility(a);
+                            if (a.GetType() == typeof(Parasite))
+                                break;
+                        }
                         else break;
 
                         abilityChance /= 4;
