@@ -5,8 +5,11 @@ using System.Security.Cryptography;
 using UnityEngine.UI;
 using System.Linq;
 using Abilities;
+using System.IO;
 
 public class GameController : MonoBehaviour {
+    public const string ABILITY_FILE = "Assets/Resources/abilities.json";
+
     public static Color ambientLight { get { return _aLight; } }
     static Color _aLight;
 
@@ -17,6 +20,9 @@ public class GameController : MonoBehaviour {
     public Light _sun;
     //Instance - eliminates the requirement for lookups
     public static GameController instance;
+
+    public static Ability[] abilityList;
+    static bool initialized = false;
 
     static RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
 
@@ -66,21 +72,63 @@ public class GameController : MonoBehaviour {
 
     float spawnRadius;
 
-    public void Awake() {
+    void Awake() {
         instance = this;
         paused = false;
+    }
 
-        foreach (var ability in abilities)
-            totalSpawnValue += ability.chanceToSpawn;
+    AbilityInfo[] LoadAbilities() {
+        StreamReader sr = new StreamReader(ABILITY_FILE);
+        var ret = Newtonsoft.Json.JsonConvert.DeserializeObject<AbilityInfo[]>(sr.ReadToEnd());
+        sr.Close();
+        return ret;
+    }
+
+    public void Initialize() {
+        if (initialized)
+            return;
+        abilities.Clear();
+        abilityList = System.AppDomain.CurrentDomain.GetAssemblies()
+          .SelectMany(x => x.GetTypes())
+          .Where(x => typeof(Ability).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract && x.GetType() != typeof(Standard))
+          .Select(x => (Ability)System.Activator.CreateInstance(x)).ToArray();
+
+        var list = LoadAbilities();
+
+        if (list != null) {
+            if (!Application.isPlaying) {
+                abilities.AddRange(list);
+                var newAbilities = abilityList.Where(x => list.FirstOrDefault(y => x.GetType() == y.ability.GetType()) == default(AbilityInfo));
+                foreach (var a in newAbilities)
+                    abilities.Add(new AbilityInfo(a, 1, true));
+            }
+            else {
+                abilities.AddRange(list.Where(x => x.enabled == true).ToArray());
+            }
+        }
+        else if (!Application.isPlaying) {
+            foreach (var a in abilityList)
+                abilities.Add(new AbilityInfo(a, 1, true));
+        }
+        else {
+            throw new System.Exception("ABILITY DATA ARE NULL");
+        }
+
+        initialized = true;
     }
 
     void Start() {
+        Initialize();
+        foreach (var ability in abilities)
+            totalSpawnValue += ability.chanceToSpawn;
+
         spawnRadius = transform.localScale.x - 0.5f;
         ChangeSeed();
         StartCoroutine("Spawn");
 
         _aLight = RenderSettings.ambientLight;
         _sLight = sun.color;
+
         //Instantiate(Resources.Load("Cube"));
     }
 

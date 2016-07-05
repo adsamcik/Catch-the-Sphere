@@ -1,9 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 namespace Abilities {
-    [System.Serializable]
     public class AbilityInfo {
+        public string abilityName
+        {
+            get { return ability.GetType().Name; }
+            set { ability = GameController.abilityList.First(x => x.GetType().Name == value); }
+        }
+
+        [System.NonSerialized]
         public Ability ability;
         public bool enabled;
         public float chanceToSpawn;
@@ -18,6 +25,10 @@ namespace Abilities {
             this.ability = ability;
             this.chanceToSpawn = chanceToSpawn;
             this.enabled = enabled;
+        }
+
+        public string ToJson() {
+            return "{name:\"" + abilityName + "\",chanceToSpawn:" + chanceToSpawn + ",enabled:" + enabled.ToString() + "}";
         }
     }
 }
