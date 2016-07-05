@@ -150,6 +150,20 @@ public class GameController : MonoBehaviour {
         RenderSettings.fogDensity = paused ? 0.12f : 0;
     }
 
+    Ability GetRandomAbility(List<AbilityInfo> al, ref float spawnValue) {
+        var rand = Random.Range(0, totalSpawnValue);
+        float currentValue = 0;
+        for (int i = 0; i < al.Count; i++) {
+            var a = al[i];
+            currentValue += a.chanceToSpawn;
+            if (currentValue <= rand) {
+                spawnValue -= a.chanceToSpawn;
+                return a.ability;
+            }
+        }
+        return null;
+    }
+
     IEnumerator Spawn() {
         sphere = Resources.Load("SphereMed") as GameObject;
 
@@ -161,17 +175,12 @@ public class GameController : MonoBehaviour {
                 Stats s = g.GetComponent<Stats>();
                 if (Random.value <= chanceToSpawnSpecial) {
                     float abilityChance = 1f;
-                    List<AbilityInfo> ab = new List<AbilityInfo>();
-                    foreach (var ability in abilities)
-                        if (ability.enabled == true)
-                            ab.Add(ability);
+                    List<AbilityInfo> ab = new List<AbilityInfo>(abilities);
+                    float spawnValue = totalSpawnValue;      
 
                     while (ab.Count > 0) {
-                        if (Random.value <= abilityChance) {
-                            int rand = Random.Range(0, ab.Count);
-                            s.AddAbility(ab[rand].ability);
-                            ab.RemoveAt(rand);
-                        }
+                        if (Random.value <= abilityChance)
+                            s.AddAbility(GetRandomAbility(ab, ref spawnValue));
                         else break;
 
                         abilityChance /= 4;
