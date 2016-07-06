@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 
 namespace Abilities {
-    public class GravityField : Ability {
+    public class Freeze : Ability {
         List<GameObject> colliding = new List<GameObject>();
 
         public override int Pop() {
@@ -46,7 +46,7 @@ namespace Abilities {
         }
 
         public override Ability Clone() {
-            return new GravityField();
+            return new Freeze();
         }
     }
 }
