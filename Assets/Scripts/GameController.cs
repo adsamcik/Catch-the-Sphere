@@ -57,7 +57,11 @@ public class GameController : MonoBehaviour {
 
     public static Vector3 randomPositionInSphere
     {
-        get { return instance.transform.position + Random.insideUnitSphere * instance.spawnRadius; }
+        get
+        {
+            Debug.Log(instance.transform.position + Random.insideUnitSphere * instance.spawnRadius);
+            return instance.transform.position + Random.insideUnitSphere * instance.spawnRadius;
+        }
     }
 
     /*Spheres with abilities*/
@@ -82,7 +86,7 @@ public class GameController : MonoBehaviour {
 
     public void Initialize() {
         if (
-        
+
             abilities != null)
             return;
         abilities = new List<AbilityInfo>();
@@ -167,7 +171,7 @@ public class GameController : MonoBehaviour {
                 if (Random.value <= chanceToSpawnSpecial) {
                     float abilityChance = 1f;
                     List<AbilityInfo> ab = new List<AbilityInfo>(abilities);
-                    float spawnValue = totalSpawnValue;      
+                    float spawnValue = totalSpawnValue;
 
                     while (ab.Count > 0) {
                         if (Random.value <= abilityChance) {
