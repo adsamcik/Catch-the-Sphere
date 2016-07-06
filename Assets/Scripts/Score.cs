@@ -26,11 +26,11 @@ public class Score : MonoBehaviour {
     void Start() {
         instance = this;
         CheckLevel();
-        OrigPos = transform.position;
 
         FinalResults = transform.parent.Find("Results").GetComponent<Text>();
         ScoreToAdd = transform.Find("ScoreToAdd").GetComponent<Text>();
         ScoreText = transform.Find("ScoreValue").GetComponent<Text>();
+        OrigPos = ScoreText.transform.position;
     }
 
     public static void CheckLevel() {
@@ -61,24 +61,8 @@ public class Score : MonoBehaviour {
         else { FinalResults.text += "You have " + (PlayerPrefs.GetInt(highScoreKey) - score) + " left\n to beat your high score"; }
     }
 
-    public static void AddScoreNoModifier(float spherescore) {
-        scoreTemp += Mathf.RoundToInt(spherescore);
-        combotimer = cTimerMax;
-        ScoreToAdd.text = "+" + scoreTemp;
-    }
-
-    public static void AddScore(float spherescore) {
-        if (combotimer > 0) {
-            scoreTemp += Mathf.RoundToInt(spherescore * comboModifier);
-            comboModifier = (comboModifier + Mathf.FloorToInt(spherescore / 25)) / 2;
-            combotimer = cTimerMax;
-        }
-        else {
-            scoreTemp += Mathf.RoundToInt(spherescore);
-            comboModifier = Mathf.FloorToInt(spherescore / 25);
-            combotimer = cTimerMax;
-            instance.StartCoroutine("ComboTimer");
-        }
+    public static void AddScore(int value) {
+        scoreTemp += value;
 
         if(ScoreToAdd != null)
             ScoreToAdd.text = (scoreTemp > 0 ? "+" : "") + scoreTemp;
@@ -87,7 +71,7 @@ public class Score : MonoBehaviour {
     static void SetScore(int stbs) {
         score += Mathf.RoundToInt(stbs);
         ScoreText.text = score.ToString();
-        if (stbs != 0) instance.StartCoroutine("ScoreAddedAnim");
+        if (stbs != 0) instance.StartCoroutine(instance.ScoreAddedAnim());
     }
 
     static void CountScore() {
@@ -98,26 +82,18 @@ public class Score : MonoBehaviour {
         combotimer = 0;
     }
 
-    IEnumerator ComboTimer() {
-        while (combotimer > 0) {
-            combotimer -= Time.deltaTime;
-            yield return new WaitForFixedUpdate();
-        }
-        CountScore();
-    }
-
     IEnumerator ScoreAddedAnim() {
-        while (transform.position.y < OrigPos.y + 1) {
-            transform.position += new Vector3(0, Time.deltaTime * 30, 0);
+        while (ScoreText.transform.position.y < OrigPos.y + 2) {
+            ScoreText.transform.position += new Vector3(0, Time.deltaTime * 30, 0);
             yield return new WaitForFixedUpdate();
         }
 
-        while (transform.position.y > OrigPos.y) {
-            transform.position -= new Vector3(0, Time.deltaTime * 30, 0);
+        while (ScoreText.transform.position.y > OrigPos.y) {
+            ScoreText.transform.position -= new Vector3(0, Time.deltaTime * 30, 0);
             yield return new WaitForFixedUpdate();
         }
 
-        transform.position = OrigPos;
+        ScoreText.transform.position = OrigPos;
     }
 
 

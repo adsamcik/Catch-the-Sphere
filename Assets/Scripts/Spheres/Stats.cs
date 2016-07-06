@@ -20,7 +20,7 @@ public class Stats : MonoBehaviour {
     }
 
     void Update() {
-        lifeLeft -= Time.fixedDeltaTime;
+        lifeLeft -= Time.deltaTime;
         if (lifeLeft <= 0) {
             GetComponent<Stats>().enabled = false;
             enabled = false;
@@ -33,8 +33,16 @@ public class Stats : MonoBehaviour {
         lifeLeft += value;
     }
 
+    public void AddBonus(float value) {
+        bonus += value;
+    }
+
+    public void RemoveBonus(float value) {
+        bonus -= value;
+    }
+
     public int Pop() {
-        double value = lifeLeft * LIFE_MULTIPLIER;
+        double value = lifeLeft * LIFE_MULTIPLIER + bonus;
         foreach (var ability in abilities) {
             value += ability.Pop();
             StartCoroutine(ability.PopAnimation(AbilityRemoved));

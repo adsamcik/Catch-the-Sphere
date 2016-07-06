@@ -25,7 +25,6 @@ namespace Abilities {
         }
 
         public override IEnumerator PopAnimation(Action func) {
-            GameController.AddScore(2000);
             gameObject.GetComponent<Collider>().enabled = false;
             gameObject.GetComponent<Renderer>().enabled = false;
             gameObject.GetComponent<Rigidbody>().isKinematic = true;

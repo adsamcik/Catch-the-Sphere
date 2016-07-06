@@ -7,6 +7,7 @@ namespace Abilities {
     public class Gravity : Ability {
         const float MAX_DIST = 3;
         const float FORCE = 3;
+        const string GRAVITY_EFFECT_NAME = "gravity";
 
         List<Rigidbody> inRange = new List<Rigidbody>();
 
@@ -20,6 +21,7 @@ namespace Abilities {
             dt.parent = gameObject.transform;
             dt.localPosition = dt.position;
             dt.localScale = new Vector3(2 * MAX_DIST, 2 * MAX_DIST, 2 * MAX_DIST);
+            dt.name = GRAVITY_EFFECT_NAME;
 
             SphereCollider sc = gameObject.AddComponent<SphereCollider>();
             sc.isTrigger = true;
@@ -48,9 +50,22 @@ namespace Abilities {
         }
 
         public override IEnumerator PopAnimation(Action func) {
-            
+            Transform t = gameObject.transform.Find(GRAVITY_EFFECT_NAME);
+            float val = 0;
+            while (val < 1) {
+                t.localScale = Vector3.Lerp(t.localScale, Vector3.zero, val);
+                val += Time.deltaTime * 4;
+                yield return new WaitForEndOfFrame();
+            }
+            t.transform.localScale = Vector3.zero;
 
-            yield return new WaitForEndOfFrame();
+            val = 0;
+            while (val < 1) {
+                gameObject.transform.localScale = Vector3.Lerp(gameObject.transform.localScale, Vector3.zero, val);
+                val += Time.deltaTime * 2;
+                yield return new WaitForEndOfFrame();
+            }
+            gameObject.transform.localScale = Vector3.zero;
             func();
         }
 

@@ -35,6 +35,9 @@ public class GameController : MonoBehaviour {
 
     public float speed = 2;
 
+    int _active;
+    public int active { get { return _active; } set { _active = value; } }
+
     int _spawned;
     public int spawned { get { return _spawned; } set { _spawned = value; UpdateSphereCount(); } }
 
@@ -215,14 +218,6 @@ public class GameController : MonoBehaviour {
         speed = 2;
         finalResults.text = "";
         Score.NoScore();
-    }
-
-    public static void AddScore(float scoresend) {
-        Score.AddScore(scoresend);
-    }
-
-    public static void AddScoreNoModifier(float scoresend) {
-        Score.AddScoreNoModifier(scoresend);
     }
 
     void ChangeSeed() {
