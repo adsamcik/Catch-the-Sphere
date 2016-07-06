@@ -20,7 +20,7 @@ public class Stats : MonoBehaviour {
     }
 
     void Update() {
-        //lifeLeft -= Time.deltaTime;
+        lifeLeft -= Time.deltaTime;
         if (lifeLeft <= 0)
             Destroy(gameObject);
     }
