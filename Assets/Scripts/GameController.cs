@@ -225,5 +225,10 @@ public class GameController : MonoBehaviour {
         rng.GetBytes(data);
         Random.InitState(System.BitConverter.ToInt32(data, 0));
     }
+
+    public static void Pop(int value) {
+        Score.AddScore(value);
+    }
+
 }
 
