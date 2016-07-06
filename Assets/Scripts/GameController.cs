@@ -59,7 +59,6 @@ public class GameController : MonoBehaviour {
     {
         get
         {
-            Debug.Log(instance.transform.position + Random.insideUnitSphere * instance.spawnRadius);
             return instance.transform.position + Random.insideUnitSphere * instance.spawnRadius;
         }
     }
