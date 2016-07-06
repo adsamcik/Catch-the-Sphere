@@ -7,13 +7,11 @@ namespace Abilities {
         const int MIN_SPEED = 10;
         const float POP_ANIMATION_LENGTH = 0.1f;
 
-        Rigidbody rigidbody;
         Transform transform;
         float sqrspeed;
 
         public override void Initialize(GameObject g) {
             base.Initialize(g);
-            rigidbody = g.GetComponent<Rigidbody>();
             transform = g.transform;
             float speed = Random.Range(MIN_SPEED, MAX_SPEED);
             sqrspeed = speed * speed;
