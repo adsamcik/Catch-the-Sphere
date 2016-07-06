@@ -140,7 +140,7 @@ public class GameController : MonoBehaviour {
         paused = !paused;
         instance.pauseMenu.SetActive(paused);
         Time.timeScale = paused ? 0 : 1;
-        RenderSettings.fogDensity = paused ? 0.12f : 0;
+        RenderSettings.fogDensity = paused ? 0.16f : 0;
     }
 
     Ability GetRandomAbility(List<AbilityInfo> al, ref float spawnValue) {
