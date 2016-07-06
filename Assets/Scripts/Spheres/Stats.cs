@@ -9,7 +9,7 @@ public class Stats : MonoBehaviour {
     public float multiplier = 1;
     public float lifeLeft = LIFE_LENGTH;
 
-    public float bonus;
+    public float bonus = 0;
 
     public List<Ability> abilities = new List<Ability>();
     ushort activeAbilities = 0;
@@ -20,9 +20,13 @@ public class Stats : MonoBehaviour {
     }
 
     void Update() {
-        lifeLeft -= Time.deltaTime;
-        if (lifeLeft <= 0)
-            Destroy(gameObject);
+        lifeLeft -= Time.fixedDeltaTime;
+        if (lifeLeft <= 0) {
+            GetComponent<Stats>().enabled = false;
+            enabled = false;
+            foreach (var ability in abilities)
+                StartCoroutine(ability.PopAnimation(AbilityRemoved));
+        }
     }
 
     public void IncreaseLife(float value) {

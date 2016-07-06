@@ -48,8 +48,7 @@ namespace Abilities {
         }
 
         public override IEnumerator PopAnimation(Action func) {
-            //GameController.AddScore(2000);
-            //StartCoroutine("SpriteField", gameObject.GetComponentInChildren<SpriteRenderer>());
+            
 
             yield return new WaitForEndOfFrame();
             func();
