@@ -7,7 +7,7 @@ namespace Abilities {
         public string abilityName
         {
             get { return ability.GetType().Name; }
-            set { ability = GameController.abilityList.First(x => x.GetType().Name == value); }
+            set { ability = GameController.abilityList.FirstOrDefault(x => x.GetType().Name == value); }
         }
 
         [System.NonSerialized]

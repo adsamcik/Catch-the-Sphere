@@ -19,11 +19,18 @@ public class GameControllerEditor : Editor {
 
         if (!Application.isPlaying) {
             if (obj.abilities != null) {
+                bool removed = false;
+                for (int i = 0; i < obj.abilities.Count; i++) {
+                    if (obj.abilities[i].ability == null) {
+                        obj.abilities.RemoveAt(i--);
+                        removed = true;
+                    }
+                }
                 IEnumerable<Ability> newAbilities;
                 newAbilities = GameController.abilityList.Where(x => obj.abilities.FirstOrDefault(y => x.GetType() == y.ability.GetType()) == default(AbilityInfo));
                 foreach (var a in newAbilities)
                     obj.abilities.Add(new AbilityInfo(a, 1, true));
-                if (newAbilities.Count() > 0)
+                if (newAbilities.Count() > 0 || removed)
                     Save();
             }
             else {
