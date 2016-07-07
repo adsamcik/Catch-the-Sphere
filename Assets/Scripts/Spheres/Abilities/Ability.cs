@@ -34,6 +34,13 @@ namespace Abilities {
         public abstract Ability Clone();
         public abstract IEnumerator PopAnimation(System.Action func);
 
-        public virtual void OnRemove() {}
+        public virtual void OnRemove() { }
+
+        protected SphereCollider AddSphereTrigger(float radius) {
+            SphereCollider sc = gameObject.AddComponent<SphereCollider>();
+            sc.isTrigger = true;
+            sc.radius = radius;
+            return sc;
+        }
     }
 }
