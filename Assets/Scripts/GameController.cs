@@ -33,7 +33,8 @@ public class GameController : MonoBehaviour {
     /*Set automagically*/
     GameObject sphere;
 
-    Score score;
+    Score _score;
+    public static Score score { get { return instance._score; } }
 
     public float speed = 2;
 
@@ -44,29 +45,11 @@ public class GameController : MonoBehaviour {
     public int spawned { get { return _spawned; } set { _spawned = value; UpdateSphereCount(); } }
 
     int _destroyed;
-    public static int destroyed
-    {
-        get
-        {
-            return instance._destroyed;
-        }
-        set
-        {
-            instance._destroyed = value;
-            instance.UpdateSphereCount();
-            if (value >= 20) instance.Results();
-        }
-    }
+    public static int destroyed { get { return instance._destroyed; } set { instance._destroyed = value; instance.UpdateSphereCount(); } }
 
     public static bool paused;
 
-    public static Vector3 randomPositionInSphere
-    {
-        get
-        {
-            return instance.transform.position + Random.insideUnitSphere * instance.spawnRadius;
-        }
-    }
+    public static Vector3 randomPositionInSphere { get { return instance.transform.position + Random.insideUnitSphere * instance.spawnRadius; } }
 
     /*Spheres with abilities*/
     public List<AbilityInfo> abilities;
@@ -103,16 +86,14 @@ public class GameController : MonoBehaviour {
                 abilities.AddRange(list);
             else
                 abilities.AddRange(list.Where(x => x.enabled == true).ToArray());
-        }
-        else if (!Application.isPlaying) {
+        } else if (!Application.isPlaying) {
             foreach (var a in abilityList)
                 abilities.Add(new AbilityInfo(a, 1, true));
-        }
-        else {
+        } else {
             throw new System.Exception("ABILITY DATA ARE NULL");
         }
 
-        score = new Score(this, transform.root.Find("/canvas"));
+        _score = new Score(this, transform.root.Find("/canvas"));
     }
 
     void Start() {
@@ -181,15 +162,13 @@ public class GameController : MonoBehaviour {
                             s.AddAbility(a);
                             if (a.GetType() == typeof(Parasite))
                                 break;
-                        }
-                        else break;
+                        } else break;
 
                         abilityChance /= 4;
 
                     }
                     chanceToSpawnSpecial = BASE_CHANCE_TO_SPAWN_SPECIAL;
-                }
-                else {
+                } else {
                     s.AddAbility(standard);
                     chanceToSpawnSpecial += INCREASE_CHANCE_BY;
                 }
@@ -204,8 +183,8 @@ public class GameController : MonoBehaviour {
     }
 
     public void Results() {
-        score.resultsActive = true;
-        score.Summary();
+        _score.resultsActive = true;
+        _score.Summary();
         StartCoroutine("RestartIn");
     }
 
@@ -215,7 +194,7 @@ public class GameController : MonoBehaviour {
         spawned = 0;
         speed = 2;
         finalResults.text = "";
-        score.NoScore();
+        _score.NoScore();
     }
 
     void ChangeSeed() {
@@ -225,7 +204,7 @@ public class GameController : MonoBehaviour {
     }
 
     public static void Pop(int value) {
-        instance.score.AddScore(value);
+        instance._score.AddScore(value);
     }
 
 }
