@@ -1,4 +1,4 @@
-﻿Shader "Dvornik/Distort" {
+﻿Shader "Custom/Distort" {
 	Properties{
 		_Refraction("Refraction", Range(0.00, 100.0)) = 1.0
 		_DistortTex("Base (RGB)", 2D) = "white" {}
