@@ -6,6 +6,7 @@ using System.Collections.Generic;
 namespace Abilities {
     public class Freeze : Ability {
         const float FREEZE_RANGE = 5;
+        const float FREEZE_TIME = 1.5f;
 
         List<GameObject> colliding = new List<GameObject>();
 
@@ -15,7 +16,7 @@ namespace Abilities {
 
         public override void Initialize(GameObject g) {
             base.Initialize(g);
-            g.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Materials/Gravity");
+            g.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Materials/Ice");
             AddSphereTrigger(FREEZE_RANGE);
         }
 
@@ -29,17 +30,12 @@ namespace Abilities {
 
         public override IEnumerator PopAnimation(Action func) {
             gameObject.GetComponent<Collider>().enabled = false;
-            gameObject.GetComponent<Renderer>().enabled = false;
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
-            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, -1, 0);
-            //StartCoroutine("SpriteField", gameObject.GetComponentInChildren<SpriteRenderer>());
 
             foreach (GameObject sphere in colliding)
                 if (sphere) sphere.GetComponent<Move>().ToggleFreeze();
 
-            yield return new WaitForSeconds(1.5f);
-
-            while (GameController.paused) yield return new WaitForFixedUpdate();
+            yield return new WaitForSeconds(FREEZE_TIME);
 
             foreach (GameObject sphere in colliding)
                 if (sphere) sphere.GetComponent<Move>().ToggleFreeze();
