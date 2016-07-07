@@ -23,9 +23,7 @@ namespace Abilities {
             dt.localScale = new Vector3(2 * MAX_DIST, 2 * MAX_DIST, 2 * MAX_DIST);
             dt.name = GRAVITY_EFFECT_NAME;
 
-            SphereCollider sc = gameObject.AddComponent<SphereCollider>();
-            sc.isTrigger = true;
-            sc.radius = MAX_DIST;
+            AddSphereTrigger(MAX_DIST);
         }
 
         public override void FixedUpdate(Rigidbody rigidbody) {

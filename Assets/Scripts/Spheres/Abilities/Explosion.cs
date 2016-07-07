@@ -12,9 +12,7 @@ namespace Abilities {
 
         public override void Initialize(GameObject g) {
             base.Initialize(g);
-            SphereCollider sc = gameObject.AddComponent<SphereCollider>();
-            sc.radius = MAX_DIST;
-            sc.isTrigger = true;
+            AddSphereTrigger(MAX_DIST);
             g.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Materials/Exploding");
         }
 

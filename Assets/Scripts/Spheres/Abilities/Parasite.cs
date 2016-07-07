@@ -40,9 +40,7 @@ namespace Abilities {
                 if (item.isTrigger)
                     UnityEngine.Object.Destroy(item);
             }
-            SphereCollider sc = gameObject.AddComponent<SphereCollider>();
-            sc.radius = SPREAD_RADIUS;
-            sc.isTrigger = true;
+            AddSphereTrigger(SPREAD_RADIUS);
             gameObject.GetComponent<Stats>().IncreaseLife(999999);
         }
 

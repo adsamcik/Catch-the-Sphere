@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 namespace Abilities {
     public class Freeze : Ability {
+        const float FREEZE_RANGE = 5;
+
         List<GameObject> colliding = new List<GameObject>();
 
         public override int Pop() {
@@ -14,6 +16,7 @@ namespace Abilities {
         public override void Initialize(GameObject g) {
             base.Initialize(g);
             g.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Materials/Gravity");
+            AddSphereTrigger(FREEZE_RANGE);
         }
 
         public override void OnFieldEnter(Collider c) {
