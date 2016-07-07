@@ -3,42 +3,41 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class Score : MonoBehaviour {
-    static Score instance;
-    static GameObject sphere;
+public class Score {
+    GameController gc;
 
-    public static Text FinalResults;
-    public static Text ScoreToAdd;
-    public static Text ScoreText;
+    public Text resultsText;
+    public Text scoreToAddText;
+    public Text scoreText;
 
-    static int comboModifier;
+    public int scoreTemp { get; private set; }
+    public int score { get; private set; }
 
-    public static int scoreTemp { get; private set; }
-    public static int score { get; private set; }
-    static float comboScore, combotimer;
-    static float cTimerMax = 2f;
-
-    static string highScoreKey;
-
-    public static bool resultsActive;
+    public bool resultsActive;
     static Vector3 OrigPos;
 
-    void Start() {
-        instance = this;
-        CheckLevel();
+    string highScoreKey;
 
-        FinalResults = transform.parent.Find("Results").GetComponent<Text>();
-        ScoreToAdd = transform.Find("ScoreToAdd").GetComponent<Text>();
-        ScoreText = transform.Find("ScoreValue").GetComponent<Text>();
-        OrigPos = ScoreText.transform.position;
+    float timeToReset;
+
+    public Score(GameController gc, Transform canvas) {
+        this.gc = gc;
+        CheckLevel();
+        resultsText = canvas.Find("results").GetComponent<Text>();
+
+        Transform u = canvas.Find("upper");
+        scoreToAddText = u.Find("scoreToAdd").GetComponent<Text>();
+        scoreText = u.Find("score").GetComponent<Text>();
+
+        OrigPos = scoreText.transform.position;
     }
 
-    public static void CheckLevel() {
+    public void CheckLevel() {
         string level = SceneManager.GetActiveScene().name;
         if (level == "Normal") { highScoreKey = "hs_normal"; }
     }
 
-    static bool SetHighscore() {
+    bool SetHighscore() {
         int highscore = score;
         if (PlayerPrefs.GetInt(highScoreKey) <= highscore) {
             PlayerPrefs.SetInt(highScoreKey, highscore);
@@ -48,52 +47,64 @@ public class Score : MonoBehaviour {
         return false;
     }
 
-    public static int GetHighscore() {
+    public int GetHighscore() {
         return PlayerPrefs.GetInt(highScoreKey);
     }
 
-    public static void NoScore() { score = 0; ScoreText.text = "0"; resultsActive = false; }
-    public static void Summary() {
-        instance.StopCoroutine("ComboTimer");
+    public void NoScore() {
+        score = 0;
+        scoreText.text = "0";
+        resultsActive = false;
+    }
+    public void Summary() {
         CountScore();
-        FinalResults.text = "\nYour final score is\n" + score + " points.\n\n";
-        if (SetHighscore()) { FinalResults.text += "You are getting better!\nYou have beaten your\nhigh score"; }
-        else { FinalResults.text += "You have " + (PlayerPrefs.GetInt(highScoreKey) - score) + " left\n to beat your high score"; }
+        resultsText.text = "Your final score is " + score + " points.";
+        if (SetHighscore()) { resultsText.text += "You are getting better! You have beaten your high score"; } else { resultsText.text += "You have " + (PlayerPrefs.GetInt(highScoreKey) - score) + " left to beat your high score"; }
     }
 
-    public static void AddScore(int value) {
+    public void AddScore(int value) {
         scoreTemp += value;
 
-        if(ScoreToAdd != null)
-            ScoreToAdd.text = (scoreTemp > 0 ? "+" : "") + scoreTemp;
+        if (scoreToAddText != null)
+            scoreToAddText.text = (scoreTemp > 0 ? "+" : "") + scoreTemp;
+
+        var temp = timeToReset;
+        timeToReset = Time.unscaledTime + 2;
+        if (temp < Time.unscaledTime)
+            gc.StartCoroutine(ResetWaiter());
     }
 
-    static void SetScore(int stbs) {
-        score += Mathf.RoundToInt(stbs);
-        ScoreText.text = score.ToString();
-        if (stbs != 0) instance.StartCoroutine(instance.ScoreAddedAnim());
+    void SetScore(int stbs) {
+        score += stbs;
+        scoreText.text = score.ToString();
+        if (stbs != 0)
+            gc.StartCoroutine(ScoreAddedAnim());
     }
 
-    static void CountScore() {
+    void CountScore() {
         SetScore(scoreTemp);
-        ScoreToAdd.text = "";
+        scoreToAddText.text = "";
         scoreTemp = 0;
-        comboModifier = 0;
-        combotimer = 0;
+    }
+
+    IEnumerator ResetWaiter() {
+        while (timeToReset > Time.unscaledTime)
+            yield return new WaitForSecondsRealtime(timeToReset - Time.unscaledTime + 0.1f);
+        CountScore();
     }
 
     IEnumerator ScoreAddedAnim() {
-        while (ScoreText.transform.position.y < OrigPos.y + 2) {
-            ScoreText.transform.position += new Vector3(0, Time.deltaTime * 30, 0);
-            yield return new WaitForFixedUpdate();
+        while (scoreText.transform.position.y < OrigPos.y + 2) {
+            scoreText.transform.position += new Vector3(0, Time.deltaTime * 30, 0);
+            yield return new WaitForEndOfFrame();
         }
 
-        while (ScoreText.transform.position.y > OrigPos.y) {
-            ScoreText.transform.position -= new Vector3(0, Time.deltaTime * 30, 0);
-            yield return new WaitForFixedUpdate();
+        while (scoreText.transform.position.y > OrigPos.y) {
+            scoreText.transform.position -= new Vector3(0, Time.deltaTime * 30, 0);
+            yield return new WaitForEndOfFrame();
         }
 
-        ScoreText.transform.position = OrigPos;
+        scoreText.transform.position = OrigPos;
     }
 
 

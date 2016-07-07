@@ -33,6 +33,8 @@ public class GameController : MonoBehaviour {
     /*Set automagically*/
     GameObject sphere;
 
+    Score score;
+
     public float speed = 2;
 
     int _active;
@@ -87,9 +89,7 @@ public class GameController : MonoBehaviour {
     }
 
     public void Initialize() {
-        if (
-
-            abilities != null)
+        if (abilities != null)
             return;
         abilities = new List<AbilityInfo>();
         abilityList = System.Reflection.Assembly.GetAssembly(typeof(Ability)).GetTypes()
@@ -111,6 +111,8 @@ public class GameController : MonoBehaviour {
         else {
             throw new System.Exception("ABILITY DATA ARE NULL");
         }
+
+        score = new Score(this, transform.root.Find("/canvas"));
     }
 
     void Start() {
@@ -124,8 +126,6 @@ public class GameController : MonoBehaviour {
 
         _aLight = RenderSettings.ambientLight;
         _sLight = sun.color;
-
-        //Instantiate(Resources.Load("Cube"));
     }
 
     public void UpdateSphereCount() {
@@ -193,8 +193,6 @@ public class GameController : MonoBehaviour {
                     s.AddAbility(standard);
                     chanceToSpawnSpecial += INCREASE_CHANCE_BY;
                 }
-                //if ((spawned) % 7 == 0) Instantiate(Resources.Load(AbilitySpheres[Mathf.RoundToInt(Random.Range(0, AbilitySpheres.Count))].name), new Vector3(Circle.x, 6, Circle.y), new Quaternion());
-                //else Instantiate(sphere, new Vector3(Circle.x, 6, Circle.y), new Quaternion());
             }
         }
     }
@@ -206,8 +204,8 @@ public class GameController : MonoBehaviour {
     }
 
     public void Results() {
-        Score.resultsActive = true;
-        Score.Summary();
+        score.resultsActive = true;
+        score.Summary();
         StartCoroutine("RestartIn");
     }
 
@@ -217,7 +215,7 @@ public class GameController : MonoBehaviour {
         spawned = 0;
         speed = 2;
         finalResults.text = "";
-        Score.NoScore();
+        score.NoScore();
     }
 
     void ChangeSeed() {
@@ -227,7 +225,7 @@ public class GameController : MonoBehaviour {
     }
 
     public static void Pop(int value) {
-        Score.AddScore(value);
+        instance.score.AddScore(value);
     }
 
 }
