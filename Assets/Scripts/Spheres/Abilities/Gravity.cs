@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace Abilities {
     public class Gravity : Ability {
+        const int BONUS = (int)(FORCE / MAX_DIST * 100);
         const float MAX_DIST = 3;
         const float FORCE = 3;
         const string GRAVITY_EFFECT_NAME = "gravity";
@@ -41,10 +42,12 @@ namespace Abilities {
 
         public override void OnFieldEnter(Collider c) {
             inRange.Add(c.GetComponent<Rigidbody>());
+            c.GetComponent<Stats>().AddBonus(BONUS);
         }
 
         public override void OnFieldExit(Collider c) {
             inRange.Remove(c.GetComponent<Rigidbody>());
+            c.GetComponent<Stats>().RemoveBonus(BONUS);
         }
 
         public override IEnumerator PopAnimation(Action func) {

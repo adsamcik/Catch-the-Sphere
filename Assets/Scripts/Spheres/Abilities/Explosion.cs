@@ -5,6 +5,7 @@ using System;
 
 namespace Abilities {
     public class Explosion : Ability {
+        const int BONUS_VELOCITY_MULTIPLIER = 5;
         const float EXPLOSION_FORCE = 1000;
         const float MAX_DIST = 25;
 
@@ -29,7 +30,9 @@ namespace Abilities {
             foreach (var item in inRange) {
                 if (item.gameObject != null) {
                     val += Mathf.RoundToInt(MAX_DIST - Vector3.Distance(item.transform.position, gameObject.transform.position));
-                    item.GetComponent<Rigidbody>().AddExplosionForce(EXPLOSION_FORCE, gameObject.transform.position, MAX_DIST);
+                    Rigidbody r = item.GetComponent<Rigidbody>();
+                    r.AddExplosionForce(EXPLOSION_FORCE, gameObject.transform.position, MAX_DIST);
+                    item.GetComponent<Stats>().AddBonus(BONUS_VELOCITY_MULTIPLIER * r.velocity.sqrMagnitude);
                 }
             }
             return val;
