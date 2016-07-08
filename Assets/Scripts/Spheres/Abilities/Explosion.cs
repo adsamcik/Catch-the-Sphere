@@ -32,7 +32,7 @@ namespace Abilities {
                     val += Mathf.RoundToInt(MAX_DIST - Vector3.Distance(item.transform.position, gameObject.transform.position));
                     Rigidbody r = item.GetComponent<Rigidbody>();
                     r.AddExplosionForce(EXPLOSION_FORCE, gameObject.transform.position, MAX_DIST);
-                    item.GetComponent<Stats>().AddBonus(BONUS_VELOCITY_MULTIPLIER * r.velocity.sqrMagnitude);
+                    item.GetComponent<Stats>().AddBonus(BONUS_VELOCITY_MULTIPLIER * (int)r.velocity.sqrMagnitude);
                 }
             }
             return val;

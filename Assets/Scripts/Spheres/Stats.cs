@@ -6,10 +6,10 @@ public class Stats : MonoBehaviour {
     const int LIFE_MULTIPLIER = 25;
     const int LIFE_LENGTH = 15;
 
-    public float multiplier = 1;
-    public float lifeLeft = LIFE_LENGTH;
+    float multiplier = 1;
+    float lifeLeft = LIFE_LENGTH;
 
-    public float bonus = 0;
+    int bonus = 0;
 
     public List<Ability> abilities = new List<Ability>();
     ushort activeAbilities = 0;
@@ -33,11 +33,11 @@ public class Stats : MonoBehaviour {
         lifeLeft += value;
     }
 
-    public void AddBonus(float value) {
+    public void AddBonus(int value) {
         bonus += value;
     }
 
-    public void RemoveBonus(float value) {
+    public void RemoveBonus(int value) {
         bonus -= value;
     }
 
