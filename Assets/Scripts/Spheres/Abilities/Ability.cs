@@ -26,11 +26,6 @@ namespace Abilities {
         /// <param name="rigidbody">Rigidbody</param>
         public virtual void FixedUpdate(Rigidbody rigidbody) { }
 
-        /// <summary>
-        /// Bonus awarded while this sphere is active
-        /// </summary>
-        /// <returns>bonus</returns>
-        public virtual int GetBonus() { return 0; }
         public abstract Ability Clone();
         public abstract IEnumerator PopAnimation(System.Action func);
 
