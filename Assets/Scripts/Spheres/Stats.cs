@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using Abilities;
+using System;
+using System.Collections;
 
 public class Stats : MonoBehaviour {
     const int LIFE_MULTIPLIER = 25;
@@ -9,10 +11,11 @@ public class Stats : MonoBehaviour {
     float multiplier = 1;
     float lifeLeft = LIFE_LENGTH;
 
-    int bonus = 0;
-
     public List<Ability> abilities = new List<Ability>();
     ushort activeAbilities = 0;
+
+    int bonus = 0;
+    List<Func<int>> bonusFunctions;
 
     public void AbilityUpdate(Rigidbody r) {
         foreach (var ability in abilities)
@@ -37,8 +40,23 @@ public class Stats : MonoBehaviour {
         bonus += value;
     }
 
+    public void AddBonus(Func<int> f, float expire = -1) {
+        bonusFunctions.Add(f);
+        if (expire > 0)
+            StartCoroutine(BonusTimer(f, expire));
+    }
+
     public void RemoveBonus(int value) {
         bonus -= value;
+    }
+
+    public void RemoveBonus(Func<int> f) {
+        bonusFunctions.Remove(f);
+    }
+
+    IEnumerator BonusTimer(Func<int> f, float expire) {
+        yield return new WaitForSeconds(expire);
+        RemoveBonus(f);
     }
 
     public int Pop() {
