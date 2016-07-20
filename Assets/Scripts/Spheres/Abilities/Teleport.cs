@@ -19,13 +19,8 @@ namespace Abilities {
             return new Teleport();
         }
 
-        public override int Pop() {
+        public override int GetValue() {
             return Mathf.RoundToInt((ttl / TIME_TO_LIVE) * 200);
-        }
-
-        public override IEnumerator PopAnimation(Action func) {
-            yield return new WaitForEndOfFrame();
-            func();
         }
     }
 }

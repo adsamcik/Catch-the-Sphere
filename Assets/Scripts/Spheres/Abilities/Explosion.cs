@@ -25,7 +25,7 @@ namespace Abilities {
             inRange.Add(c.gameObject);
         }
 
-        public override int Pop() {
+        public override int GetValue() {
             int val = 0;
             foreach (var item in inRange) {
                 if (item.gameObject != null) {
@@ -38,7 +38,7 @@ namespace Abilities {
             return val;
         }
 
-        public override IEnumerator PopAnimation(Action func) {
+        public override IEnumerator Pop() {
             gameObject.GetComponent<Collider>().enabled = false;
             gameObject.GetComponent<Rigidbody>().Sleep();
             Camera.main.GetComponent<CameraEffects>().ShakeCamera(0.25f);
@@ -52,8 +52,6 @@ namespace Abilities {
                 m.SetVector("_ChannelFactor", new Vector4(i, i, i, 1));
                 yield return new WaitForEndOfFrame();
             }
-
-            func();
         }
 
         public override Ability Clone() {

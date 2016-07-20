@@ -22,7 +22,7 @@ namespace Abilities {
         /// Called when sphere is destroyed
         /// </summary>
         /// <returns>Score for the sphere to award</returns>
-        public abstract int Pop();
+        public abstract int GetValue();
 
         /// <summary>
         /// Behaves as FixedUpdate on Monobehavior
@@ -32,16 +32,34 @@ namespace Abilities {
 
         public abstract Ability Clone();
 
-        public virtual IEnumerator PopAnimation(System.Action func) {
+        public IEnumerator Pop(System.Action func) {
+            yield return Pop();
+            func();
+        }
+
+        public virtual IEnumerator Pop() {
+            yield return FadeOutAnimation();
+        }
+
+        /// <summary>
+        /// FadeOut animation with callback
+        /// </summary>
+        /// <param name="func">Callback</param>
+        public IEnumerator FadeOutAnimation(System.Action func) {
+            yield return FadeOutAnimation();
+            func();
+        }
+
+        /// <summary>
+        /// FadeOut animation
+        /// </summary>
+        public virtual IEnumerator FadeOutAnimation() {
             float mod = transform.localScale.x / POP_ANIMATION_LENGTH;
             while (transform.localScale.x > 0) {
                 float val = Time.deltaTime * mod;
                 transform.localScale -= new Vector3(val, val, val);
                 yield return new WaitForEndOfFrame();
             }
-
-            if (func != null)
-                func();
         }
 
         public virtual void OnRemove() { }

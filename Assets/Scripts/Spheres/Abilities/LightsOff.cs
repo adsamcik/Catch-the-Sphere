@@ -4,6 +4,8 @@ using System;
 
 namespace Abilities {
     public class LightsOff : Ability {
+        static int active = 0;
+
         Color aColor;
         Color sColor;
         Light light;
@@ -18,24 +20,26 @@ namespace Abilities {
             light.type = LightType.Point;
             light.intensity = 8;
             light.range = 5;
+            active++;
         }
 
-        public override int Pop() {
+        public override int GetValue() {
             return 500;
         }
 
-        public override IEnumerator PopAnimation(Action func) {
-            float val = 0;
-            while (RenderSettings.ambientLight != aColor) {
-                if ((val += Time.deltaTime) > 1)
-                    val = 1;
-                RenderSettings.ambientLight = Color.Lerp(RenderSettings.ambientLight, aColor, val);
-                GameController.sun.color = Color.Lerp(GameController.sun.color, sColor, val);
-                light.color = Color.Lerp(light.color, Color.black, val);
-                yield return new WaitForEndOfFrame();
+        public override IEnumerator FadeOutAnimation() {
+            if(--active == 0) {
+                float val = 0;
+                while (RenderSettings.ambientLight != aColor) {
+                    if ((val += Time.deltaTime) > 1)
+                        val = 1;
+                    RenderSettings.ambientLight = Color.Lerp(RenderSettings.ambientLight, aColor, val);
+                    GameController.sun.color = Color.Lerp(GameController.sun.color, sColor, val);
+                    light.color = Color.Lerp(light.color, Color.black, val);
+                    yield return new WaitForEndOfFrame();
+                }
+                GameController.sun.enabled = true;
             }
-            GameController.sun.enabled = true;
-            func();
         }
 
         public override Ability Clone() {

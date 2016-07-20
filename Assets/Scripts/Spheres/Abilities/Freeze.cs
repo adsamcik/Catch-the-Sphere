@@ -10,7 +10,7 @@ namespace Abilities {
 
         List<GameObject> colliding = new List<GameObject>();
 
-        public override int Pop() {
+        public override int GetValue() {
             return 200;
         }
 
@@ -28,7 +28,7 @@ namespace Abilities {
             colliding.Remove(c.gameObject);
         }
 
-        public override IEnumerator PopAnimation(Action func) {
+        public override IEnumerator Pop() {
             gameObject.GetComponent<Collider>().enabled = false;
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
 
@@ -39,8 +39,6 @@ namespace Abilities {
 
             foreach (GameObject sphere in colliding)
                 if (sphere) sphere.GetComponent<Move>().ToggleFreeze();
-
-            func();
         }
 
         public override Ability Clone() {

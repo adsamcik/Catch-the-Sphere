@@ -14,7 +14,7 @@ namespace Abilities {
             sqrspeed = speed * speed;
         }
 
-        public override int Pop() {
+        public override int GetValue() {
             return Mathf.RoundToInt(sqrspeed);
         }
 

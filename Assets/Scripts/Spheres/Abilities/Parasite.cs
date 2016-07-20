@@ -44,7 +44,7 @@ namespace Abilities {
             gameObject.GetComponent<Stats>().IncreaseLife(999999);
         }
 
-        public override int Pop() {
+        public override int GetValue() {
             active--;
             foreach (var item in inRange) {
                 if (item != null && !item.GetComponent<Stats>().hasAbility(this))
@@ -54,7 +54,8 @@ namespace Abilities {
             return active == 0 ? value : active;
         }
 
-        public override IEnumerator PopAnimation(Action func) {
+        public override IEnumerator Pop() {
+            gameObject.SetActive(false);
             SphereCollider[] sc = gameObject.GetComponents<SphereCollider>();
             SphereCollider main = null;
             foreach (var item in sc) {
@@ -94,7 +95,6 @@ namespace Abilities {
                 }
                 yield return new WaitForEndOfFrame();
             }
-            func();
         }
 
         public override void OnFieldEnter(Collider g) {

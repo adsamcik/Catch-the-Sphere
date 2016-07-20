@@ -12,7 +12,7 @@ namespace Abilities {
 
         List<Rigidbody> inRange = new List<Rigidbody>();
 
-        public override int Pop() {
+        public override int GetValue() {
             return 200;
         }
 
@@ -50,7 +50,7 @@ namespace Abilities {
             c.GetComponent<Stats>().RemoveBonus(BONUS);
         }
 
-        public override IEnumerator PopAnimation(Action func) {
+        public override IEnumerator Pop() {
             Transform t = gameObject.transform.Find(GRAVITY_EFFECT_NAME);
             float val = 0;
             while (val < 1) {
@@ -67,7 +67,6 @@ namespace Abilities {
                 yield return new WaitForEndOfFrame();
             }
             gameObject.transform.localScale = Vector3.zero;
-            func();
         }
 
         public override Ability Clone() {

@@ -28,7 +28,7 @@ public class Stats : MonoBehaviour {
             GetComponent<Stats>().enabled = false;
             enabled = false;
             foreach (var ability in abilities)
-                StartCoroutine(ability.PopAnimation(AbilityRemoved));
+                StartCoroutine(ability.FadeOutAnimation(AbilityRemoved));
         }
     }
 
@@ -62,8 +62,8 @@ public class Stats : MonoBehaviour {
     public int Pop() {
         double value = lifeLeft * LIFE_MULTIPLIER + bonus;
         foreach (var ability in abilities) {
-            value += ability.Pop();
-            StartCoroutine(ability.PopAnimation(AbilityRemoved));
+            value += ability.GetValue();
+            StartCoroutine(ability.Pop(AbilityRemoved));
         }
         value *= multiplier;
         return (int)value;
