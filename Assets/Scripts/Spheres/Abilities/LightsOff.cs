@@ -42,9 +42,10 @@ namespace Abilities {
             return new LightsOff();
         }
 
-        public override void OnRemove() {
+        public override void OnRemove(MonoBehaviour mb) {
             RenderSettings.ambientLight = GameController.ambientLight;
             GameController.sun.color = GameController.sunLight;
+            mb.StartCoroutine(base.PopAnimation(null));
         }
     }
 }

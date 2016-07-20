@@ -59,5 +59,6 @@ namespace Abilities {
         public override Ability Clone() {
             return new Explosion();
         }
+
     }
 }
