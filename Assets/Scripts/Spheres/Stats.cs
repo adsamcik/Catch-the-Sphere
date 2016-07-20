@@ -108,7 +108,7 @@ public class Stats : MonoBehaviour {
 
     public void RemoveAllAbilities() {
         foreach (var ability in abilities)
-            ability.OnRemove(this);
+            ability.OnRemove();
         abilities.Clear();
         activeAbilities = 0;
         name.Remove(0);

@@ -44,9 +44,7 @@ namespace Abilities {
                 func();
         }
 
-        public virtual void OnRemove(MonoBehaviour mb) {
-            mb.StartCoroutine(PopAnimation(null));
-        }
+        public virtual void OnRemove() { }
 
         protected SphereCollider AddSphereTrigger(float radius) {
             SphereCollider sc = gameObject.AddComponent<SphereCollider>();
