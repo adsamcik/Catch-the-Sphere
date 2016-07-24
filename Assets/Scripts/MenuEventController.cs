@@ -12,4 +12,8 @@ public class MenuEventController : MonoBehaviour {
 	public void LoadLevel(string name) {
         SceneManager.LoadScene(name);
 	}
+
+    public void Exit() {
+        Application.Quit();
+    }
 }
