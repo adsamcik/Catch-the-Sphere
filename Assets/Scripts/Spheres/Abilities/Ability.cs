@@ -7,6 +7,7 @@ namespace Abilities {
 
         protected GameObject gameObject;
         protected Transform transform { get { return gameObject.transform; } }
+        protected Stats stats;
 
         /// <summary>
         /// Called when Ability is added
@@ -14,6 +15,7 @@ namespace Abilities {
         /// <param name="g">gameobject</param>
         public virtual void Initialize(GameObject g) {
             gameObject = g;
+            stats = gameObject.GetComponent<Stats>();
         }
         public virtual void OnFieldEnter(Collider g) { }
         public virtual void OnFieldExit(Collider g) { }
@@ -58,6 +60,7 @@ namespace Abilities {
             while (transform.localScale.x > 0) {
                 float val = Time.deltaTime * mod;
                 transform.localScale -= new Vector3(val, val, val);
+                Debug.Log(val);
                 yield return new WaitForEndOfFrame();
             }
         }
