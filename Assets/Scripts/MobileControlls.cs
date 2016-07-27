@@ -4,6 +4,7 @@ using System.Collections;
 public class MobileControlls : MonoBehaviour {
     RaycastHit hit;
     public LayerMask mask;
+    public float radius = 0.5f;
 
     void Update() {
         if (Input.GetButtonDown("Pause")) GameController.Pause();
@@ -14,8 +15,8 @@ public class MobileControlls : MonoBehaviour {
 #endif
  {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit, 100, mask, QueryTriggerInteraction.Ignore))
+            Debug.DrawRay(ray.origin, ray.direction * 10, Color.red, 2, true);
+            if (Physics.SphereCast(ray, radius, out hit, 100, mask, QueryTriggerInteraction.Ignore))
                 GameController.Pop(hit.transform.GetComponent<Stats>().Pop());
         }
     }
