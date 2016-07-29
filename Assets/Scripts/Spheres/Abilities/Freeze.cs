@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Abilities {
     public class Freeze : Ability {
-        const float FREEZE_RANGE = 5;
+        const float FREEZE_RANGE = 3;
         const float FREEZE_TIME = 1.5f;
 
         List<GameObject> colliding = new List<GameObject>();
@@ -35,17 +35,17 @@ namespace Abilities {
 
         public override IEnumerator Pop() {
             gameObject.GetComponent<ObjectController>().SetMaterial(material);
-            gameObject.transform.localScale = new Vector3(FREEZE_RANGE, FREEZE_RANGE, FREEZE_RANGE);
+            gameObject.transform.localScale = new Vector3(FREEZE_RANGE * 2, FREEZE_RANGE * 2, FREEZE_RANGE * 2);
             gameObject.GetComponent<Collider>().enabled = false;
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
 
             foreach (GameObject sphere in colliding)
-                if (sphere) sphere.GetComponent<ObjectController>().ToggleFreeze();
+                if (sphere) sphere.GetComponent<ObjectController>().SetFreeze(true);
 
             yield return new WaitForSeconds(FREEZE_TIME);
 
             foreach (GameObject sphere in colliding)
-                if (sphere) sphere.GetComponent<ObjectController>().ToggleFreeze();
+                if (sphere) sphere.GetComponent<ObjectController>().SetFreeze(false);
         }
 
         public override Ability Clone() {

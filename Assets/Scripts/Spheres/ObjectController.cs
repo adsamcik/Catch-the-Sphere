@@ -10,6 +10,8 @@ public class ObjectController : MonoBehaviour {
     Vector3 velocity;
     MeshRenderer mr;
 
+    bool isFrozen = false;
+
     void Start() {
         StartCoroutine("IsInside");
         r = GetComponent<Rigidbody>();
@@ -33,15 +35,17 @@ public class ObjectController : MonoBehaviour {
         s.AbilityUpdate(r);
     }
 
-    public void ToggleFreeze() {
-        if (r.isKinematic)
-            r.velocity = velocity;
-        else {
+    public void SetFreeze(bool value) {
+        if (value == isFrozen)
+            return;
+
+        if (value) {
             velocity = r.velocity;
             r.velocity = Vector3.zero;
-        }
+        } else
+            r.velocity = velocity;
 
-        r.isKinematic = !r.isKinematic;
+        r.isKinematic = value;
     }
 
     void LoadMeshRenderer() {
