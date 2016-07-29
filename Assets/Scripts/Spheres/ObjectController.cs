@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Move : MonoBehaviour {
+public class ObjectController : MonoBehaviour {
     const float MAX_SPEED = 20;
     const float MAX_SPEED_SQR = MAX_SPEED * MAX_SPEED;
 

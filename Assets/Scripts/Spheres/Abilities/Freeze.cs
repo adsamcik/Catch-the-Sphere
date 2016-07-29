@@ -33,12 +33,12 @@ namespace Abilities {
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
 
             foreach (GameObject sphere in colliding)
-                if (sphere) sphere.GetComponent<Move>().ToggleFreeze();
+                if (sphere) sphere.GetComponent<ObjectController>().ToggleFreeze();
 
             yield return new WaitForSeconds(FREEZE_TIME);
 
             foreach (GameObject sphere in colliding)
-                if (sphere) sphere.GetComponent<Move>().ToggleFreeze();
+                if (sphere) sphere.GetComponent<ObjectController>().ToggleFreeze();
         }
 
         public override Ability Clone() {
