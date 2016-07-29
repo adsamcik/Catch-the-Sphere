@@ -1,7 +1,5 @@
 fileFormatVersion: 2
-guid: 3e3618e195b1a5240b0533cdd141bf70
-timeCreated: 1469795102
-licenseType: Free
+guid: d5d6fa2367b314d43a131ae140a7f5a3
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
@@ -9,10 +7,11 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Sphere Med-poly
+    4300000: Sphere001
+    4300002: Sphere Med-poly
     9500000: //RootNode
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
   animations:
@@ -49,12 +48,12 @@ ModelImporter:
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
-    useFileScale: 1
+    useFileScale: 0
   tangentSpace:
-    normalSmoothAngle: 60
-    normalImportMode: 0
+    normalSmoothAngle: 14
+    normalImportMode: 1
     tangentImportMode: 3
-  importAnimation: 1
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     human: []
@@ -69,7 +68,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
