@@ -47,7 +47,6 @@ namespace Abilities {
         /// Called when item is clicked
         /// </summary>
         public virtual IEnumerator Pop() {
-            Debug.Log("default pop");
             yield return FadeOutAnimation();
         }
 
