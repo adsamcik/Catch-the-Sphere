@@ -143,7 +143,7 @@ public class GameController : MonoBehaviour {
     }
 
     IEnumerator Spawn() {
-        sphere = Resources.Load<GameObject>("Med");
+        sphere = Resources.Load<GameObject>("SphereMed");
 
         while (true) {
             yield return new WaitForSeconds(speed);
