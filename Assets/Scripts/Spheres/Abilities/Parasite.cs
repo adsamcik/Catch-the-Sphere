@@ -55,7 +55,6 @@ namespace Abilities {
         }
 
         public override IEnumerator Pop() {
-            gameObject.SetActive(false);
             SphereCollider[] sc = gameObject.GetComponents<SphereCollider>();
             SphereCollider main = null;
             foreach (var item in sc) {
@@ -74,7 +73,7 @@ namespace Abilities {
                 if (item != null && !item.GetComponent<Stats>().hasAbility(this))
                     parasiteSpreads.Add(new Pair<Transform, Transform>(((GameObject)UnityEngine.Object.Instantiate(Resources.Load<GameObject>("ParasiteSpread"), gameObject.transform.position, new Quaternion())).transform, item.transform));
             }
-            
+
             while (parasiteSpreads.Count > 0) {
                 for (int i = 0; i < parasiteSpreads.Count; i++) {
                     var pair = parasiteSpreads[i];
@@ -83,7 +82,6 @@ namespace Abilities {
                     var posDif = target.position - parasite.position;
                     var dir = (posDif).normalized * PARASITE_SPEED * Time.deltaTime;
                     if (dir.sqrMagnitude > posDif.sqrMagnitude) {
-                        Debug.Log(dir.sqrMagnitude > posDif.sqrMagnitude);
                         Stats s = target.GetComponent<Stats>();
                         s.RemoveAllAbilities();
                         s.AddCustomAbility(new Parasite(target.gameObject));
@@ -93,11 +91,9 @@ namespace Abilities {
                     }
                     else
                         parasite.position += dir;
-                    Debug.Log("parasite");
 
                 }
                 yield return new WaitForEndOfFrame();
-                Debug.Log(parasiteSpreads.Count);
             }
         }
 

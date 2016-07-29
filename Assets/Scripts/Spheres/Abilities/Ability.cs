@@ -34,12 +34,20 @@ namespace Abilities {
 
         public abstract Ability Clone();
 
+        /// <summary>
+        /// Pop with callback
+        /// </summary>
+        /// <param name="func">callback</param>
         public IEnumerator Pop(System.Action func) {
             yield return Pop();
             func();
         }
 
+        /// <summary>
+        /// Called when item is clicked
+        /// </summary>
         public virtual IEnumerator Pop() {
+            Debug.Log("default pop");
             yield return FadeOutAnimation();
         }
 
@@ -60,7 +68,6 @@ namespace Abilities {
             while (transform.localScale.x > 0) {
                 float val = Time.deltaTime * mod;
                 transform.localScale -= new Vector3(val, val, val);
-                Debug.Log(val);
                 yield return new WaitForEndOfFrame();
             }
         }
