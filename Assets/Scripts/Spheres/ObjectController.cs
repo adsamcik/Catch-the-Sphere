@@ -14,7 +14,6 @@ public class ObjectController : MonoBehaviour {
         StartCoroutine("IsInside");
         r = GetComponent<Rigidbody>();
         s = GetComponent<Stats>();
-        mr = GetComponent<MeshRenderer>();
     }
 
     IEnumerator IsInside() {
@@ -45,14 +44,24 @@ public class ObjectController : MonoBehaviour {
         r.isKinematic = !r.isKinematic;
     }
 
+    void LoadMeshRenderer() {
+        if (mr == null)
+            mr = gameObject.GetComponent<MeshRenderer>();
+    }
+
     /// <summary>
     /// Adds material on top of all materials
     /// </summary>
     /// <param name="m">Material</param>
     public void AddMaterial(Material m) {
-        Material[] materials = new Material[mr.materials.Length + 1];
-        mr.materials.CopyTo(materials, 0);
-        materials[mr.materials.Length] = m;
+        LoadMeshRenderer();
+        if (mr.materials == null)
+            mr.materials = new Material[1] { m };
+        else {
+            Material[] materials = new Material[mr.materials.Length + 1];
+            mr.materials.CopyTo(materials, 0);
+            materials[mr.materials.Length] = m;
+        }
     }
 
     /// <summary>
@@ -60,6 +69,7 @@ public class ObjectController : MonoBehaviour {
     /// </summary>
     /// <param name="m">Material</param>
     public void SetMaterial(Material m) {
+        LoadMeshRenderer();
         mr.materials = new Material[] { m };
     }
 
@@ -68,6 +78,7 @@ public class ObjectController : MonoBehaviour {
     /// </summary>
     /// <param name="m">Material</param>
     public void SetBaseMaterial(Material m) {
+        LoadMeshRenderer();
         mr.material = m;
     }
 
