@@ -10,6 +10,8 @@ namespace Abilities {
 
         List<GameObject> colliding = new List<GameObject>();
 
+        Material material;
+
         public override int GetValue() {
             return 200;
         }
@@ -17,7 +19,8 @@ namespace Abilities {
         public override void Initialize(GameObject g) {
             base.Initialize(g);
             ObjectController controller = g.GetComponent<ObjectController>();
-            controller.AddMaterial(Resources.Load<Material>("Materials/Ice"));
+            material = Resources.Load<Material>("Materials/Ice");
+            controller.AddMaterial(material);
             controller.SetModel(Resources.Load<Mesh>("Models/MedIce"));
             AddSphereTrigger(FREEZE_RANGE);
         }
@@ -31,6 +34,8 @@ namespace Abilities {
         }
 
         public override IEnumerator Pop() {
+            gameObject.GetComponent<ObjectController>().SetMaterial(material);
+            gameObject.transform.localScale = new Vector3(FREEZE_RANGE, FREEZE_RANGE, FREEZE_RANGE);
             gameObject.GetComponent<Collider>().enabled = false;
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
 
