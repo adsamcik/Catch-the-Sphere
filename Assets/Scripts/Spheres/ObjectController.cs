@@ -55,13 +55,10 @@ public class ObjectController : MonoBehaviour {
     /// <param name="m">Material</param>
     public void AddMaterial(Material m) {
         LoadMeshRenderer();
-        if (mr.materials == null)
-            mr.materials = new Material[1] { m };
-        else {
-            Material[] materials = new Material[mr.materials.Length + 1];
-            mr.materials.CopyTo(materials, 0);
-            materials[mr.materials.Length] = m;
-        }
+        Material[] materials = new Material[mr.materials.Length + 1];
+        mr.materials.CopyTo(materials, 0);
+        materials[mr.materials.Length] = m;
+        mr.materials = materials;
     }
 
     /// <summary>
