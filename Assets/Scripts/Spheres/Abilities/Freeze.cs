@@ -16,7 +16,9 @@ namespace Abilities {
 
         public override void Initialize(GameObject g) {
             base.Initialize(g);
-            g.GetComponent<ObjectController>().AddMaterial(Resources.Load<Material>("Materials/Ice"));
+            ObjectController controller = g.GetComponent<ObjectController>();
+            controller.AddMaterial(Resources.Load<Material>("Materials/Ice"));
+            controller.SetModel(Resources.Load<Mesh>("Models/MedIce"));
             AddSphereTrigger(FREEZE_RANGE);
         }
 

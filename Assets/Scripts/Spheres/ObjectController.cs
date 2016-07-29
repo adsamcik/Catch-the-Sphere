@@ -71,4 +71,12 @@ public class ObjectController : MonoBehaviour {
         mr.material = m;
     }
 
+    /// <summary>
+    /// Changes model of the sphere
+    /// </summary>
+    /// <param name="m">Mesh</param>
+    public void SetModel(Mesh m) {
+        gameObject.GetComponent<MeshFilter>().mesh = m;
+    }
+
 }
