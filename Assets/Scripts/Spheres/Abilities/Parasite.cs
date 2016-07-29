@@ -28,14 +28,13 @@ namespace Abilities {
                 value += VALUE_MAX;
                 if (value > VALUE_MAX)
                     value = VALUE_MAX;
-            }
-            else
+            } else
                 value = VALUE_MAX;
             Spread();
         }
 
         public void Spread() {
-            gameObject.GetComponent<Renderer>().materials = new Material[] { Resources.Load<Material>("Materials/Parasite") };
+            gameObject.GetComponent<ObjectController>().SetMaterial(Resources.Load<Material>("Materials/Parasite"));
             foreach (var item in gameObject.GetComponents<Collider>()) {
                 if (item.isTrigger)
                     UnityEngine.Object.Destroy(item);
@@ -88,8 +87,7 @@ namespace Abilities {
                         UnityEngine.Object.Destroy(parasite.gameObject);
                         parasiteSpreads.RemoveAt(i);
                         i--;
-                    }
-                    else
+                    } else
                         parasite.position += dir;
 
                 }

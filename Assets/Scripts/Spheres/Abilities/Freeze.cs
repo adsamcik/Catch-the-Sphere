@@ -16,7 +16,7 @@ namespace Abilities {
 
         public override void Initialize(GameObject g) {
             base.Initialize(g);
-            g.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Materials/Ice");
+            g.GetComponent<ObjectController>().AddMaterial(Resources.Load<Material>("Materials/Ice"));
             AddSphereTrigger(FREEZE_RANGE);
         }
 

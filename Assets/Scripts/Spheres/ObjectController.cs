@@ -8,11 +8,13 @@ public class ObjectController : MonoBehaviour {
     Rigidbody r;
     Stats s;
     Vector3 velocity;
+    MeshRenderer mr;
 
     void Start() {
         StartCoroutine("IsInside");
         r = GetComponent<Rigidbody>();
         s = GetComponent<Stats>();
+        mr = GetComponent<MeshRenderer>();
     }
 
     IEnumerator IsInside() {
@@ -41,6 +43,32 @@ public class ObjectController : MonoBehaviour {
         }
 
         r.isKinematic = !r.isKinematic;
+    }
+
+    /// <summary>
+    /// Adds material on top of all materials
+    /// </summary>
+    /// <param name="m">Material</param>
+    public void AddMaterial(Material m) {
+        Material[] materials = new Material[mr.materials.Length + 1];
+        mr.materials.CopyTo(materials, 0);
+        materials[mr.materials.Length] = m;
+    }
+
+    /// <summary>
+    /// Set <paramref name="m"/> as the only material
+    /// </summary>
+    /// <param name="m">Material</param>
+    public void SetMaterial(Material m) {
+        mr.materials = new Material[] { m };
+    }
+
+    /// <summary>
+    /// Set <paramref name="m"/> as base material (first one to render)
+    /// </summary>
+    /// <param name="m">Material</param>
+    public void SetBaseMaterial(Material m) {
+        mr.material = m;
     }
 
 }

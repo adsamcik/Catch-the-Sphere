@@ -14,7 +14,7 @@ namespace Abilities {
         public override void Initialize(GameObject g) {
             base.Initialize(g);
             AddSphereTrigger(MAX_DIST);
-            g.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Materials/Exploding");
+            g.GetComponent<ObjectController>().SetBaseMaterial(Resources.Load<Material>("Materials/Exploding"));
         }
 
         public override void OnFieldEnter(Collider c) {
