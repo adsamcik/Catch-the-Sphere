@@ -8,8 +8,8 @@ namespace Abilities {
 
         float sqrspeed;
 
-        public override void Initialize(GameObject g) {
-            base.Initialize(g);
+        public override void Initialize(Stats s) {
+            base.Initialize(s);
             float speed = Random.Range(MIN_SPEED, MAX_SPEED);
             sqrspeed = speed * speed;
         }
