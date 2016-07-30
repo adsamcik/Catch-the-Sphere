@@ -39,6 +39,8 @@ public class ObjectController : MonoBehaviour {
         if (value == isFrozen)
             return;
 
+        isFrozen = value;
+
         if (value) {
             velocity = r.velocity;
             r.velocity = Vector3.zero;
