@@ -82,5 +82,9 @@ namespace Abilities {
             sc.radius = radius;
             return sc;
         }
+
+        public virtual bool CanAdd(Ability a) {
+            return true;
+        }
     }
 }

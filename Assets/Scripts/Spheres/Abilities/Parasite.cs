@@ -97,5 +97,9 @@ namespace Abilities {
         public override Ability Clone() {
             return new Parasite();
         }
+
+        public override bool CanAdd(Ability a) {
+            return false;
+        }
     }
 }

@@ -70,6 +70,9 @@ public class Stats : MonoBehaviour {
     }
 
     public void AddAbility(Ability a) {
+        foreach (var item in abilities)
+            if (!item.CanAdd(a))
+                return;
         Ability ability = a.Clone();
         abilities.Add(ability);
         ability.Initialize(this);
