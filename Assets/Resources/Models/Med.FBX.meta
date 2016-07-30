@@ -1,5 +1,7 @@
 fileFormatVersion: 2
-guid: d5d6fa2367b314d43a131ae140a7f5a3
+guid: cb8ad78fc0c0b8d4da065249ad129879
+timeCreated: 1469903573
+licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
@@ -7,8 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Sphere001
-    4300002: Sphere Med-poly
+    4300000: Sphere Med-poly
     9500000: //RootNode
   materials:
     importMaterials: 0
@@ -48,11 +49,11 @@ ModelImporter:
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
-    useFileScale: 0
+    useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 14
-    normalImportMode: 0
-    tangentImportMode: 0
+    normalSmoothAngle: 60
+    normalImportMode: 1
+    tangentImportMode: 3
   importAnimation: 0
   copyAvatar: 0
   humanDescription:

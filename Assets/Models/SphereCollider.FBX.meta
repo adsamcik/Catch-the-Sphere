@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 43f1cd1e989f89a48b9818d6a384d17b
-timeCreated: 1467744334
+guid: 8caa6f828615f7f4985cb0f595b13537
+timeCreated: 1469903721
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -9,7 +9,8 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: SphereBackground
+    4300000: SphereCollider
+    6400000: //RootNode
     9500000: //RootNode
   materials:
     importMaterials: 0
@@ -35,8 +36,8 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 0.1
-    meshCompression: 0
+    globalScale: 0.025
+    meshCompression: 3
     addColliders: 0
     importBlendShapes: 1
     swapUVChannels: 0
@@ -52,8 +53,8 @@ ModelImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 0
-    tangentImportMode: 3
+    normalImportMode: 2
+    tangentImportMode: 2
   importAnimation: 0
   copyAvatar: 0
   humanDescription:
