@@ -48,7 +48,7 @@ public class GameController : MonoBehaviour {
     int _active;
     public int active { get { return _active; } set { _active = value; } }
 
-    public int spawned { get { return instance.spawned; } }
+    public int spawned { get { return score.spawned; } }
 
     int _destroyed;
     public static int destroyed { get { return instance._destroyed; } set { instance._destroyed = value; instance._score.SpawnedSphere(); } }
