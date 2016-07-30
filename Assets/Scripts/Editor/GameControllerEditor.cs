@@ -32,8 +32,7 @@ public class GameControllerEditor : Editor {
                     obj.abilities.Add(new AbilityInfo(a, 1, true));
                 if (newAbilities.Count() > 0 || removed)
                     Save();
-            }
-            else {
+            } else {
                 foreach (var a in GameController.abilityList)
                     obj.abilities.Add(new AbilityInfo(a, 1, true));
                 Save();
@@ -63,8 +62,12 @@ public class GameControllerEditor : Editor {
         AbilityInfo item = ((GameController)target).abilities[index];
 
         EditorGUI.BeginChangeCheck();
-        item.enabled = EditorGUI.Toggle(new Rect(rect.x, rect.y, 15, rect.height), item.enabled);
-        EditorGUI.LabelField(new Rect(rect.x + 15, rect.y, rect.width - 30, rect.height), item.name);
+        float offset = 0;
+        if (!Application.isPlaying) {
+            item.enabled = EditorGUI.Toggle(new Rect(rect.x, rect.y, 15, rect.height), item.enabled);
+            offset = 15;
+        }
+        EditorGUI.LabelField(new Rect(rect.x + offset, rect.y, rect.width - 30, rect.height), item.name);
         item.chanceToSpawn = EditorGUI.FloatField(new Rect(rect.width - 30, rect.y, 30, rect.height), item.chanceToSpawn);
         if (EditorGUI.EndChangeCheck()) {
             Save();
