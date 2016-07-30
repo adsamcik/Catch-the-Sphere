@@ -72,7 +72,7 @@ public class Stats : MonoBehaviour {
     public void AddAbility(Ability a) {
         Ability ability = a.Clone();
         abilities.Add(ability);
-        ability.Initialize(gameObject);
+        ability.Initialize(this);
         activeAbilities++;
         name += a.GetType().Name;
     }

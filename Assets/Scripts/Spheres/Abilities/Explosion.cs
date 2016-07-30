@@ -11,10 +11,10 @@ namespace Abilities {
 
         List<GameObject> inRange = new List<GameObject>();
 
-        public override void Initialize(GameObject g) {
-            base.Initialize(g);
+        public override void Initialize(Stats s) {
+            base.Initialize(s);
             AddSphereTrigger(MAX_DIST);
-            g.GetComponent<ObjectController>().SetBaseMaterial(Resources.Load<Material>("Materials/Exploding"));
+            s.GetComponent<ObjectController>().SetBaseMaterial(Resources.Load<Material>("Materials/Exploding"));
         }
 
         public override void OnFieldEnter(Collider c) {

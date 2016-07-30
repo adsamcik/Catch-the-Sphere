@@ -16,9 +16,9 @@ namespace Abilities {
             return 200;
         }
 
-        public override void Initialize(GameObject g) {
-            base.Initialize(g);
-            ObjectController controller = g.GetComponent<ObjectController>();
+        public override void Initialize(Stats s) {
+            base.Initialize(s);
+            ObjectController controller = oc.GetComponent<ObjectController>();
             material = Resources.Load<Material>("Materials/Ice");
             controller.AddMaterial(material);
             controller.SetModel(Resources.Load<Mesh>("Models/MedIce"));

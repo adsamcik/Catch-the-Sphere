@@ -18,12 +18,12 @@ namespace Abilities {
         public Parasite() { }
 
         public Parasite(GameObject g) {
-            base.Initialize(g);
+            base.Initialize(g.GetComponent<Stats>());
             Spread();
         }
 
-        public override void Initialize(GameObject g) {
-            base.Initialize(g);
+        public override void Initialize(Stats s) {
+            base.Initialize(s);
             if (active++ > 0) {
                 value += VALUE_MAX;
                 if (value > VALUE_MAX)

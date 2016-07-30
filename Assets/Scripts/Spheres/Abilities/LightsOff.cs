@@ -10,13 +10,13 @@ namespace Abilities {
         Color sColor;
         Light light;
 
-        public override void Initialize(GameObject g) {
-            base.Initialize(g);
+        public override void Initialize(Stats s) {
+            base.Initialize(s);
             aColor = RenderSettings.ambientLight;
             sColor = GameController.sun.color;
             RenderSettings.ambientLight = Color.black;
             GameController.sun.color = Color.black;
-            light = g.AddComponent<Light>();
+            light = gameObject.AddComponent<Light>();
             light.type = LightType.Point;
             light.intensity = 8;
             light.range = 5;

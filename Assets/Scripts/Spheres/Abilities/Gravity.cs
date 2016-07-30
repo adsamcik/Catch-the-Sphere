@@ -16,8 +16,8 @@ namespace Abilities {
             return 200;
         }
 
-        public override void Initialize(GameObject g) {
-            base.Initialize(g);
+        public override void Initialize(Stats s) {
+            base.Initialize(s);
             Transform dt = UnityEngine.Object.Instantiate(Resources.Load<GameObject>("GravityDistortion")).transform;
             dt.parent = gameObject.transform;
             dt.localPosition = dt.position;

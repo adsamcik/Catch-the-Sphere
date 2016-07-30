@@ -5,7 +5,8 @@ namespace Abilities {
     public abstract class Ability {
         const float POP_ANIMATION_LENGTH = 0.1f;
 
-        protected GameObject gameObject;
+        protected ObjectController oc;
+        protected GameObject gameObject { get { return oc.gameObject; } }
         protected Transform transform { get { return gameObject.transform; } }
         protected Stats stats;
 
@@ -13,9 +14,9 @@ namespace Abilities {
         /// Called when Ability is added
         /// </summary>
         /// <param name="g">gameobject</param>
-        public virtual void Initialize(GameObject g) {
-            gameObject = g;
-            stats = gameObject.GetComponent<Stats>();
+        public virtual void Initialize(Stats s) {
+            this.stats = s;
+            this.oc = s.GetComponent<ObjectController>();
         }
         public virtual void OnFieldEnter(Collider g) { }
         public virtual void OnFieldExit(Collider g) { }
