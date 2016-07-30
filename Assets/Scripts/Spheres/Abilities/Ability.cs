@@ -39,6 +39,8 @@ namespace Abilities {
         /// </summary>
         /// <param name="func">callback</param>
         public IEnumerator Pop(System.Action func) {
+            foreach (var collider in gameObject.GetComponents<Collider>())
+                collider.enabled = false;
             yield return Pop();
             func();
         }

@@ -39,7 +39,6 @@ namespace Abilities {
         }
 
         public override IEnumerator Pop() {
-            gameObject.GetComponent<Collider>().enabled = false;
             gameObject.GetComponent<Rigidbody>().Sleep();
             Camera.main.GetComponent<CameraEffects>().ShakeCamera(0.25f);
 

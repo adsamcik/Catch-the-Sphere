@@ -55,15 +55,6 @@ namespace Abilities {
 
         public override IEnumerator Pop() {
             SphereCollider[] sc = gameObject.GetComponents<SphereCollider>();
-            SphereCollider main = null;
-            foreach (var item in sc) {
-                if (item.isTrigger)
-                    UnityEngine.Object.Destroy(item);
-                else if (main == null)
-                    main = item;
-                else
-                    Debug.LogWarning("Sphere has more than one non-trigger collider");
-            }
 
             //Pair<Parasite, Target>
             List<Pair<Transform, Transform>> parasiteSpreads = new List<Pair<Transform, Transform>>();
