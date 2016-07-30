@@ -12,17 +12,19 @@ namespace Abilities {
 
         List<Rigidbody> inRange = new List<Rigidbody>();
 
+        Transform distortion;
+
         public override int GetValue() {
             return 200;
         }
 
         public override void Initialize(Stats s) {
             base.Initialize(s);
-            Transform dt = UnityEngine.Object.Instantiate(Resources.Load<GameObject>("GravityDistortion")).transform;
-            dt.parent = gameObject.transform;
-            dt.localPosition = dt.position;
-            dt.localScale = new Vector3(2 * MAX_DIST, 2 * MAX_DIST, 2 * MAX_DIST);
-            dt.name = GRAVITY_EFFECT_NAME;
+            distortion = UnityEngine.Object.Instantiate(Resources.Load<GameObject>("GravityDistortion")).transform;
+            distortion.parent = gameObject.transform;
+            distortion.localPosition = distortion.position;
+            distortion.localScale = new Vector3(2 * MAX_DIST, 2 * MAX_DIST, 2 * MAX_DIST);
+            distortion.name = GRAVITY_EFFECT_NAME;
 
             AddSphereTrigger(MAX_DIST);
         }
@@ -71,6 +73,10 @@ namespace Abilities {
 
         public override Ability Clone() {
             return new Gravity();
+        }
+
+        public override void OnRemove() {
+            UnityEngine.Object.Destroy(distortion);
         }
     }
 }
