@@ -6,11 +6,6 @@ using System.Collections.Generic;
 namespace Abilities {
     [System.Serializable]
     public class AbilityInfo {
-        public string abilityName {
-            get { return ability.GetType().Name; }
-            set { _ability = GameController.abilityList.FirstOrDefault(x => x.GetType().Name == value); name = value; }
-        }
-
         public Ability ability {
             get { if (_ability == null) _ability = GameController.abilityList.FirstOrDefault(x => x.GetType().Name == name); return _ability; }
         }
@@ -27,10 +22,6 @@ namespace Abilities {
             this.name = ability.GetType().Name;
             this.chanceToSpawn = chanceToSpawn;
             this.enabled = enabled;
-        }
-
-        public string ToJson() {
-            return "{name:\"" + abilityName + "\",chanceToSpawn:" + chanceToSpawn + ",enabled:" + enabled.ToString() + "}";
         }
     }
 

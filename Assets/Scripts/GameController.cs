@@ -21,7 +21,17 @@ public class GameController : MonoBehaviour {
     //Instance - eliminates the requirement for lookups
     public static GameController instance;
 
-    public static Ability[] abilityList;
+
+    public static Ability[] abilityList {
+        get {
+            if (_abilityList == null)
+                _abilityList = System.Reflection.Assembly.GetAssembly(typeof(Ability)).GetTypes()
+          .Where(x => typeof(Ability).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract && x != typeof(Standard))
+          .Select(x => (Ability)System.Activator.CreateInstance(x)).ToArray();
+            return _abilityList;
+        }
+    }
+    static Ability[] _abilityList;
 
     static RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
 
@@ -53,6 +63,8 @@ public class GameController : MonoBehaviour {
 
     /*Spheres with abilities*/
     public List<AbilityInfo> abilities;
+    bool initialized = false;
+
     public Standard standard = new Standard();
     float totalSpawnValue;
 
@@ -72,10 +84,11 @@ public class GameController : MonoBehaviour {
     }
 
     public void Initialize() {
+        if (initialized)
+            return;
+        else
+            initialized = true;
         abilities = new List<AbilityInfo>();
-        abilityList = System.Reflection.Assembly.GetAssembly(typeof(Ability)).GetTypes()
-          .Where(x => typeof(Ability).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract && x != typeof(Standard))
-          .Select(x => (Ability)System.Activator.CreateInstance(x)).ToArray();
 
         var list = LoadAbilities();
 

@@ -64,7 +64,7 @@ public class GameControllerEditor : Editor {
 
         EditorGUI.BeginChangeCheck();
         item.enabled = EditorGUI.Toggle(new Rect(rect.x, rect.y, 15, rect.height), item.enabled);
-        EditorGUI.LabelField(new Rect(rect.x + 15, rect.y, rect.width - 30, rect.height), item.abilityName);
+        EditorGUI.LabelField(new Rect(rect.x + 15, rect.y, rect.width - 30, rect.height), item.name);
         item.chanceToSpawn = EditorGUI.FloatField(new Rect(rect.width - 30, rect.y, 30, rect.height), item.chanceToSpawn);
         if (EditorGUI.EndChangeCheck()) {
             Save();
