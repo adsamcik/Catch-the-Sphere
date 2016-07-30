@@ -35,9 +35,6 @@ public class GameController : MonoBehaviour {
 
     static RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
 
-    /*Need to be set in editor*/
-    public Text finalResults;
-    public Text spawnInfo;
     public GameObject pauseMenu;
 
     /*Set automagically*/
@@ -51,11 +48,10 @@ public class GameController : MonoBehaviour {
     int _active;
     public int active { get { return _active; } set { _active = value; } }
 
-    int _spawned;
-    public int spawned { get { return _spawned; } set { _spawned = value; UpdateSphereCount(); } }
+    public int spawned { get { return instance.spawned; } }
 
     int _destroyed;
-    public static int destroyed { get { return instance._destroyed; } set { instance._destroyed = value; instance.UpdateSphereCount(); } }
+    public static int destroyed { get { return instance._destroyed; } set { instance._destroyed = value; instance._score.SpawnedSphere(); } }
 
     public static bool paused;
 
@@ -92,8 +88,6 @@ public class GameController : MonoBehaviour {
 
         var list = LoadAbilities();
 
-        Debug.Log(list.Length);
-
         if (list != null) {
             if (!Application.isPlaying)
                 abilities.AddRange(list);
@@ -120,10 +114,6 @@ public class GameController : MonoBehaviour {
 
         _aLight = RenderSettings.ambientLight;
         _sLight = sun.color;
-    }
-
-    public void UpdateSphereCount() {
-        spawnInfo.text = destroyed + "/" + spawned;
     }
 
     /// <summary>
@@ -161,7 +151,7 @@ public class GameController : MonoBehaviour {
         while (true) {
             yield return new WaitForSeconds(speed);
             if (!paused) {
-                spawned++;
+                score.SpawnedSphere();
                 GameObject g = (GameObject)Instantiate(sphere, randomPositionInSphere, new Quaternion());
                 Stats s = g.GetComponent<Stats>();
                 if (Random.value <= chanceToSpawnSpecial) {
@@ -204,10 +194,8 @@ public class GameController : MonoBehaviour {
     void Restart() {
         ChangeSeed();
         destroyed = 0;
-        spawned = 0;
         speed = 2;
-        finalResults.text = "";
-        _score.NoScore();
+        _score = new Score(this, transform.root.Find("/canvas"));
     }
 
     void ChangeSeed() {

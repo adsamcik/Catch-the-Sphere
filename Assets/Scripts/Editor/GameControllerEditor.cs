@@ -81,7 +81,6 @@ public class GameControllerEditor : Editor {
         if (Application.isPlaying)
             EditorGUILayout.LabelField("Spawned", obj.spawned.ToString());
         obj._sun = (Light)EditorGUILayout.ObjectField("Sun", obj._sun, typeof(Light), true);
-        obj.finalResults = (Text)EditorGUILayout.ObjectField("Final result", obj.finalResults, typeof(Text), true);
         obj.pauseMenu = (GameObject)EditorGUILayout.ObjectField("Pause menu", obj.pauseMenu, typeof(GameObject), true);
         abilityList.DoLayoutList();
         if (GUI.changed) {
