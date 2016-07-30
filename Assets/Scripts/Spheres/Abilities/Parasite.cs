@@ -54,8 +54,6 @@ namespace Abilities {
         }
 
         public override IEnumerator Pop() {
-            SphereCollider[] sc = gameObject.GetComponents<SphereCollider>();
-
             //Pair<Parasite, Target>
             List<Pair<Transform, Transform>> parasiteSpreads = new List<Pair<Transform, Transform>>();
 
