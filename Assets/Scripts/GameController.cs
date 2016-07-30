@@ -68,18 +68,18 @@ public class GameController : MonoBehaviour {
     }
 
     AbilityInfo[] LoadAbilities() {
-        return Newtonsoft.Json.JsonConvert.DeserializeObject<AbilityInfo[]>(Resources.Load<TextAsset>(ABILITY_FILE).text);
+        return JsonUtility.FromJson<AbilityInfoList>(Resources.Load<TextAsset>(ABILITY_FILE).text).array;
     }
 
     public void Initialize() {
-        if (abilities != null)
-            return;
         abilities = new List<AbilityInfo>();
         abilityList = System.Reflection.Assembly.GetAssembly(typeof(Ability)).GetTypes()
           .Where(x => typeof(Ability).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract && x != typeof(Standard))
           .Select(x => (Ability)System.Activator.CreateInstance(x)).ToArray();
 
         var list = LoadAbilities();
+
+        Debug.Log(list.Length);
 
         if (list != null) {
             if (!Application.isPlaying)
