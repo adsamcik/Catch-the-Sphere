@@ -10,7 +10,7 @@ public static class PlayerStats {
     public static int spheresSpawned { get { return stats.spheresSpawned; } private set { stats.spheresSpawned = value; stats.Save(); } }
     public static int spheresCaught { get { return stats.spheresCaught; } private set { stats.spheresCaught = value; stats.Save(); } }
 
-    static Stats stats = JsonUtility.FromJson<Stats>(PlayerPrefs.GetString(PLAYER_KEY));
+    static Stats stats = JsonUtility.FromJson<Stats>(PlayerPrefs.GetString(PLAYER_KEY, "{}"));
 
     [System.Serializable]
     class Stats {
