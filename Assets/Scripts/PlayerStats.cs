@@ -6,14 +6,9 @@ public static class PlayerStats {
     public const int DEFAULT_POWER = 1000;
     public const string PLAYER_KEY = "PLAYAKEYA";
 
-    public static int power { get { return _power; } private set { _power = value; stats.Save(); } }
-    static int _power;
-
-    public static int spheresSpawned { get { return _spheresSpawned; } private set { _spheresSpawned = value; stats.Save(); } }
-    static int _spheresSpawned;
-
-    public static int spheresCaught { get { return _spheresCaught; } private set { _spheresCaught = value; stats.Save(); } }
-    static int _spheresCaught;
+    public static int power { get { return stats.power; } private set { stats.power = value; stats.Save(); } }
+    public static int spheresSpawned { get { return stats.spheresSpawned; } private set { stats.spheresSpawned = value; stats.Save(); } }
+    public static int spheresCaught { get { return stats.spheresCaught; } private set { stats.spheresCaught = value; stats.Save(); } }
 
     static Stats stats = JsonUtility.FromJson<Stats>(PlayerPrefs.GetString(PLAYER_KEY));
 
