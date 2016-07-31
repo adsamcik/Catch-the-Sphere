@@ -5,11 +5,13 @@ using System;
 using System.Collections;
 
 public class Stats : MonoBehaviour {
-    const int LIFE_MULTIPLIER = 25;
-    const int LIFE_LENGTH = 15;
+    const int BASE_LIFE_MULTIPLIER = 25;
+    const int BASE_TIME_TO_LIVE = 15;
 
     float multiplier = 1;
-    float lifeLeft = LIFE_LENGTH;
+    float timeMultiplier = BASE_LIFE_MULTIPLIER;
+    float timeLeft = BASE_TIME_TO_LIVE;
+    float totalTime = BASE_TIME_TO_LIVE;
 
     public List<Ability> abilities = new List<Ability>();
     ushort activeAbilities = 0;
@@ -23,8 +25,8 @@ public class Stats : MonoBehaviour {
     }
 
     void Update() {
-        lifeLeft -= Time.deltaTime;
-        if (lifeLeft <= 0) {
+        timeLeft -= Time.deltaTime;
+        if (timeLeft <= 0) {
             GetComponent<Stats>().enabled = false;
             enabled = false;
             foreach (var ability in abilities)
@@ -32,8 +34,9 @@ public class Stats : MonoBehaviour {
         }
     }
 
-    public void IncreaseLife(float value) {
-        lifeLeft += value;
+    public void AddTime(float value) {
+        timeLeft += value;
+        totalTime += value;
     }
 
     public void AddBonus(int value) {
@@ -60,11 +63,12 @@ public class Stats : MonoBehaviour {
     }
 
     public int Pop() {
-        double value = lifeLeft * LIFE_MULTIPLIER + bonus;
+        double value = (timeLeft / totalTime) * timeMultiplier + bonus;
         foreach (var ability in abilities) {
             value += ability.GetValue();
             StartCoroutine(ability.Pop(AbilityRemoved));
         }
+
         value *= multiplier;
         return (int)value;
     }
