@@ -13,6 +13,14 @@ public class MenuEventController : MonoBehaviour {
         SceneManager.LoadScene(name);
 	}
 
+    public void Journal() {
+
+    }
+
+    public void Stats() {
+
+    }
+
     public void Exit() {
         Application.Quit();
     }
