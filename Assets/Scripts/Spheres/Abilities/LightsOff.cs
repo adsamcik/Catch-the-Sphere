@@ -10,7 +10,7 @@ namespace Abilities {
         Color sColor;
         Light light;
 
-        public override void Initialize(Stats s) {
+        public override void Initialize(SphereStats s) {
             base.Initialize(s);
             aColor = RenderSettings.ambientLight;
             sColor = GameController.sun.color;

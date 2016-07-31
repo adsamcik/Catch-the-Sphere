@@ -8,13 +8,13 @@ namespace Abilities {
         protected ObjectController oc;
         protected GameObject gameObject { get { return oc.gameObject; } }
         protected Transform transform { get { return gameObject.transform; } }
-        protected Stats stats;
+        protected SphereStats stats;
 
         /// <summary>
         /// Called when Ability is added
         /// </summary>
         /// <param name="g">gameobject</param>
-        public virtual void Initialize(Stats s) {
+        public virtual void Initialize(SphereStats s) {
             this.stats = s;
             this.oc = s.GetComponent<ObjectController>();
         }

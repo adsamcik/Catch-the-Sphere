@@ -4,7 +4,7 @@ using Abilities;
 using System;
 using System.Collections;
 
-public class Stats : MonoBehaviour {
+public class SphereStats : MonoBehaviour {
     const int BASE_LIFE_MULTIPLIER = 25;
     const int BASE_TIME_TO_LIVE = 15;
 
@@ -27,7 +27,7 @@ public class Stats : MonoBehaviour {
     void Update() {
         timeLeft -= Time.deltaTime;
         if (timeLeft <= 0) {
-            GetComponent<Stats>().enabled = false;
+            GetComponent<SphereStats>().enabled = false;
             enabled = false;
             foreach (var ability in abilities)
                 StartCoroutine(ability.FadeOutAnimation(AbilityRemoved));

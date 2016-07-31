@@ -16,7 +16,7 @@ namespace Abilities {
             return 200;
         }
 
-        public override void Initialize(Stats s) {
+        public override void Initialize(SphereStats s) {
             base.Initialize(s);
             ObjectController controller = oc.GetComponent<ObjectController>();
             material = Resources.Load<Material>("Materials/Ice");

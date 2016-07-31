@@ -18,7 +18,7 @@ namespace Abilities {
             return 200;
         }
 
-        public override void Initialize(Stats s) {
+        public override void Initialize(SphereStats s) {
             base.Initialize(s);
             distortion = UnityEngine.Object.Instantiate(Resources.Load<GameObject>("GravityDistortion")).transform;
             distortion.parent = gameObject.transform;
@@ -44,12 +44,12 @@ namespace Abilities {
 
         public override void OnFieldEnter(Collider c) {
             inRange.Add(c.GetComponent<Rigidbody>());
-            c.GetComponent<Stats>().AddBonus(BONUS);
+            c.GetComponent<SphereStats>().AddBonus(BONUS);
         }
 
         public override void OnFieldExit(Collider c) {
             inRange.Remove(c.GetComponent<Rigidbody>());
-            c.GetComponent<Stats>().RemoveBonus(BONUS);
+            c.GetComponent<SphereStats>().RemoveBonus(BONUS);
         }
 
         public override IEnumerator Pop() {

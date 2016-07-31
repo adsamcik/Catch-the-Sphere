@@ -6,7 +6,7 @@ public class ObjectController : MonoBehaviour {
     const float MAX_SPEED_SQR = MAX_SPEED * MAX_SPEED;
 
     Rigidbody r;
-    Stats s;
+    SphereStats s;
     Vector3 velocity;
     MeshRenderer mr;
 
@@ -15,7 +15,7 @@ public class ObjectController : MonoBehaviour {
     void Start() {
         StartCoroutine("IsInside");
         r = GetComponent<Rigidbody>();
-        s = GetComponent<Stats>();
+        s = GetComponent<SphereStats>();
     }
 
     IEnumerator IsInside() {

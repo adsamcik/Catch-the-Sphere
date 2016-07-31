@@ -18,11 +18,11 @@ namespace Abilities {
         public Parasite() { }
 
         public Parasite(GameObject g) {
-            base.Initialize(g.GetComponent<Stats>());
+            base.Initialize(g.GetComponent<SphereStats>());
             Spread();
         }
 
-        public override void Initialize(Stats s) {
+        public override void Initialize(SphereStats s) {
             base.Initialize(s);
             value += VALUE_MAX + SPHERE_VALUE;
             if (value > VALUE_MAX + SPHERE_VALUE)
@@ -39,7 +39,7 @@ namespace Abilities {
                     UnityEngine.Object.Destroy(item);
             }
             AddSphereTrigger(SPREAD_RADIUS);
-            gameObject.GetComponent<Stats>().AddTime(999999);
+            gameObject.GetComponent<SphereStats>().AddTime(999999);
         }
 
         public override int GetValue() {
@@ -51,7 +51,7 @@ namespace Abilities {
             List<Pair<Transform, Transform>> parasiteSpreads = new List<Pair<Transform, Transform>>();
 
             foreach (var item in inRange) {
-                if (item != null && !item.GetComponent<Stats>().hasAbility(this))
+                if (item != null && !item.GetComponent<SphereStats>().hasAbility(this))
                     parasiteSpreads.Add(new Pair<Transform, Transform>(((GameObject)UnityEngine.Object.Instantiate(Resources.Load<GameObject>("ParasiteSpread"), gameObject.transform.position, new Quaternion())).transform, item.transform));
             }
 
@@ -63,7 +63,7 @@ namespace Abilities {
                     var posDif = target.position - parasite.position;
                     var dir = (posDif).normalized * PARASITE_SPEED * Time.deltaTime;
                     if (dir.sqrMagnitude > posDif.sqrMagnitude) {
-                        Stats s = target.GetComponent<Stats>();
+                        SphereStats s = target.GetComponent<SphereStats>();
                         s.RemoveAllAbilities();
                         s.AddCustomAbility(new Parasite(target.gameObject));
                         UnityEngine.Object.Destroy(parasite.gameObject);

@@ -153,7 +153,7 @@ public class GameController : MonoBehaviour {
             if (!paused) {
                 score.SpawnedSphere();
                 GameObject g = (GameObject)Instantiate(sphere, randomPositionInSphere, new Quaternion());
-                Stats s = g.GetComponent<Stats>();
+                SphereStats s = g.GetComponent<SphereStats>();
                 if (Random.value <= chanceToSpawnSpecial) {
                     float abilityChance = 1f;
                     List<AbilityInfo> ab = new List<AbilityInfo>(abilities);
