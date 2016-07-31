@@ -186,7 +186,6 @@ public class GameController : MonoBehaviour {
     }
 
     public void Results() {
-        _score.resultsActive = true;
         _score.Summary();
         StartCoroutine("RestartIn");
     }

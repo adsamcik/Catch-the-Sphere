@@ -13,12 +13,9 @@ public class GameStats {
 
     public int scoreTemp { get; private set; }
     public int score { get; private set; }
-
     public int spawned { get; private set; }
-
     public int poped { get; private set; }
 
-    public bool resultsActive;
     static Vector3 OrigPos;
 
     string highScoreKey;
