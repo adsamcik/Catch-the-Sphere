@@ -10,7 +10,7 @@ namespace Abilities {
         const int SPHERE_VALUE = 1000;
         const float SPREAD_RADIUS = 4;
 
-        static int value;
+        static int value = 0;
         static int active;
 
         List<GameObject> inRange = new List<GameObject>();
@@ -24,33 +24,26 @@ namespace Abilities {
 
         public override void Initialize(Stats s) {
             base.Initialize(s);
-            if (active++ > 0) {
-                value += VALUE_MAX;
-                if (value > VALUE_MAX)
-                    value = VALUE_MAX;
-            } else
+            value += VALUE_MAX + SPHERE_VALUE;
+            if (value > VALUE_MAX + SPHERE_VALUE)
                 value = VALUE_MAX;
             Spread();
         }
 
         public void Spread() {
+            active++;
+            value -= SPHERE_VALUE;
             gameObject.GetComponent<ObjectController>().SetMaterial(Resources.Load<Material>("Materials/Parasite"));
             foreach (var item in gameObject.GetComponents<Collider>()) {
                 if (item.isTrigger)
                     UnityEngine.Object.Destroy(item);
             }
             AddSphereTrigger(SPREAD_RADIUS);
-            gameObject.GetComponent<Stats>().IncreaseLife(999999);
+            gameObject.GetComponent<Stats>().AddTime(999999);
         }
 
         public override int GetValue() {
-            active--;
-            foreach (var item in inRange) {
-                if (item != null && !item.GetComponent<Stats>().hasAbility(this))
-                    value -= SPHERE_VALUE;
-            }
-
-            return active == 0 ? value : active;
+            return --active == 0 && inRange.Count == 0 ? value : 0;
         }
 
         public override IEnumerator Pop() {
@@ -82,14 +75,6 @@ namespace Abilities {
                 }
                 yield return new WaitForEndOfFrame();
             }
-        }
-
-        public override void OnFieldEnter(Collider g) {
-            inRange.Add(g.gameObject);
-        }
-
-        public override void OnFieldExit(Collider g) {
-            inRange.Remove(g.gameObject);
         }
 
         public override Ability Clone() {
