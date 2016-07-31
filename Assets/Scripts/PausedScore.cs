@@ -9,7 +9,7 @@ public class PausedScore : MonoBehaviour {
     public GameStats Score;
 
     void Awake() {
-        HighscoreText.text = "Highscore " + GameController.score.GetHighscore();
-        ScoreText.text = "Score " + GameController.score.score;
+        HighscoreText.text = "Total power " + PlayerStats.power;
+        ScoreText.text = "Game power " + GameController.score.power;
     }
 }

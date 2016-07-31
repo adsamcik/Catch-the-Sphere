@@ -11,26 +11,24 @@ public class GameStats {
     public Text scoreText;
     public Text spawnInfo;
 
-    public int scoreTemp { get; private set; }
-    public int score { get; private set; }
+    public int power { get; private set; }
+    public int powerGainedTemp { get; private set; }
     public int spawned { get; private set; }
     public int poped { get; private set; }
 
     static Vector3 OrigPos;
 
-    string highScoreKey;
-
     float timeToReset;
 
-    public GameStats(GameController gc, Transform canvas) {
+    public GameStats(GameController gc, Transform canvas, int initialPower) {
         this.gc = gc;
-        CheckLevel();
+        this.power = initialPower;
         resultsText = canvas.Find("results").GetComponent<Text>();
 
         scoreToAddText = canvas.Find("scoreToAdd").GetComponent<Text>();
         scoreToAddText.text = "";
         scoreText = canvas.Find("score").GetComponent<Text>();
-        scoreText.text = "0";
+        scoreText.text = power.ToString();
 
         spawnInfo = canvas.Find("spawned").GetComponent<Text>();
         spawnInfo.text = "0/0";
@@ -38,16 +36,11 @@ public class GameStats {
         OrigPos = scoreText.transform.position;
     }
 
-    public void CheckLevel() {
-        string level = SceneManager.GetActiveScene().name;
-        if (level == "Normal") { highScoreKey = "hs_normal"; }
-    }
-
-    public void Summary() {
+    /*public void Summary() {
         CountScore();
-        resultsText.text = "Your final score is " + score + " points.";
-        if (SetHighscore()) { resultsText.text += "You are getting better! You have beaten your high score"; } else { resultsText.text += "You have " + (PlayerPrefs.GetInt(highScoreKey) - score) + " left to beat your high score"; }
-    }
+        resultsText.text = "Your final score is " + power + " points.";
+        if (SetHighscore()) { resultsText.text += "You are getting better! You have beaten your high score"; } else { resultsText.text += "You have " + (PlayerPrefs.GetInt(highScoreKey) - power) + " left to beat your high score"; }
+    }*/
 
     public void SpawnedSphere() {
         spawned++;
@@ -55,12 +48,12 @@ public class GameStats {
     }
 
     public void AddScore(int value) {
-        scoreTemp += value;
+        powerGainedTemp += value;
         poped++;
         UpdateSphereInfo();
 
         if (scoreToAddText != null)
-            scoreToAddText.text = (scoreTemp > 0 ? "+" : "") + scoreTemp;
+            scoreToAddText.text = (powerGainedTemp > 0 ? "+" : "") + powerGainedTemp;
 
         var temp = timeToReset;
         timeToReset = Time.unscaledTime + 2;
@@ -69,16 +62,16 @@ public class GameStats {
     }
 
     void SetScore(int stbs) {
-        score += stbs;
-        scoreText.text = score.ToString();
+        power += stbs;
+        scoreText.text = power.ToString();
         if (stbs != 0)
             gc.StartCoroutine(ScoreAddedAnim());
     }
 
     void CountScore() {
-        SetScore(scoreTemp);
+        SetScore(powerGainedTemp);
         scoreToAddText.text = "";
-        scoreTemp = 0;
+        powerGainedTemp = 0;
     }
 
     void UpdateSphereInfo() {
@@ -103,19 +96,5 @@ public class GameStats {
         }
 
         scoreText.transform.position = OrigPos;
-    }
-
-    bool SetHighscore() {
-        int highscore = score;
-        if (PlayerPrefs.GetInt(highScoreKey) <= highscore) {
-            PlayerPrefs.SetInt(highScoreKey, highscore);
-            PlayerPrefs.Save();
-            return true;
-        }
-        return false;
-    }
-
-    public int GetHighscore() {
-        return PlayerPrefs.GetInt(highScoreKey);
     }
 }

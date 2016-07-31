@@ -12,6 +12,27 @@ public static class PlayerStats {
 
     static Stats stats = JsonUtility.FromJson<Stats>(PlayerPrefs.GetString(PLAYER_KEY, "{}"));
 
+    static int availablePower;
+
+    public static void SetAvailablePower(int value) {
+        if(value > power) {
+            Debug.LogError("Cannot allow more power than player has " + value + "/" + power);
+            return;
+        }
+        availablePower = value;
+    }
+
+    public static int GetAvailablePower() {
+        power -= availablePower;
+        int tempPower = availablePower;
+        availablePower = 0;
+        return tempPower;
+    }
+
+    public static void AddPower(int value) {
+        power += value;
+    }
+
     [System.Serializable]
     class Stats {
         public int power = DEFAULT_POWER;

@@ -100,7 +100,7 @@ public class GameController : MonoBehaviour {
             throw new System.Exception("ABILITY DATA ARE NULL");
         }
 
-        _score = new GameStats(this, transform.root.Find("/canvas"));
+        _score = new GameStats(this, transform.root.Find("/canvas"), PlayerStats.GetAvailablePower());
     }
 
     void Start() {
@@ -185,16 +185,11 @@ public class GameController : MonoBehaviour {
         Restart();
     }
 
-    public void Results() {
-        _score.Summary();
-        StartCoroutine("RestartIn");
-    }
-
     void Restart() {
         ChangeSeed();
         destroyed = 0;
         speed = 2;
-        _score = new GameStats(this, transform.root.Find("/canvas"));
+        _score = new GameStats(this, transform.root.Find("/canvas"), 0);
     }
 
     void ChangeSeed() {

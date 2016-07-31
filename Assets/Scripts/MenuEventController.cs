@@ -7,6 +7,7 @@ public class MenuEventController : MonoBehaviour {
 
     void Start() {
         HighscoreText.text = PlayerStats.power + "\npower";
+        PlayerStats.AddPower(500);
     }
 
     public void LoadLevel(string name) {
