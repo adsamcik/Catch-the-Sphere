@@ -3,15 +3,15 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 
 public class MenuEventController : MonoBehaviour {
-	public UnityEngine.UI.Text HighscoreText;
+    public UnityEngine.UI.Text HighscoreText;
 
-	void Start() {
-		HighscoreText.text = "power:\n" + PlayerStats.power;
-	}
+    void Start() {
+        HighscoreText.text = PlayerStats.power + "\npower";
+    }
 
-	public void LoadLevel(string name) {
+    public void LoadLevel(string name) {
         SceneManager.LoadScene(name);
-	}
+    }
 
     public void Journal() {
 
