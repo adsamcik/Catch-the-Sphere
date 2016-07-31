@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class Score {
+public class GameStats {
     GameController gc;
 
     public Text resultsText;
@@ -25,7 +25,7 @@ public class Score {
 
     float timeToReset;
 
-    public Score(GameController gc, Transform canvas) {
+    public GameStats(GameController gc, Transform canvas) {
         this.gc = gc;
         CheckLevel();
         resultsText = canvas.Find("results").GetComponent<Text>();

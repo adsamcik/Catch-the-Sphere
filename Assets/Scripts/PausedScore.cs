@@ -6,7 +6,7 @@ public class PausedScore : MonoBehaviour {
     public Text HighscoreText;
     public Text ScoreText;
 
-    public Score Score;
+    public GameStats Score;
 
     void Awake() {
         HighscoreText.text = "Highscore " + GameController.score.GetHighscore();

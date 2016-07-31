@@ -40,8 +40,8 @@ public class GameController : MonoBehaviour {
     /*Set automagically*/
     GameObject sphere;
 
-    Score _score;
-    public static Score score { get { return instance._score; } }
+    GameStats _score;
+    public static GameStats score { get { return instance._score; } }
 
     public float speed = 2;
 
@@ -100,7 +100,7 @@ public class GameController : MonoBehaviour {
             throw new System.Exception("ABILITY DATA ARE NULL");
         }
 
-        _score = new Score(this, transform.root.Find("/canvas"));
+        _score = new GameStats(this, transform.root.Find("/canvas"));
     }
 
     void Start() {
@@ -195,7 +195,7 @@ public class GameController : MonoBehaviour {
         ChangeSeed();
         destroyed = 0;
         speed = 2;
-        _score = new Score(this, transform.root.Find("/canvas"));
+        _score = new GameStats(this, transform.root.Find("/canvas"));
     }
 
     void ChangeSeed() {
