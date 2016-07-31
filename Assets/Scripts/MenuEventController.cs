@@ -6,7 +6,7 @@ public class MenuEventController : MonoBehaviour {
 	public UnityEngine.UI.Text HighscoreText;
 
 	void Start() {
-		HighscoreText.text = "highscore " + PlayerPrefs.GetInt("hs_normal");
+		HighscoreText.text = "power:\n" + PlayerStats.power;
 	}
 
 	public void LoadLevel(string name) {
