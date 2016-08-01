@@ -13,8 +13,6 @@ public class ObjectController : MonoBehaviour {
 
     bool isFrozen = false;
 
-    public BonusManager bonusManager = new BonusManager();
-
     void Start() {
         StartCoroutine("IsInside");
         r = GetComponent<Rigidbody>();

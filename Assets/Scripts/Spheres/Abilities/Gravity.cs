@@ -44,12 +44,12 @@ namespace Abilities {
 
         public override void OnFieldEnter(Collider c) {
             inRange.Add(c.GetComponent<Rigidbody>());
-            c.GetComponent<SphereStats>().AddBonus(BONUS);
+            c.GetComponent<SphereStats>().bonusManager.AddBonus(new Bonus(BONUS));
         }
 
         public override void OnFieldExit(Collider c) {
             inRange.Remove(c.GetComponent<Rigidbody>());
-            c.GetComponent<SphereStats>().RemoveBonus(BONUS);
+            c.GetComponent<SphereStats>().bonusManager.AddBonus(new Bonus(BONUS));
         }
 
         public override IEnumerator Pop() {

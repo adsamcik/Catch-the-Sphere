@@ -16,8 +16,7 @@ public class SphereStats : MonoBehaviour {
     public List<Ability> abilities = new List<Ability>();
     ushort activeAbilities = 0;
 
-    int bonus = 0;
-    List<Func<int>> bonusFunctions;
+    public BonusManager bonusManager = new BonusManager();
 
     public void AbilityUpdate(Rigidbody r) {
         foreach (var ability in abilities)
@@ -44,31 +43,8 @@ public class SphereStats : MonoBehaviour {
         timeLeft = value;
     }
 
-    public void AddBonus(int value) {
-        bonus += value;
-    }
-
-    public void AddBonus(Func<int> f, float expire = -1) {
-        bonusFunctions.Add(f);
-        if (expire > 0)
-            StartCoroutine(BonusTimer(f, expire));
-    }
-
-    public void RemoveBonus(int value) {
-        bonus -= value;
-    }
-
-    public void RemoveBonus(Func<int> f) {
-        bonusFunctions.Remove(f);
-    }
-
-    IEnumerator BonusTimer(Func<int> f, float expire) {
-        yield return new WaitForSeconds(expire);
-        RemoveBonus(f);
-    }
-
     public int Pop() {
-        double value = (timeLeft / totalTime) * timeMultiplier + bonus;
+        double value = (timeLeft / totalTime) * timeMultiplier + bonusManager.CalculateBonus(GetComponent<Rigidbody>());
         foreach (var ability in abilities) {
             value += ability.GetValue();
             StartCoroutine(ability.Pop(AbilityRemoved));
