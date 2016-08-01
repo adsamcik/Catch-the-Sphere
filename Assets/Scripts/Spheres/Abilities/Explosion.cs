@@ -14,7 +14,7 @@ namespace Abilities {
         public override void Initialize(SphereStats s) {
             base.Initialize(s);
             AddSphereTrigger(MAX_DIST);
-            s.GetComponent<ObjectController>().SetBaseMaterial(Resources.Load<Material>("Materials/Exploding"));
+            s.GetComponent<SphereController>().SetBaseMaterial(Resources.Load<Material>("Materials/Exploding"));
         }
 
         public override void OnFieldEnter(Collider c) {

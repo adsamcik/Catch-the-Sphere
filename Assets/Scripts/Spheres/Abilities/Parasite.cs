@@ -33,7 +33,7 @@ namespace Abilities {
         public void Spread() {
             active++;
             value -= SPHERE_VALUE;
-            gameObject.GetComponent<ObjectController>().SetMaterial(Resources.Load<Material>("Materials/Parasite"));
+            gameObject.GetComponent<SphereController>().SetMaterial(Resources.Load<Material>("Materials/Parasite"));
             foreach (var item in gameObject.GetComponents<Collider>()) {
                 if (item.isTrigger)
                     UnityEngine.Object.Destroy(item);

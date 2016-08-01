@@ -5,7 +5,7 @@ namespace Abilities {
     public abstract class Ability {
         const float POP_ANIMATION_LENGTH = 0.1f;
 
-        protected ObjectController oc;
+        protected SphereController oc;
         protected GameObject gameObject { get { return oc.gameObject; } }
         protected Transform transform { get { return gameObject.transform; } }
         protected SphereStats stats;
@@ -16,7 +16,7 @@ namespace Abilities {
         /// <param name="g">gameobject</param>
         public virtual void Initialize(SphereStats s) {
             this.stats = s;
-            this.oc = s.GetComponent<ObjectController>();
+            this.oc = s.GetComponent<SphereController>();
         }
         public virtual void OnFieldEnter(Collider g) { }
         public virtual void OnFieldExit(Collider g) { }

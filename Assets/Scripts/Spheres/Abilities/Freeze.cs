@@ -18,7 +18,7 @@ namespace Abilities {
 
         public override void Initialize(SphereStats s) {
             base.Initialize(s);
-            ObjectController controller = oc.GetComponent<ObjectController>();
+            SphereController controller = oc.GetComponent<SphereController>();
             material = Resources.Load<Material>("Materials/Ice");
             controller.AddMaterial(material);
             controller.SetModel(Resources.Load<Mesh>("Models/MedIce"));
@@ -34,17 +34,17 @@ namespace Abilities {
         }
 
         public override IEnumerator Pop() {
-            gameObject.GetComponent<ObjectController>().SetMaterial(material);
+            gameObject.GetComponent<SphereController>().SetMaterial(material);
             gameObject.transform.localScale = new Vector3(FREEZE_RANGE * 2, FREEZE_RANGE * 2, FREEZE_RANGE * 2);
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
 
             foreach (GameObject sphere in colliding)
-                if (sphere) sphere.GetComponent<ObjectController>().SetFreeze(true);
+                if (sphere) sphere.GetComponent<SphereController>().SetFreeze(true);
 
             yield return new WaitForSeconds(FREEZE_TIME);
 
             foreach (GameObject sphere in colliding)
-                if (sphere) sphere.GetComponent<ObjectController>().SetFreeze(false);
+                if (sphere) sphere.GetComponent<SphereController>().SetFreeze(false);
         }
 
         public override Ability Clone() {

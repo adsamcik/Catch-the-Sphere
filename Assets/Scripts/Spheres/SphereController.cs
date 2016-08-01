@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ObjectController : MonoBehaviour {
+public class SphereController : MonoBehaviour {
     const float MAX_SPEED = 10;
     const float MAX_SPEED_SQR = MAX_SPEED * MAX_SPEED;
 
