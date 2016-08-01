@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ObjectController : MonoBehaviour {
     const float MAX_SPEED = 10;
@@ -11,6 +12,10 @@ public class ObjectController : MonoBehaviour {
     MeshRenderer mr;
 
     bool isFrozen = false;
+
+    uint nextIndex = 0;
+
+    public BonusManager bonusManager = new BonusManager();
 
     void Start() {
         StartCoroutine("IsInside");
@@ -92,5 +97,4 @@ public class ObjectController : MonoBehaviour {
     public void SetModel(Mesh m) {
         gameObject.GetComponent<MeshFilter>().mesh = m;
     }
-
 }

@@ -70,6 +70,8 @@ public class GameController : MonoBehaviour {
 
     float spawnRadius;
 
+    public static BonusManager bonusManager = new BonusManager();
+
     void Awake() {
         instance = this;
         paused = false;
@@ -201,6 +203,5 @@ public class GameController : MonoBehaviour {
     public static void Pop(int value) {
         instance._score.AddPower(value);
     }
-
 }
 
