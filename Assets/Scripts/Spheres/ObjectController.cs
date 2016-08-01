@@ -13,8 +13,6 @@ public class ObjectController : MonoBehaviour {
 
     bool isFrozen = false;
 
-    uint nextIndex = 0;
-
     public BonusManager bonusManager = new BonusManager();
 
     void Start() {
