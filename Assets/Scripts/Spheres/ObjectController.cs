@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class ObjectController : MonoBehaviour {
-    const float MAX_SPEED = 20;
+    const float MAX_SPEED = 10;
     const float MAX_SPEED_SQR = MAX_SPEED * MAX_SPEED;
 
     Rigidbody r;
