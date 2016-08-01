@@ -5,17 +5,16 @@ namespace Abilities {
     public class Standard : Ability {
         const int MAX_SPEED = 50;
         const int MIN_SPEED = 10;
-
-        float sqrspeed;
+        const int BASE_VALUE = 25;
 
         public override void Initialize(SphereStats s) {
             base.Initialize(s);
-            float speed = Random.Range(MIN_SPEED, MAX_SPEED);
-            sqrspeed = speed * speed;
         }
 
         public override int GetValue() {
-            return Mathf.RoundToInt(sqrspeed);
+            Rigidbody r = gameObject.GetComponent<Rigidbody>();
+            float speed = r.velocity.sqrMagnitude;
+            return Mathf.RoundToInt(Mathf.Log10(speed) * BASE_VALUE);
         }
 
         public override Ability Clone() {
