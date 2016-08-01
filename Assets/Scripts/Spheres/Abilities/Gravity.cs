@@ -49,7 +49,7 @@ namespace Abilities {
 
         public override void OnFieldExit(Collider c) {
             inRange.Remove(c.GetComponent<Rigidbody>());
-            c.GetComponent<SphereStats>().bonusManager.AddBonus(new Bonus(BONUS));
+            c.GetComponent<SphereStats>().bonusManager.RemoveBonus(new Bonus(BONUS));
         }
 
         public override IEnumerator Pop() {
