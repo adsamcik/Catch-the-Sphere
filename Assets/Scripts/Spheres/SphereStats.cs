@@ -39,6 +39,11 @@ public class SphereStats : MonoBehaviour {
         totalTime += value;
     }
 
+    public void SetTime(float value) {
+        totalTime = (totalTime - timeLeft) + value;
+        timeLeft = value;
+    }
+
     public void AddBonus(int value) {
         bonus += value;
     }
