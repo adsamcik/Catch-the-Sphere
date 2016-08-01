@@ -21,6 +21,8 @@ namespace Abilities {
             light.intensity = 8;
             light.range = 5;
             active++;
+           
+            s.SetTime(8);
         }
 
         public override int GetValue() {
