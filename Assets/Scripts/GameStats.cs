@@ -47,7 +47,7 @@ public class GameStats {
         UpdateSphereInfo();
     }
 
-    public void AddScore(int value) {
+    public void AddPower(int value) {
         powerGainedTemp += value;
         poped++;
         UpdateSphereInfo();
@@ -61,15 +61,15 @@ public class GameStats {
             gc.StartCoroutine(ResetWaiter());
     }
 
-    void SetScore(int stbs) {
+    void AddPowerInstant(int stbs) {
         power += stbs;
         scoreText.text = power.ToString();
         if (stbs != 0)
-            gc.StartCoroutine(ScoreAddedAnim());
+            gc.StartCoroutine(PowerAddAnim());
     }
 
-    void CountScore() {
-        SetScore(powerGainedTemp);
+    void ResolveImmediateTempPower() {
+        AddPowerInstant(powerGainedTemp);
         scoreToAddText.text = "";
         powerGainedTemp = 0;
     }
@@ -81,10 +81,10 @@ public class GameStats {
     IEnumerator ResetWaiter() {
         while (timeToReset > Time.unscaledTime)
             yield return new WaitForSecondsRealtime(timeToReset - Time.unscaledTime + 0.1f);
-        CountScore();
+        ResolveImmediateTempPower();
     }
 
-    IEnumerator ScoreAddedAnim() {
+    IEnumerator PowerAddAnim() {
         while (scoreText.transform.position.y < OrigPos.y + 2) {
             scoreText.transform.position += new Vector3(0, Time.deltaTime * 30, 0);
             yield return new WaitForEndOfFrame();

@@ -199,7 +199,7 @@ public class GameController : MonoBehaviour {
     }
 
     public static void Pop(int value) {
-        instance._score.AddScore(value);
+        instance._score.AddPower(value);
     }
 
 }
