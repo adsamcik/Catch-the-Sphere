@@ -57,6 +57,8 @@ public class GameController : MonoBehaviour {
 
     public static Vector3 randomPositionInSphere { get { return instance.transform.position + Random.insideUnitSphere * instance.spawnRadius; } }
 
+    public static List<SphereStats> activeSpheres { get; private set; }
+
     /*Spheres with abilities*/
     public List<AbilityInfo> abilities;
     bool initialized = false;
@@ -156,6 +158,7 @@ public class GameController : MonoBehaviour {
                 score.SpawnedSphere();
                 GameObject g = (GameObject)Instantiate(sphere, randomPositionInSphere, new Quaternion());
                 SphereStats s = g.GetComponent<SphereStats>();
+                activeSpheres.Add(s);
                 if (Random.value <= chanceToSpawnSpecial) {
                     float abilityChance = 1f;
                     List<AbilityInfo> ab = new List<AbilityInfo>(abilities);
@@ -200,8 +203,9 @@ public class GameController : MonoBehaviour {
         Random.InitState(System.BitConverter.ToInt32(data, 0));
     }
 
-    public static void Pop(int value) {
-        instance._score.AddPower(value);
+    public static void Pop(SphereStats stats) {
+        instance._score.AddPower(stats.Pop());
+        activeSpheres.Remove(stats);
     }
 }
 

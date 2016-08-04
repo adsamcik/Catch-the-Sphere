@@ -17,7 +17,7 @@ public class MobileControlls : MonoBehaviour {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * 10, Color.red, 2, true);
             if (Physics.SphereCast(ray, radius, out hit, 100, mask, QueryTriggerInteraction.Ignore))
-                GameController.Pop(hit.transform.GetComponent<SphereStats>().Pop());
+                GameController.Pop(hit.transform.GetComponent<SphereStats>());
         }
     }
 
