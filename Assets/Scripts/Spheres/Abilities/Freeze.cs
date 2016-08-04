@@ -45,6 +45,7 @@ namespace Abilities {
             foreach (GameObject sphere in colliding) {
                 if (sphere) {
                     sphere.GetComponent<SphereController>().SetFreeze(true);
+                    sphere.GetComponent<SphereStats>().bonusManager.AddBonus(new Bonus(25, false, FREEZE_TIME));
                     GameObject iceInst = UnityEngine.Object.Instantiate(ice);
                     iceInst.transform.position = transform.position;
                     iceInst.transform.LookAt(sphere.transform, Vector3.right);
