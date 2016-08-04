@@ -34,6 +34,7 @@ namespace Abilities {
         }
 
         public override IEnumerator Pop() {
+            transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
             //gameObject.GetComponent<SphereController>().SetMaterial(material);
             //gameObject.transform.localScale = new Vector3(FREEZE_RANGE * 2, FREEZE_RANGE * 2, FREEZE_RANGE * 2);
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
