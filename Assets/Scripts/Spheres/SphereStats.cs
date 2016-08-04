@@ -43,6 +43,15 @@ public class SphereStats : MonoBehaviour {
         timeLeft = value;
     }
 
+    public List<SphereStats> FindSpheresInRange(float range) {
+        List<SphereStats> inRange = new List<SphereStats>();
+        foreach (var sphere in GameController.activeSpheres) {
+            if ((sphere.transform.position - transform.position).magnitude <= range)
+                inRange.Add(sphere);
+        }
+        return inRange;
+    }
+
     public int Pop() {
         double value = (timeLeft / totalTime) * timeMultiplier + bonusManager.CalculateBonus(GetComponent<Rigidbody>());
         foreach (var ability in abilities) {
