@@ -34,17 +34,32 @@ namespace Abilities {
         }
 
         public override IEnumerator Pop() {
-            gameObject.GetComponent<SphereController>().SetMaterial(material);
-            gameObject.transform.localScale = new Vector3(FREEZE_RANGE * 2, FREEZE_RANGE * 2, FREEZE_RANGE * 2);
+            //gameObject.GetComponent<SphereController>().SetMaterial(material);
+            //gameObject.transform.localScale = new Vector3(FREEZE_RANGE * 2, FREEZE_RANGE * 2, FREEZE_RANGE * 2);
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
 
-            foreach (GameObject sphere in colliding)
-                if (sphere) sphere.GetComponent<SphereController>().SetFreeze(true);
+            GameObject ice = Resources.Load<GameObject>("Models/FreezeBridge");
+
+            List<GameObject> iceInstances = new List<GameObject>();
+            foreach (GameObject sphere in colliding) {
+                if (sphere) {
+                    sphere.GetComponent<SphereController>().SetFreeze(true);
+                    GameObject iceInst = UnityEngine.Object.Instantiate(ice);
+                    iceInst.transform.position = transform.position;
+                    iceInst.transform.LookAt(sphere.transform, Vector3.right);
+                    iceInst.transform.localScale = new Vector3(1, 1, Mathf.Abs((sphere.transform.position - transform.position).magnitude));
+                    iceInstances.Add(iceInst);
+                }
+            }
 
             yield return new WaitForSeconds(FREEZE_TIME);
 
             foreach (GameObject sphere in colliding)
                 if (sphere) sphere.GetComponent<SphereController>().SetFreeze(false);
+
+            foreach (var item in iceInstances) {
+                UnityEngine.Object.Destroy(item);
+            }
         }
 
         public override Ability Clone() {
