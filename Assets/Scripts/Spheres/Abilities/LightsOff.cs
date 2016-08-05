@@ -13,9 +13,9 @@ namespace Abilities {
         public override void Initialize(SphereStats s) {
             base.Initialize(s);
             aColor = RenderSettings.ambientLight;
-            sColor = GameController.sun.color;
+            sColor = GlobalManager.sun.color;
             RenderSettings.ambientLight = Color.black;
-            GameController.sun.color = Color.black;
+            GlobalManager.sun.color = Color.black;
             light = gameObject.AddComponent<Light>();
             light.type = LightType.Point;
             light.intensity = 8;

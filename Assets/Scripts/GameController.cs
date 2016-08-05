@@ -9,15 +9,6 @@ using System.IO;
 
 public class GameController : MonoBehaviour {
     public const string ABILITY_FILE = "abilities";
-
-    public static Color ambientLight { get { return _aLight; } }
-    static Color _aLight;
-
-    public static Color sunLight { get { return _sLight; } }
-    static Color _sLight;
-
-    public static Light sun { get { return instance._sun; } set { instance._sun = value; } }
-    public Light _sun;
     //Instance - eliminates the requirement for lookups
     public static GameController instance;
 
@@ -72,7 +63,6 @@ public class GameController : MonoBehaviour {
 
     float spawnRadius;
 
-    public static BonusManager bonusManager = new BonusManager();
 
     void Awake() {
         paused = false;
@@ -118,9 +108,6 @@ public class GameController : MonoBehaviour {
         spawnRadius = transform.localScale.x - 0.5f;
         ChangeSeed();
         StartCoroutine("Spawn");
-
-        _aLight = RenderSettings.ambientLight;
-        _sLight = sun.color;
     }
 
     /// <summary>
