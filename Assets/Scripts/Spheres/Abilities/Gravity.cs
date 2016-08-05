@@ -42,6 +42,15 @@ namespace Abilities {
             }
         }
 
+        public override void OnFieldEnter(Collider g) {
+            g.GetComponent<SphereStats>().bonusManager.AddBonus(this, new Bonus(stats, BONUS));
+        }
+
+        public override void OnFieldExit(Collider g) {
+            g.GetComponent<SphereStats>().bonusManager.RemoveBonus(this);
+
+        }
+
         public override IEnumerator Pop() {
             Transform t = gameObject.transform.Find(GRAVITY_EFFECT_NAME);
             float val = 0;

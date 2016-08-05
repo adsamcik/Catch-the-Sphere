@@ -3,15 +3,17 @@ using System.Collections;
 using System;
 
 public class Bonus {
+    readonly SphereStats source;
     readonly float totalTime;
     float timeLeft;
     readonly bool useTime;
 
     readonly bool shouldDecay;
     readonly int value;
-    readonly Func<Rigidbody, int> function;
+    readonly Func<SphereStats, Rigidbody, int> function;
 
-    public Bonus(int value, bool shouldDecay = false, float timeLeft = -1) {
+    public Bonus(SphereStats source, int value, bool shouldDecay = false, float timeLeft = -1) {
+        this.source = source;
         this.useTime = timeLeft > 0;
         this.timeLeft = timeLeft;
         this.totalTime = timeLeft;
@@ -22,7 +24,8 @@ public class Bonus {
         this.shouldDecay = shouldDecay;
     }
 
-    public Bonus(Func<Rigidbody, int> function, bool shouldDecay = false, float timeLeft = -1) {
+    public Bonus(SphereStats source, Func<SphereStats, Rigidbody, int> function, bool shouldDecay = false, float timeLeft = -1) {
+        this.source = source;
         this.useTime = timeLeft > 0;
         this.timeLeft = timeLeft;
         this.totalTime = timeLeft;
@@ -41,7 +44,7 @@ public class Bonus {
     }
 
     public int CountBonus(Rigidbody r) {
-        int bonus = function != null ? function(r) : value;
+        int bonus = function != null ? function(source, r) : value;
         return shouldDecay ? Mathf.RoundToInt(bonus * (1 - (timeLeft / totalTime))) : bonus;
     }
 }
