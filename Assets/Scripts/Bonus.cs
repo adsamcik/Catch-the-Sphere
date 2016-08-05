@@ -45,6 +45,6 @@ public class Bonus {
 
     public int CountBonus(Rigidbody r) {
         int bonus = function != null ? function(source, r) : value;
-        return shouldDecay ? Mathf.RoundToInt(bonus * (1 - (timeLeft / totalTime))) : bonus;
+        return shouldDecay ? Mathf.RoundToInt(bonus * (timeLeft / totalTime)) : bonus;
     }
 }

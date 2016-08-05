@@ -57,6 +57,14 @@ public class SphereController : MonoBehaviour {
     }
 
     /// <summary>
+    /// Returns true value of velocity even in frozen states
+    /// </summary>
+    /// <returns>velocity value</returns>
+    public float GetSqrVelocity() {
+        return isFrozen ? velocity.sqrMagnitude : r.velocity.sqrMagnitude;
+    }
+
+    /// <summary>
     /// Adds material on top of all materials
     /// </summary>
     /// <param name="m">Material</param>

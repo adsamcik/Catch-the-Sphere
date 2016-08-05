@@ -9,30 +9,21 @@ namespace Abilities {
         const float EXPLOSION_FORCE = 1000;
         const float MAX_DIST = 25;
 
-        List<GameObject> inRange = new List<GameObject>();
-
         public override void Initialize(SphereStats s) {
             base.Initialize(s);
             AddSphereTrigger(MAX_DIST);
             s.GetComponent<SphereController>().SetBaseMaterial(Resources.Load<Material>("Materials/Exploding"));
         }
 
-        public override void OnFieldEnter(Collider c) {
-            inRange.Add(c.gameObject);
-        }
-
-        public override void OnFieldExit(Collider c) {
-            inRange.Add(c.gameObject);
-        }
-
         public override int GetValue() {
             int val = 0;
+            List<SphereStats> inRange = stats.FindSpheresInRange(MAX_DIST);
             foreach (var item in inRange) {
                 if (item.gameObject != null) {
                     val += Mathf.RoundToInt(MAX_DIST - Vector3.Distance(item.transform.position, gameObject.transform.position));
                     Rigidbody r = item.GetComponent<Rigidbody>();
                     r.AddExplosionForce(EXPLOSION_FORCE, gameObject.transform.position, MAX_DIST);
-                    item.GetComponent<SphereStats>().bonusManager.AddBonus(this, new Bonus(stats, BONUS_VELOCITY_MULTIPLIER * (int)r.velocity.sqrMagnitude, true, 5));
+                    item.bonusManager.AddBonus(this, new Bonus(stats, BONUS_VELOCITY_MULTIPLIER * (int)r.velocity.sqrMagnitude, true, 5));
                 }
             }
             return val;

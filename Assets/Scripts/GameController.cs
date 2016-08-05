@@ -57,7 +57,7 @@ public class GameController : MonoBehaviour {
 
     public static Vector3 randomPositionInSphere { get { return instance.transform.position + Random.insideUnitSphere * instance.spawnRadius; } }
 
-    public static List<SphereStats> activeSpheres { get; private set; }
+    public static List<SphereStats> activeSpheres { get; private set; } 
 
     /*Spheres with abilities*/
     public List<AbilityInfo> abilities;
@@ -75,7 +75,6 @@ public class GameController : MonoBehaviour {
     public static BonusManager bonusManager = new BonusManager();
 
     void Awake() {
-        instance = this;
         paused = false;
     }
 
@@ -88,6 +87,10 @@ public class GameController : MonoBehaviour {
             return;
         else
             initialized = true;
+
+        instance = this;
+        activeSpheres = new List<SphereStats>();
+
         abilities = new List<AbilityInfo>();
 
         var list = LoadAbilities();
