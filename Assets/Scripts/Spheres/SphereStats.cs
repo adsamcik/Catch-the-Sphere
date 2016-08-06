@@ -55,11 +55,9 @@ public class SphereStats : MonoBehaviour {
     public int Pop() {
         double value = (timeLeft / totalTime) * timeMultiplier + bonusManager.CalculateBonus(GetComponent<Rigidbody>());
         foreach (var ability in abilities) {
-            Debug.Log(value + " + " + ability.GetValue() + " - " + ability.GetType().Name);
             value += ability.GetValue();
             StartCoroutine(ability.Pop(AbilityRemoved));
         }
-        Debug.Log(value);
         value *= multiplier;
         return (int)value;
     }

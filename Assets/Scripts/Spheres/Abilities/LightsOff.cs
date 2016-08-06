@@ -14,8 +14,8 @@ namespace Abilities {
             base.Initialize(s);
             aColor = RenderSettings.ambientLight;
             sColor = GlobalManager.sun.color;
-            RenderSettings.ambientLight = Color.black;
-            GlobalManager.sun.color = Color.black;
+            GlobalManager.SetAmbientLight(Color.black, 1);
+            GlobalManager.SetSunLight(Color.black, 1);
             light = gameObject.AddComponent<Light>();
             light.type = LightType.Point;
             light.intensity = 8;
@@ -30,7 +30,10 @@ namespace Abilities {
         }
 
         public override IEnumerator FadeOutAnimation() {
-            if(--active == 0) {
+            GlobalManager.ReleaseAmbientLight(Color.black);
+            GlobalManager.ReleaseSunLight(Color.black);
+            yield return new WaitForEndOfFrame();
+            /*if(--active == 0) {
                 float val = 0;
                 while (RenderSettings.ambientLight != aColor) {
                     if ((val += Time.deltaTime) > 1)
@@ -41,7 +44,7 @@ namespace Abilities {
                     yield return new WaitForEndOfFrame();
                 }
                 GameController.sun.enabled = true;
-            }
+            }*/
         }
 
         public override Ability Clone() {
@@ -49,8 +52,8 @@ namespace Abilities {
         }
 
         public override void OnRemove() {
-            RenderSettings.ambientLight = GameController.ambientLight;
-            GameController.sun.color = GameController.sunLight;
+            /*RenderSettings.ambientLight = GameController.ambientLight;
+            GameController.sun.color = GameController.sunLight;*/
         }
     }
 }
