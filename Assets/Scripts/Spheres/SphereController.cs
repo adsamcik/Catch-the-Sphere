@@ -101,4 +101,14 @@ public class SphereController : MonoBehaviour {
     public void SetModel(Mesh m) {
         gameObject.GetComponent<MeshFilter>().mesh = m;
     }
+
+    /// <summary>
+    /// Removes all colliders from Sphere
+    /// </summary>
+    public void RemoveColliders() {
+        Collider[] colliders = gameObject.GetComponents<Collider>();
+
+        foreach (var item in colliders)
+            Destroy(item);
+    }
 }

@@ -26,7 +26,7 @@ public class SphereStats : MonoBehaviour {
     void Update() {
         timeLeft -= Time.deltaTime;
         if (timeLeft <= 0) {
-            GetComponent<SphereStats>().enabled = false;
+            GetComponent<SphereController>().enabled = false;
             enabled = false;
             foreach (var ability in abilities)
                 StartCoroutine(ability.FadeOutAnimation(AbilityRemoved));
@@ -53,6 +53,7 @@ public class SphereStats : MonoBehaviour {
     }
 
     public int Pop() {
+        GetComponent<SphereController>().RemoveColliders();
         double value = (timeLeft / totalTime) * timeMultiplier + bonusManager.CalculateBonus(this);
         foreach (var ability in abilities) {
             value += ability.GetValue();
