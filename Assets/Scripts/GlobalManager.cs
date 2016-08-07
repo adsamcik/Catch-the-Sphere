@@ -108,7 +108,6 @@ public static class GlobalManager {
         public Lock(T original, Comparison<T> comparator) {
             this.original = original;
             this.comparator = comparator;
-            Debug.Log(this.original);
         }
 
         public bool Add(T value) {
