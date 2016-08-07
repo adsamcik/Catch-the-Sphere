@@ -12,6 +12,7 @@ namespace Abilities {
             GlobalManager.SetAmbientLight(Color.black);
             GlobalManager.SetSunLight(Color.black);
             GlobalManager.SetReflectionIntensity(0);
+            GlobalManager.bonusManager.AddBonus(this, new Bonus(stats, 75));
             light = gameObject.AddComponent<Light>();
             light.type = LightType.Point;
             light.intensity = 8;

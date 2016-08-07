@@ -10,8 +10,16 @@ public class Bonus {
 
     readonly bool shouldDecay;
     readonly int value;
-    readonly Func<SphereStats, Rigidbody, int> function;
+    //source, target, bonus
+    readonly Func<SphereStats, SphereStats, int> function;
 
+    /// <summary>
+    /// Bonus costructor
+    /// </summary>
+    /// <param name="source">Source sphere of the bonus</param>
+    /// <param name="value">Bonus value</param>
+    /// <param name="shouldDecay">Should decay over time</param>
+    /// <param name="timeLeft">Time to live</param>
     public Bonus(SphereStats source, int value, bool shouldDecay = false, float timeLeft = -1) {
         this.source = source;
         this.useTime = timeLeft > 0;
@@ -24,7 +32,14 @@ public class Bonus {
         this.shouldDecay = shouldDecay;
     }
 
-    public Bonus(SphereStats source, Func<SphereStats, Rigidbody, int> function, bool shouldDecay = false, float timeLeft = -1) {
+    /// <summary>
+    /// Bonus costructor
+    /// </summary>
+    /// <param name="source">Source sphere of the bonus</param>
+    /// <param name="function">Function func(source, target) returns reward</param>
+    /// <param name="shouldDecay">Should decay over time</param>
+    /// <param name="timeLeft">Time to live</param>
+    public Bonus(SphereStats source, Func<SphereStats, SphereStats, int> function, bool shouldDecay = false, float timeLeft = -1) {
         this.source = source;
         this.useTime = timeLeft > 0;
         this.timeLeft = timeLeft;
@@ -43,8 +58,8 @@ public class Bonus {
         return timeLeft > 0;
     }
 
-    public int CountBonus(Rigidbody r) {
-        int bonus = function != null ? function(source, r) : value;
+    public int CountBonus(SphereStats stats) {
+        int bonus = function != null ? function(source, stats) : value;
         return shouldDecay ? Mathf.RoundToInt(bonus * (timeLeft / totalTime)) : bonus;
     }
 }

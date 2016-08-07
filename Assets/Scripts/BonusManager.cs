@@ -19,10 +19,10 @@ public class BonusManager {
         }
     }
 
-    public int CalculateBonus(Rigidbody r) {
+    public int CalculateBonus(SphereStats stats) {
         int bonus = 0;
         foreach (var item in dict)
-            bonus += item.Value.CountBonus(r);
+            bonus += item.Value.CountBonus(stats);
         return bonus;
     }
 }
