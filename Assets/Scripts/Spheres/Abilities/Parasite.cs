@@ -6,11 +6,10 @@ using System.Collections.Generic;
 namespace Abilities {
     public class Parasite : Ability {
         const float PARASITE_SPEED = 20;
-        const int VALUE_MAX = 10000;
-        const int SPHERE_VALUE = 1000;
+        const int BASE_VALUE = 150;
+        const int SPHERE_VALUE = 100;
         const float SPREAD_RADIUS = 4;
 
-        static int value = 0;
         static int active;
 
         List<SphereStats> inRange;
@@ -24,23 +23,21 @@ namespace Abilities {
 
         public override void Initialize(SphereStats s) {
             base.Initialize(s);
-            value += VALUE_MAX + SPHERE_VALUE;
-            if (value > VALUE_MAX + SPHERE_VALUE)
-                value = VALUE_MAX;
             Spread();
         }
 
         public void Spread() {
             active++;
-            value -= SPHERE_VALUE;
             controller.SetMaterial(Resources.Load<Material>("Materials/Parasite"));
             controller.RemoveTriggerColliders();
             stats.AddTime(999999);
+            GlobalManager.bonusManager.AddBonus(this, new Bonus(stats, -25));
         }
 
         public override int GetValue() {
+            GlobalManager.bonusManager.RemoveBonus(this);
             inRange = stats.FindSpheresInRange(SPREAD_RADIUS);
-            return --active == 0 && inRange.Count == 0 ? value : 0;
+            return --active == 0 && inRange.Count == 0 ? BASE_VALUE * GameController.activeSpheres.Count : 0;
         }
 
         public override IEnumerator Pop() {
