@@ -132,7 +132,6 @@ public static class GlobalManager {
                         return false;
                 }
                 active.RemoveAt(index);
-                Debug.Log(this.original);
                 return true;
             }
             return false;
