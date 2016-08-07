@@ -5,15 +5,10 @@ using System;
 namespace Abilities {
     public class LightsOff : Ability {
         static int active = 0;
-
-        Color aColor;
-        Color sColor;
         Light light;
 
         public override void Initialize(SphereStats s) {
             base.Initialize(s);
-            aColor = RenderSettings.ambientLight;
-            sColor = GlobalManager.sun.color;
             GlobalManager.SetAmbientLight(Color.black, 1);
             GlobalManager.SetSunLight(Color.black, 1);
             light = gameObject.AddComponent<Light>();
