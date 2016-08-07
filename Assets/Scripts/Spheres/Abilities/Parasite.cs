@@ -13,7 +13,7 @@ namespace Abilities {
         static int value = 0;
         static int active;
 
-        List<GameObject> inRange = new List<GameObject>();
+        List<SphereStats> inRange;
 
         public Parasite() { }
 
@@ -33,16 +33,13 @@ namespace Abilities {
         public void Spread() {
             active++;
             value -= SPHERE_VALUE;
-            gameObject.GetComponent<SphereController>().SetMaterial(Resources.Load<Material>("Materials/Parasite"));
-            foreach (var item in gameObject.GetComponents<Collider>()) {
-                if (item.isTrigger)
-                    UnityEngine.Object.Destroy(item);
-            }
-            AddSphereTrigger(SPREAD_RADIUS);
-            gameObject.GetComponent<SphereStats>().AddTime(999999);
+            controller.SetMaterial(Resources.Load<Material>("Materials/Parasite"));
+            controller.RemoveTriggerColliders();
+            stats.AddTime(999999);
         }
 
         public override int GetValue() {
+            inRange = stats.FindSpheresInRange(SPREAD_RADIUS);
             return --active == 0 && inRange.Count == 0 ? value : 0;
         }
 
@@ -51,7 +48,7 @@ namespace Abilities {
             List<Pair<Transform, Transform>> parasiteSpreads = new List<Pair<Transform, Transform>>();
 
             foreach (var item in inRange) {
-                if (item != null && !item.GetComponent<SphereStats>().hasAbility(this))
+                if (!item.hasAbility(this))
                     parasiteSpreads.Add(new Pair<Transform, Transform>(((GameObject)UnityEngine.Object.Instantiate(Resources.Load<GameObject>("ParasiteSpread"), gameObject.transform.position, new Quaternion())).transform, item.transform));
             }
 

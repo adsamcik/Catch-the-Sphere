@@ -18,8 +18,8 @@ namespace Abilities {
             this.stats = s;
             this.controller = s.GetComponent<SphereController>();
         }
-        public virtual void OnFieldEnter(Collider g) { }
-        public virtual void OnFieldExit(Collider g) { }
+        public virtual void OnFieldEnter(SphereStats stats) { }
+        public virtual void OnFieldExit(SphereStats stats) { }
 
         /// <summary>
         /// Called when sphere is destroyed

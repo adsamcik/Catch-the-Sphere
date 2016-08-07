@@ -42,13 +42,12 @@ namespace Abilities {
             }
         }
 
-        public override void OnFieldEnter(Collider g) {
-            g.GetComponent<SphereStats>().bonusManager.AddBonus(this, new Bonus(stats, (source, target) => { return Mathf.RoundToInt((1 - (Vector3.Distance(source.transform.position, target.transform.position) / MAX_DIST)) * BONUS); }));
+        public override void OnFieldEnter(SphereStats stats) {
+            stats.bonusManager.AddBonus(this, new Bonus(stats, (source, target) => { return Mathf.RoundToInt((1 - (Vector3.Distance(source.transform.position, target.transform.position) / MAX_DIST)) * BONUS); }));
         }
 
-        public override void OnFieldExit(Collider g) {
-            g.GetComponent<SphereStats>().bonusManager.RemoveBonus(this);
-
+        public override void OnFieldExit(SphereStats stats) {
+            stats.bonusManager.RemoveBonus(this);
         }
 
         public override IEnumerator Pop() {

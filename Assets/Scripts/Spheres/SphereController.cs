@@ -111,4 +111,15 @@ public class SphereController : MonoBehaviour {
         foreach (var item in colliders)
             Destroy(item);
     }
+
+    /// <summary>
+    /// Removes all trigger colliders from Sphere
+    /// </summary>
+    public void RemoveTriggerColliders() {
+        Collider[] colliders = gameObject.GetComponents<Collider>();
+
+        foreach (var item in colliders)
+            if (item.isTrigger)
+                Destroy(item);
+    }
 }
