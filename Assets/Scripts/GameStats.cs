@@ -61,11 +61,11 @@ public class GameStats {
             gc.StartCoroutine(ResetWaiter());
     }
 
-    void AddPowerInstant(int stbs) {
-        power += stbs;
+    public void AddPowerInstant(int value) {
+        power += value;
         scoreText.text = power.ToString();
-        if (stbs != 0)
-            gc.StartCoroutine(PowerAddAnim());
+        if (value != 0)
+            gc.StartCoroutine(PowerAnim(value < 0));
     }
 
     void ResolveImmediateTempPower() {
@@ -84,17 +84,30 @@ public class GameStats {
         ResolveImmediateTempPower();
     }
 
-    IEnumerator PowerAddAnim() {
-        while (scoreText.transform.position.y < OrigPos.y + 2) {
+    IEnumerator PowerAnim(bool remove = true) {
+        if (remove) {
+            yield return AnimDown();
+            yield return AnimUp();
+        } else {
+            yield return AnimUp();
+            yield return AnimDown();
+        }
+        scoreText.transform.position = OrigPos;
+    }
+
+    IEnumerator AnimUp() {
+        Vector3 origPos = scoreText.transform.position + Vector3.up * 2;
+        while (scoreText.transform.position.y < origPos.y + 2) {
             scoreText.transform.position += new Vector3(0, Time.deltaTime * 30, 0);
             yield return new WaitForEndOfFrame();
         }
+    }
 
-        while (scoreText.transform.position.y > OrigPos.y) {
+    IEnumerator AnimDown() {
+        Vector3 origPos = scoreText.transform.position + Vector3.down * 2;
+        while (scoreText.transform.position.y > origPos.y) {
             scoreText.transform.position -= new Vector3(0, Time.deltaTime * 30, 0);
             yield return new WaitForEndOfFrame();
         }
-
-        scoreText.transform.position = OrigPos;
     }
 }

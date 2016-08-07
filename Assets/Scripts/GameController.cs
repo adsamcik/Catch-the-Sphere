@@ -170,7 +170,7 @@ public class GameController : MonoBehaviour {
                     s.AddAbility(standard);
                     chanceToSpawnSpecial += INCREASE_CHANCE_BY;
                 }
-                score.AddPower(-value);
+                score.AddPowerInstant(-value);
             }
         }
     }
