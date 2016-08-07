@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Abilities {
     public class Gravity : Ability {
-        const int BONUS = (int)(FORCE / MAX_DIST * 100);
+        const int BONUS = (int)(FORCE * 50);
         const float MAX_DIST = 3;
         const float FORCE = 3;
         const string GRAVITY_EFFECT_NAME = "gravity";
@@ -43,7 +43,7 @@ namespace Abilities {
         }
 
         public override void OnFieldEnter(Collider g) {
-            g.GetComponent<SphereStats>().bonusManager.AddBonus(this, new Bonus(stats, BONUS));
+            g.GetComponent<SphereStats>().bonusManager.AddBonus(this, new Bonus(stats, (source, target) => { return Mathf.RoundToInt((1 - (Vector3.Distance(source.transform.position, target.transform.position) / MAX_DIST)) * BONUS); }));
         }
 
         public override void OnFieldExit(Collider g) {
