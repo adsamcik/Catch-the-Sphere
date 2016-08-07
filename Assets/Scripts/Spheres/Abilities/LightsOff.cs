@@ -29,6 +29,7 @@ namespace Abilities {
         public override IEnumerator FadeOutAnimation() {
             GlobalManager.ReleaseAmbientLight(Color.black);
             GlobalManager.ReleaseSunLight(Color.black);
+            GlobalManager.bonusManager.RemoveBonus(this);
             yield return new WaitForEndOfFrame();
             /*if(--active == 0) {
                 float val = 0;
