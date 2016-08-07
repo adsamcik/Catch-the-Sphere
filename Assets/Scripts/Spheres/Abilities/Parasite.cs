@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Abilities {
     public class Parasite : Ability {
         const float PARASITE_SPEED = 20;
-        const int BASE_VALUE = 150;
+        const int BASE_VALUE = 50;
         const int SPHERE_VALUE = 100;
         const float SPREAD_RADIUS = 4;
 
@@ -37,7 +37,7 @@ namespace Abilities {
         public override int GetValue() {
             GlobalManager.bonusManager.RemoveBonus(this);
             inRange = stats.FindSpheresInRange(SPREAD_RADIUS);
-            return --active == 0 && inRange.Count == 0 ? BASE_VALUE * GameController.activeSpheres.Count : 0;
+            return --active == 0 && inRange.Count == 0 ? BASE_VALUE + (SPHERE_VALUE * GameController.activeSpheres.Count) : 0;
         }
 
         public override IEnumerator Pop() {
