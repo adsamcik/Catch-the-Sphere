@@ -4,7 +4,9 @@ using System;
 
 namespace Abilities {
     public class Teleport : Ability {
+        const int BASE_REWARD = 300;
         const float TIME_TO_LIVE = 2;
+        const float REWARD_PER_SECOND = BASE_REWARD / TIME_TO_LIVE;
         float ttl = TIME_TO_LIVE;
 
         public override void FixedUpdate(Rigidbody rigidbody) {
@@ -20,7 +22,7 @@ namespace Abilities {
         }
 
         public override int GetValue() {
-            return Mathf.RoundToInt((ttl / TIME_TO_LIVE) * 200);
+            return Mathf.RoundToInt(ttl * REWARD_PER_SECOND);
         }
     }
 }
