@@ -51,11 +51,10 @@ namespace Abilities {
 
         public override IEnumerator Pop() {
             active = false;
+            gameObject.GetComponent<Rigidbody>().Sleep();
             Camera.main.GetComponent<CameraEffects>().ShakeCamera(0.25f);
 
-            MeshRenderer mr = gameObject.GetComponent<MeshRenderer>();
-
-            for (float i = m.GetVector("_ChannelFactor").x; i < 2; i += Time.deltaTime) {
+            for (float i = 0; i < 2; i += Time.deltaTime * 2) {
                 m.SetFloat("_Displacement", i);
                 m.SetVector("_ChannelFactor", new Vector4(i, i, i, 1));
                 yield return new WaitForEndOfFrame();
