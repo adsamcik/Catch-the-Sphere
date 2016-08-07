@@ -6,8 +6,8 @@ using System.Collections.Generic;
 namespace Abilities {
     public class Gravity : Ability {
         const int BONUS = (int)(FORCE * 50);
-        const float MAX_DIST = 3;
-        const float FORCE = 3;
+        const float MAX_DIST = 3.5f;
+        const float FORCE = 4;
         const string GRAVITY_EFFECT_NAME = "gravity";
 
         List<Rigidbody> inRange = new List<Rigidbody>();
@@ -15,7 +15,7 @@ namespace Abilities {
         Transform distortion;
 
         public override int GetValue() {
-            return 200;
+            return 10;
         }
 
         public override void Initialize(SphereStats s) {
@@ -60,14 +60,6 @@ namespace Abilities {
                 yield return new WaitForEndOfFrame();
             }
             t.transform.localScale = Vector3.zero;
-
-            val = 0;
-            while (val < 1) {
-                gameObject.transform.localScale = Vector3.Lerp(gameObject.transform.localScale, Vector3.zero, val);
-                val += Time.deltaTime * 2;
-                yield return new WaitForEndOfFrame();
-            }
-            gameObject.transform.localScale = Vector3.zero;
         }
 
         public override Ability Clone() {
