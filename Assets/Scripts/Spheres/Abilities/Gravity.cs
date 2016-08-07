@@ -43,6 +43,7 @@ namespace Abilities {
         }
 
         public override void OnFieldEnter(SphereStats stats) {
+            inRange.Add(stats.GetComponent<Rigidbody>());
             stats.bonusManager.AddBonus(this, new Bonus(stats, (source, target) => { return Mathf.RoundToInt((1 - (Vector3.Distance(source.transform.position, target.transform.position) / MAX_DIST)) * BONUS); }));
         }
 
