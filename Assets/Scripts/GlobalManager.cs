@@ -7,36 +7,34 @@ public static class GlobalManager {
     public static BonusManager bonusManager = new BonusManager();
 
     //reflection intensity
-    static float reflectionIntensity;
+    static readonly float reflectionIntensity;
     //ambient light
-    static Color ambientLight;
+    static readonly Color ambientLight;
     //sun light
-    static Color sunLight;
+    static readonly Color sunLight;
 
-    public static Light sun;
+    public static readonly Light sun;
 
-    static Lock<Color> sunLightLock;
-    static Lock<Color> ambientLightLock;
-    static Lock<float> reflectionIntensityLock;
+    static readonly Lock<Color> sunLightLock;
+    static readonly Lock<Color> ambientLightLock;
+    static readonly Lock<float> reflectionIntensityLock;
 
     static Comparison<Color> colorComparison = (Color x, Color y) => {
         float val = Mathf.RoundToInt(((x.r + x.g + x.b) / 3) - ((y.r + y.g + y.b) / 3));
         return val > 0 ? Mathf.CeilToInt(val) : Mathf.FloorToInt(val);
     };
 
-
     static GlobalManager() {
         sun = GameObject.Find("SUN").GetComponent<Light>();
         ambientLight = RenderSettings.ambientLight;
         ambientLightLock = new Lock<Color>(ambientLight, colorComparison);
         sunLight = sun.color;
-        sunLightLock = new Lock<Color>(new Color(sunLight.r, sunLight.g, sunLight.b), colorComparison);
+        sunLightLock = new Lock<Color>(sunLight, colorComparison);
         reflectionIntensity = RenderSettings.reflectionIntensity;
         reflectionIntensityLock = new Lock<float>(reflectionIntensity, (float x, float y) => { float val = x - y; return val > 0 ? Mathf.CeilToInt(val) : Mathf.FloorToInt(val); });
     }
 
     public static IEnumerator LightLerp(Light light, Color targetColor, float time) {
-        Debug.Log(targetColor);
         Color original = light.color;
         float value = 0;
         while ((value += Time.deltaTime / time) < 1) {
@@ -79,13 +77,13 @@ public static class GlobalManager {
     }
 
     public static void SetSunLight(Color color, float length) {
-        if (ambientLightLock.Add(color))
+        if (sunLightLock.Add(color))
             GameController.instance.StartCoroutine(LightLerp(sun, color, 0.5f));
     }
 
     public static void ReleaseSunLight(Color color) {
         Color c = new Color();
-        if (ambientLightLock.Remove(color, ref c))
+        if (sunLightLock.Remove(color, ref c))
             GameController.instance.StartCoroutine(LightLerp(sun, c, 0.5f));
     }
     
@@ -110,6 +108,7 @@ public static class GlobalManager {
         public Lock(T original, Comparison<T> comparator) {
             this.original = original;
             this.comparator = comparator;
+            Debug.Log(this.original);
         }
 
         public bool Add(T value) {
@@ -133,6 +132,7 @@ public static class GlobalManager {
                         return false;
                 }
                 active.RemoveAt(index);
+                Debug.Log(this.original);
                 return true;
             }
             return false;
