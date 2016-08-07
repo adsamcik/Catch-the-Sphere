@@ -46,7 +46,7 @@ public class SphereStats : MonoBehaviour {
     public List<SphereStats> FindSpheresInRange(float range) {
         List<SphereStats> inRange = new List<SphereStats>();
         foreach (var sphere in GameController.activeSpheres) {
-            if ((sphere.transform.position - transform.position).magnitude <= range)
+            if (sphere != gameObject && (sphere.transform.position - transform.position).magnitude <= range)
                 inRange.Add(sphere);
         }
         return inRange;
