@@ -8,11 +8,15 @@ namespace Abilities {
         const int BONUS_VELOCITY_MULTIPLIER = 5;
         const float EXPLOSION_FORCE = 1000;
         const float MAX_DIST = 25;
+        Material m;
+        bool active = true;
 
         public override void Initialize(SphereStats s) {
             base.Initialize(s);
             AddSphereTrigger(MAX_DIST);
-            s.GetComponent<SphereController>().SetBaseMaterial(Resources.Load<Material>("Materials/Exploding"));
+            m = new Material(Resources.Load<Material>("Materials/Exploding"));
+            s.GetComponent<SphereController>().SetBaseMaterial(m);
+            s.StartCoroutine(Animation());
         }
 
         public override int GetValue() {
@@ -29,13 +33,27 @@ namespace Abilities {
             return val;
         }
 
+        IEnumerator Animation() {
+            float t = 2;
+            while (active) {
+                t += Time.deltaTime;
+                float r = Mathf.Sin(t * (2 * Mathf.PI)) * 0.5f + 0.25f;
+                float g = Mathf.Sin((t + 0.33333333f) * 2 * Mathf.PI) * 0.5f + 0.25f;
+                float b = Mathf.Sin((t + 0.66666667f) * 2 * Mathf.PI) * 0.5f + 0.25f;
+                float correction = 1 / (r + g + b);
+                r *= correction;
+                g *= correction;
+                b *= correction;
+                m.SetVector("_ChannelFactor", new Vector4(r, g, b, 0));
+                yield return new WaitForEndOfFrame();
+            }
+        }
+
         public override IEnumerator Pop() {
-            gameObject.GetComponent<Rigidbody>().Sleep();
+            active = false;
             Camera.main.GetComponent<CameraEffects>().ShakeCamera(0.25f);
 
             MeshRenderer mr = gameObject.GetComponent<MeshRenderer>();
-            Material m = new Material(mr.material);
-            mr.material = m;
 
             for (float i = m.GetVector("_ChannelFactor").x; i < 2; i += Time.deltaTime) {
                 m.SetFloat("_Displacement", i);

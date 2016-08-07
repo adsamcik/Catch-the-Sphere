@@ -23,7 +23,7 @@ namespace Abilities {
         }
 
         public override int GetValue() {
-            return 20;
+            return 25;
         }
 
         public override IEnumerator FadeOutAnimation() {
