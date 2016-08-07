@@ -9,8 +9,9 @@ namespace Abilities {
 
         public override void Initialize(SphereStats s) {
             base.Initialize(s);
-            GlobalManager.SetAmbientLight(Color.black, 1);
-            GlobalManager.SetSunLight(Color.black, 1);
+            GlobalManager.SetAmbientLight(Color.black);
+            GlobalManager.SetSunLight(Color.black);
+            GlobalManager.SetReflectionIntensity(0);
             light = gameObject.AddComponent<Light>();
             light.type = LightType.Point;
             light.intensity = 8;
