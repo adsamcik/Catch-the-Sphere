@@ -73,7 +73,7 @@ public static class GlobalManager {
     public static void ReleaseAmbientLight(Color color) {
         Color c = new Color();
         if (ambientLightLock.Remove(color, ref c))
-            GameController.instance.StartCoroutine(AmbientLerp(c, 0.5f));
+            GameController.instance.StartCoroutine(AmbientLerp(c, 0.25f));
     }
 
     public static void SetSunLight(Color color, float length = 0.5f) {
@@ -84,7 +84,7 @@ public static class GlobalManager {
     public static void ReleaseSunLight(Color color) {
         Color c = new Color();
         if (sunLightLock.Remove(color, ref c))
-            GameController.instance.StartCoroutine(LightLerp(sun, c, 0.5f));
+            GameController.instance.StartCoroutine(LightLerp(sun, c, 0.25f));
     }
     
     public static void SetReflectionIntensity(float value, float length = 0.5f) {
@@ -95,7 +95,7 @@ public static class GlobalManager {
     public static void ReleaseReflectionIntensity(float value) {
         float f = 0;
         if (reflectionIntensityLock.Remove(value, ref f))
-            GameController.instance.StartCoroutine(ReflectionLerp(f, 0.5f));
+            GameController.instance.StartCoroutine(ReflectionLerp(f, 0.25f));
     }
 
 
