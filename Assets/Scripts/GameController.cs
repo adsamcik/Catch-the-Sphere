@@ -149,6 +149,7 @@ public class GameController : MonoBehaviour {
                 GameObject g = (GameObject)Instantiate(sphere, randomPositionInSphere, new Quaternion());
                 SphereStats s = g.GetComponent<SphereStats>();
                 activeSpheres.Add(s);
+                int value = 100;
                 if (Random.value <= chanceToSpawnSpecial) {
                     float abilityChance = 1f;
                     List<AbilityInfo> ab = new List<AbilityInfo>(abilities);
@@ -156,20 +157,20 @@ public class GameController : MonoBehaviour {
 
                     while (ab.Count > 0) {
                         if (Random.value <= abilityChance) {
+                            value += 50;
                             Ability a = GetRandomAbility(ab, ref spawnValue);
                             s.AddAbility(a);
                             if (a.GetType() == typeof(Parasite))
                                 break;
                         } else break;
-
                         abilityChance /= 4;
-
                     }
                     chanceToSpawnSpecial = BASE_CHANCE_TO_SPAWN_SPECIAL;
                 } else {
                     s.AddAbility(standard);
                     chanceToSpawnSpecial += INCREASE_CHANCE_BY;
                 }
+                score.AddPower(-value);
             }
         }
     }
