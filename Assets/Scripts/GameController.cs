@@ -194,8 +194,8 @@ public class GameController : MonoBehaviour {
     }
 
     public static void Pop(SphereStats stats) {
-        instance._score.AddPower(stats.Pop() + GlobalManager.bonusManager.CalculateBonus(stats));
         activeSpheres.Remove(stats);
+        instance._score.AddPower(stats.Pop() + GlobalManager.bonusManager.CalculateBonus(stats));
     }
 }
 
