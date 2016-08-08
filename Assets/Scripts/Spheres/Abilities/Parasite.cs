@@ -14,22 +14,13 @@ namespace Abilities {
 
         List<SphereStats> inRange;
 
-        public Parasite() { }
-
-        public Parasite(GameObject g) {
-            base.Initialize(g.GetComponent<SphereStats>());
-            Spread();
-        }
 
         public override void Initialize(SphereStats s) {
             base.Initialize(s);
-            Spread();
-        }
-
-        public void Spread() {
             active++;
             controller.SetMaterial(Resources.Load<Material>("Materials/Parasite"));
             controller.RemoveTriggerColliders();
+            stats.RemoveAllAbilities();
             stats.AddTime(999999);
             GlobalManager.bonusManager.AddBonus(this, new Bonus(stats, -25));
         }
@@ -55,11 +46,10 @@ namespace Abilities {
                     var parasite = pair.first;
                     var target = pair.second;
                     var posDif = target.position - parasite.position;
-                    var dir = (posDif).normalized * PARASITE_SPEED * Time.deltaTime;
+                    var dir = posDif.normalized * PARASITE_SPEED * Time.deltaTime;
                     if (dir.sqrMagnitude > posDif.sqrMagnitude) {
                         SphereStats s = target.GetComponent<SphereStats>();
-                        s.RemoveAllAbilities();
-                        s.AddCustomAbility(new Parasite(target.gameObject));
+                        s.AddAbility(this);
                         UnityEngine.Object.Destroy(parasite.gameObject);
                         parasiteSpreads.RemoveAt(i);
                         i--;
