@@ -197,6 +197,9 @@ public class GameController : MonoBehaviour {
     public static void Pop(SphereStats stats) {
         activeSpheres.Remove(stats);
         instance._score.AddPower(stats.Pop() + GlobalManager.bonusManager.CalculateBonus(stats));
+        if(activeSpheres.Count == 0 && score.power < 100) {
+            //todo end game
+        }
     }
 }
 
