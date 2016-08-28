@@ -15,7 +15,7 @@ public class MenuEventController : MonoBehaviour {
     }
 
     public void Journal() {
-
+        LoadLevel("Journal");
     }
 
     public void Stats() {

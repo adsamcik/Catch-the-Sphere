@@ -74,6 +74,13 @@ namespace Abilities {
             }
         }
 
+        /// <summary>
+        /// Show off animation for Journal
+        /// </summary>
+        public virtual IEnumerator ShowOff() {
+            yield return new WaitForEndOfFrame();
+        }
+
         public virtual void OnRemove() { }
 
         protected SphereCollider AddSphereTrigger(float radius) {
