@@ -67,7 +67,7 @@ namespace Abilities {
         }
 
         public override void OnRemove() {
-            UnityEngine.Object.Destroy(distortion);
+            UnityEngine.Object.Destroy(distortion.gameObject);
         }
     }
 }
