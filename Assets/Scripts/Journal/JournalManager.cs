@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using Abilities;
+using System.Text;
 
 public class JournalManager : MonoBehaviour {
     private const string ABILITY_FILE = GameController.ABILITY_FILE;
@@ -75,7 +76,16 @@ public class JournalManager : MonoBehaviour {
         stats.RemoveAllAbilities();
         controller.SetMaterial(GlobalManager.standardMaterial);
         stats.AddAbility(abilities[position].ability.Clone());
-        title.text = abilities[position].name;
+        title.text = ParseName(abilities[position].name);
         description.text = abilities[position].description;
+    }
+
+    private string ParseName(string name) {
+        StringBuilder sb = new StringBuilder(name);
+        for (int i = 1; i < sb.Length - 1; i++) {
+            if (char.IsUpper(sb[i]))
+                sb.Insert(i++, ' ');
+        }
+        return sb.ToString();
     }
 }
