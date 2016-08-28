@@ -26,21 +26,15 @@ namespace Abilities {
             return 25;
         }
 
-        public override IEnumerator FadeOutAnimation() {
-            GlobalManager.ReleaseAmbientLight(Color.black);
-            GlobalManager.ReleaseSunLight(Color.black);
-            GlobalManager.ReleaseReflectionIntensity(0);
-            GlobalManager.bonusManager.RemoveBonus(this);
-            yield return new WaitForEndOfFrame();
-        }
-
         public override Ability Clone() {
             return new LightsOff();
         }
 
         public override void OnRemove() {
-            /*RenderSettings.ambientLight = GameController.ambientLight;
-            GameController.sun.color = GameController.sunLight;*/
+            GlobalManager.ReleaseAmbientLight(Color.black);
+            GlobalManager.ReleaseSunLight(Color.black);
+            GlobalManager.ReleaseReflectionIntensity(0);
+            GlobalManager.bonusManager.RemoveBonus(this);
         }
     }
 }

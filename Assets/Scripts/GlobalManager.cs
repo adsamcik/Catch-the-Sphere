@@ -67,35 +67,35 @@ public static class GlobalManager {
 
     public static void SetAmbientLight(Color color, float length = 0.5f) {
         if (ambientLightLock.Add(color))
-            GameController.instance.StartCoroutine(AmbientLerp(color, length));
+            CoroutineRunner.instance.StartCoroutine(AmbientLerp(color, length));
     }
 
     public static void ReleaseAmbientLight(Color color) {
         Color c = new Color();
         if (ambientLightLock.Remove(color, ref c))
-            GameController.instance.StartCoroutine(AmbientLerp(c, 0.25f));
+            CoroutineRunner.instance.StartCoroutine(AmbientLerp(c, 0.25f));
     }
 
     public static void SetSunLight(Color color, float length = 0.5f) {
         if (sunLightLock.Add(color))
-            GameController.instance.StartCoroutine(LightLerp(sun, color, length));
+            CoroutineRunner.instance.StartCoroutine(LightLerp(sun, color, length));
     }
 
     public static void ReleaseSunLight(Color color) {
         Color c = new Color();
         if (sunLightLock.Remove(color, ref c))
-            GameController.instance.StartCoroutine(LightLerp(sun, c, 0.25f));
+            CoroutineRunner.instance.StartCoroutine(LightLerp(sun, c, 0.25f));
     }
     
     public static void SetReflectionIntensity(float value, float length = 0.5f) {
         if (reflectionIntensityLock.Add(value))
-            GameController.instance.StartCoroutine(ReflectionLerp(value, length));
+            CoroutineRunner.instance.StartCoroutine(ReflectionLerp(value, length));
     }
 
     public static void ReleaseReflectionIntensity(float value) {
         float f = 0;
         if (reflectionIntensityLock.Remove(value, ref f))
-            GameController.instance.StartCoroutine(ReflectionLerp(f, 0.25f));
+            CoroutineRunner.instance.StartCoroutine(ReflectionLerp(f, 0.25f));
     }
 
 

@@ -14,6 +14,7 @@ namespace Abilities {
         Ability _ability;
 
         public string name;
+        public string description;
         public bool enabled;
         public float chanceToSpawn;
 
