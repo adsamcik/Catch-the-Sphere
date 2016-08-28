@@ -28,9 +28,6 @@ public class GameController : MonoBehaviour {
 
     public GameObject pauseMenu;
 
-    /*Set automagically*/
-    GameObject sphere;
-
     GameStats _score;
     public static GameStats score { get { return instance._score; } }
 
@@ -140,13 +137,11 @@ public class GameController : MonoBehaviour {
     }
 
     IEnumerator Spawn() {
-        sphere = Resources.Load<GameObject>("SphereMed");
-
         while (true) {
             yield return new WaitForSeconds(speed);
             if (!paused) {
                 score.SpawnedSphere();
-                GameObject g = (GameObject)Instantiate(sphere, randomPositionInSphere, new Quaternion());
+                GameObject g = (GameObject)Instantiate(GlobalManager.defaultSphere, randomPositionInSphere, new Quaternion());
                 SphereStats s = g.GetComponent<SphereStats>();
                 activeSpheres.Add(s);
                 int value = 100;

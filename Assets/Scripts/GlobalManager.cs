@@ -13,6 +13,10 @@ public static class GlobalManager {
     //sun light
     static readonly Color sunLight;
 
+    public static readonly Material standardMaterial;
+    public static readonly GameObject defaultSphere;
+    public static readonly Mesh defaultSphereMesh;
+
     public static readonly Light sun;
 
     static readonly Lock<Color> sunLightLock;
@@ -30,6 +34,9 @@ public static class GlobalManager {
         ambientLightLock = new Lock<Color>(ambientLight, colorComparison);
         sunLight = sun.color;
         sunLightLock = new Lock<Color>(sunLight, colorComparison);
+        standardMaterial = Resources.Load<Material>("Materials/Standard");
+        defaultSphere = Resources.Load<GameObject>("SphereMed");
+        defaultSphereMesh = defaultSphere.GetComponent<MeshFilter>().sharedMesh;
         reflectionIntensity = RenderSettings.reflectionIntensity;
         reflectionIntensityLock = new Lock<float>(reflectionIntensity, (float x, float y) => { float val = x - y; return val > 0 ? Mathf.CeilToInt(val) : Mathf.FloorToInt(val); });
     }

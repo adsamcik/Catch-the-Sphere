@@ -51,6 +51,10 @@ namespace Abilities {
                 UnityEngine.Object.Destroy(item);
         }
 
+        public override void OnRemove() {
+            controller.SetModel(GlobalManager.defaultSphereMesh);
+        }
+
         public override Ability Clone() {
             return new Freeze();
         }

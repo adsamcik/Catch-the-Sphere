@@ -73,6 +73,7 @@ public class JournalManager : MonoBehaviour {
 
     private void Load(int position) {
         stats.RemoveAllAbilities();
+        controller.SetMaterial(GlobalManager.standardMaterial);
         stats.AddAbility(abilities[position].ability.Clone());
         title.text = abilities[position].name;
         description.text = abilities[position].description;

@@ -35,6 +35,7 @@ namespace Abilities {
             GlobalManager.ReleaseSunLight(Color.black);
             GlobalManager.ReleaseReflectionIntensity(0);
             GlobalManager.bonusManager.RemoveBonus(this);
+            UnityEngine.Object.Destroy(light);
         }
     }
 }

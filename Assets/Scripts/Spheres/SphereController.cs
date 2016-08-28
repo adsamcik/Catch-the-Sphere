@@ -95,6 +95,41 @@ public class SphereController : MonoBehaviour {
     }
 
     /// <summary>
+    /// Remove given material
+    /// todo doesn't work thanks to instancing
+    /// </summary>
+    /// <param name="m">material</param>
+    public void RemoveMaterial(Material m) {
+        int index = -1;
+        for (int i = 0; i < mr.materials.Length; i++) {
+            Debug.Log(m + " vs " + mr.materials[i]);
+            if (m == mr.materials[i]) {
+                index = i;
+                break;
+            }
+        }
+
+        Debug.Log(index);
+
+        if (index == -1)
+            return;
+        else if (mr.materials.Length == 1)
+            mr.materials = new Material[1] { GlobalManager.standardMaterial };
+        else {
+            Material[] temp = new Material[mr.materials.Length - 1];
+            for (int i = 0; i < mr.materials.Length; i++) {
+                if (i == index)
+                    continue;
+                else if (i > index)
+                    temp[i - 1] = mr.materials[i];
+                else
+                    temp[i] = mr.materials[i];
+            }
+            mr.materials = temp;
+        }
+    }
+
+    /// <summary>
     /// Changes model of the sphere
     /// </summary>
     /// <param name="m">Mesh</param>

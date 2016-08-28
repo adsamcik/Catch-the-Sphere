@@ -15,7 +15,7 @@ namespace Abilities {
             base.Initialize(s);
             AddSphereTrigger(MAX_DIST);
             m = new Material(Resources.Load<Material>("Materials/Exploding"));
-            s.GetComponent<SphereController>().SetBaseMaterial(m);
+            controller.SetBaseMaterial(m);
             s.StartCoroutine(Animation());
         }
 

@@ -18,9 +18,9 @@ namespace Abilities {
         public override void Initialize(SphereStats s) {
             base.Initialize(s);
             active++;
+            stats.RemoveAllAbilities();
             controller.SetMaterial(Resources.Load<Material>("Materials/Parasite"));
             controller.RemoveTriggerColliders();
-            stats.RemoveAllAbilities();
             stats.AddTime(999999);
             GlobalManager.bonusManager.AddBonus(this, new Bonus(stats, -25));
         }

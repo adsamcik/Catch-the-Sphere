@@ -82,21 +82,15 @@ public class SphereStats : MonoBehaviour {
 
     public void OnTriggerEnter(Collider other) {
         if (other.gameObject.layer == 8) {
-            SphereStats stats = GetComponent<SphereStats>();
-            if (stats) {
-                foreach (var ability in abilities)
-                    ability.OnFieldEnter(stats);
-            }
+            foreach (var ability in abilities)
+                ability.OnFieldEnter(this);
         }
     }
 
     public void OnTriggerExit(Collider other) {
         if (other.gameObject.layer == 8) {
-            SphereStats stats = GetComponent<SphereStats>();
-            if (stats) {
-                foreach (var ability in abilities)
-                    ability.OnFieldExit(stats);
-            }
+            foreach (var ability in abilities)
+                ability.OnFieldExit(this);
         }
     }
 
