@@ -110,4 +110,17 @@ public class SphereStats : MonoBehaviour {
         activeAbilities = 0;
         name.Remove(0);
     }
+
+    public void RemoveAllAbilitiesExcept(Ability a) {
+        for (int i = 0; i < abilities.Count; i++) {
+            Ability ability = abilities[i];
+            if (a != ability) {
+                ability.OnRemove();
+                abilities.RemoveAt(i);
+                i--;
+            }
+        }
+        activeAbilities = (ushort)abilities.Count;
+        name.Remove(0);
+    }
 }

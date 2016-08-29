@@ -51,6 +51,19 @@ namespace Abilities {
                 UnityEngine.Object.Destroy(item);
         }
 
+        public override IEnumerator ShowOff() {
+            GameObject g = JournalManager.CreateDummySphere();
+            g.transform.parent = transform;
+            g.transform.position = new Vector3(4, 3, 0);
+            g.transform.localScale = new Vector3(1, 1, 1);
+            GameObject iceInst = UnityEngine.Object.Instantiate(Resources.Load<GameObject>("Models/FreezeBridge"));
+            iceInst.transform.position = transform.position;
+            iceInst.transform.LookAt(g.transform, Vector3.right);
+            iceInst.transform.localScale = new Vector3(1, 1, Mathf.Abs((g.transform.position - transform.position).magnitude));
+            iceInst.transform.parent = transform;
+            yield return new WaitForEndOfFrame();
+        }
+
         public override void OnRemove() {
             controller.SetModel(GlobalManager.defaultSphereMesh);
         }

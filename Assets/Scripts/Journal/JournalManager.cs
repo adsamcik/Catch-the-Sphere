@@ -29,12 +29,7 @@ public class JournalManager : MonoBehaviour {
     void Start() {
         LoadAbilities();
         GestureRecognition.OnSwipe += GestureRecognition_OnSwipe;
-        sphere = (GameObject)Instantiate(Resources.Load<GameObject>("SphereMed"), Vector3.zero, Quaternion.Euler(90, 0, 0));
-        Destroy(sphere.GetComponent<Rigidbody>());
-        controller = sphere.GetComponent<SphereController>();
-        controller.enabled = false;
-        stats = sphere.GetComponent<SphereStats>();
-        stats.enabled = false;
+        sphere = CreateDummySphere(out controller, out stats);
         sphere.transform.localScale = new Vector3(SPHERE_SCALE, SPHERE_SCALE, SPHERE_SCALE);
         Transform panel = GameObject.Find("Canvas/Panel").transform;
         title = panel.Find("Title").GetComponent<Text>();
@@ -77,8 +72,14 @@ public class JournalManager : MonoBehaviour {
 
     private void Load(int position) {
         stats.RemoveAllAbilities();
+        Transform[] children = stats.transform.GetComponentsInChildren<Transform>();
+        for (int i = 1; i < children.Length; i++) {
+            if (children[i])
+                Destroy(children[i].gameObject);
+        }
         controller.SetMaterial(GlobalManager.standardMaterial);
-        stats.AddAbility(abilities[position].ability.Clone());
+        stats.AddAbility(abilities[position].ability);
+        StartCoroutine(stats.abilities[0].ShowOff());
         title.text = ParseName(abilities[position].name);
         description.text = abilities[position].description;
     }
@@ -90,5 +91,21 @@ public class JournalManager : MonoBehaviour {
                 sb.Insert(i++, ' ');
         }
         return sb.ToString();
+    }
+
+    public static GameObject CreateDummySphere() {
+        SphereController sc;
+        SphereStats ss;  
+        return CreateDummySphere(out sc, out ss);
+    }
+
+    public static GameObject CreateDummySphere(out SphereController controller, out SphereStats stats) {
+        GameObject s = (GameObject)Instantiate(Resources.Load<GameObject>("SphereMed"), Vector3.zero, Quaternion.Euler(90, 0, 0));
+        Destroy(s.GetComponent<Rigidbody>());
+        controller = s.GetComponent<SphereController>();
+        controller.enabled = false;
+        stats = s.GetComponent<SphereStats>();
+        stats.enabled = false;
+        return s;
     }
 }
