@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class GestureRecognition : MonoBehaviour {
-    const float SWIPE_THRESHOLD = 10;
+    const float SWIPE_THRESHOLD = 50;
     bool init = false;
     bool active = false;
     bool swiped = false;
@@ -39,7 +39,7 @@ public class GestureRecognition : MonoBehaviour {
             active = true;
         } else if (OnSwipe != null) {
             float distance = (Input.touches[0].position - originalPosition).x;
-            if (distance > SWIPE_THRESHOLD) {
+            if (Mathf.Abs(distance) > SWIPE_THRESHOLD) {
                 OnSwipe(distance < 0 ? SwipeDirection.Right : SwipeDirection.Left);
                 swiped = true;
             }
