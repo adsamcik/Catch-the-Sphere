@@ -55,12 +55,12 @@ namespace Abilities {
             GameObject g = JournalManager.CreateDummySphere();
             g.transform.parent = transform;
             g.transform.position = new Vector3(4, 3, 0);
-            g.transform.localScale = new Vector3(1, 1, 1);
+            g.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
             GameObject iceInst = UnityEngine.Object.Instantiate(Resources.Load<GameObject>("Models/FreezeBridge"));
             iceInst.transform.position = transform.position;
             iceInst.transform.LookAt(g.transform, Vector3.right);
-            iceInst.transform.localScale = new Vector3(1, 1, Mathf.Abs((g.transform.position - transform.position).magnitude));
             iceInst.transform.parent = transform;
+            iceInst.transform.localScale = new Vector3(1, 1, Mathf.Abs((g.transform.position - transform.position).magnitude) / transform.lossyScale.x);
             yield return new WaitForEndOfFrame();
         }
 
