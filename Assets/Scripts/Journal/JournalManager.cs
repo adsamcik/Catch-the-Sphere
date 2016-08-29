@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using Abilities;
 using System.Text;
+using UnityEngine.SceneManagement;
 
 public class JournalManager : MonoBehaviour {
     private const string ABILITY_FILE = GameController.ABILITY_FILE;
@@ -43,6 +44,8 @@ public class JournalManager : MonoBehaviour {
 
     void Update() {
         sphere.transform.Rotate(Vector3.forward, Time.deltaTime * 10);
+        if (Input.GetKeyDown(KeyCode.Escape))
+            SceneManager.LoadScene(0);
     }
 
     private void GestureRecognition_OnSwipe(GestureRecognition.SwipeDirection dir) {

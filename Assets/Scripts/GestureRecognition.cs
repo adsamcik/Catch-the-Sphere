@@ -40,7 +40,7 @@ public class GestureRecognition : MonoBehaviour {
         } else if (OnSwipe != null) {
             float distance = (Input.touches[0].position - originalPosition).x;
             if (distance > SWIPE_THRESHOLD) {
-                OnSwipe(distance > 0 ? SwipeDirection.Right : SwipeDirection.Left);
+                OnSwipe(distance < 0 ? SwipeDirection.Right : SwipeDirection.Left);
                 swiped = true;
             }
         }
