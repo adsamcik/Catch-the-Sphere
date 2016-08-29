@@ -31,16 +31,18 @@ public class GestureRecognition : MonoBehaviour {
             active = false;
             swiped = false;
             return;
-        }
-        else if(swiped)
+        } else if (swiped)
             return;
 
-        if (!active)
+        if (!active) {
             originalPosition = Input.touches[0].position;
-        else if(OnSwipe != null){
+            active = true;
+        } else if (OnSwipe != null) {
             float distance = (Input.touches[0].position - originalPosition).x;
-            if (distance > SWIPE_THRESHOLD)
+            if (distance > SWIPE_THRESHOLD) {
                 OnSwipe(distance > 0 ? SwipeDirection.Right : SwipeDirection.Left);
+                swiped = true;
+            }
         }
 
         active = true;
