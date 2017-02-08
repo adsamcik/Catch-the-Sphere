@@ -4,8 +4,10 @@ using System.Collections;
 public class GestureRecognition : MonoBehaviour {
     const float SWIPE_THRESHOLD = 50;
     bool init = false;
+#if !UNITY_EDITOR && !UNITY_STANDALONE && !UNITY_WEBGL
     bool active = false;
     bool swiped = false;
+#endif
     Vector2 originalPosition;
 
     public delegate void SwipeAction(SwipeDirection dir);
