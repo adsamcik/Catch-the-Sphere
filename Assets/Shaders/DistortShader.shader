@@ -1,58 +1,94 @@
-﻿Shader "Custom/Distort" {
+﻿// Per pixel bumped refraction.
+// Uses a normal map to distort the image behind, and
+// an additional texture to tint the color.
+
+Shader "Custom/Distortion" {
 	Properties{
-		_Refraction("Refraction", Range(0.00, 100.0)) = 1.0
-		_DistortTex("Base (RGB)", 2D) = "white" {}
+		_BumpAmt("Distortion", range(0,128)) = 10
+		_BumpMap("Normalmap", 2D) = "bump" {}
 	}
+
+		Category{
+
+		// We must be transparent, so other objects are drawn before this one.
+		Tags{"Queue" = "Transparent" "RenderType" = "Opaque"}
+
 
 		SubShader{
 
-		Tags{"RenderType" = "Transparent" "Queue" = "Overlay"}
-		LOD 100
-
-		GrabPass
-	{
-
+		// This pass grabs the screen behind the object into a texture.
+		// We can access the result in the next pass as _GrabTexture
+		GrabPass{
+		Name "BASE"
+		Tags{"LightMode" = "Always"}
 	}
 
-	CGPROGRAM
-#pragma surface surf NoLighting
+		// Main pass: Take the texture grabbed above and use the bumpmap to perturb it
+		// on to the screen
+		Pass{
+		Name "BASE"
+		Tags{"LightMode" = "Always"}
+
+		CGPROGRAM
 #pragma vertex vert
+#pragma fragment frag
+#pragma multi_compile_fog
+#include "UnityCG.cginc"
 
-		fixed4 LightingNoLighting(SurfaceOutput s, fixed3 lightDir, fixed atten) {
-		fixed4 c;
-		c.rgb = s.Albedo;
-		c.a = s.Alpha;
-		return c;
-	}
-
-	sampler2D _GrabTexture : register(s0);
-	sampler2D _DistortTex : register(s2);
-	float _Refraction;
-
-	float4 _GrabTexture_TexelSize;
-
-	struct Input {
-		float2 uv_DistortTex;
-		float3 color;
-		float3 worldRefl;
-		float4 screenPos;
-		INTERNAL_DATA
+		struct appdata_t {
+		float4 vertex : POSITION;
+		float2 texcoord: TEXCOORD0;
 	};
 
-	void vert(inout appdata_full v, out Input o) {
-		UNITY_INITIALIZE_OUTPUT(Input,o);
-		o.color = v.color;
+	struct v2f {
+		float4 vertex : SV_POSITION;
+		float4 uvgrab : TEXCOORD0;
+		float2 uvbump : TEXCOORD1;
+		UNITY_FOG_COORDS(3)
+	};
+
+	float _BumpAmt;
+	float4 _BumpMap_ST;
+
+	v2f vert(appdata_t v) {
+		v2f o;
+		o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+#if UNITY_UV_STARTS_AT_TOP
+		float scale = -1.0;
+#else
+		float scale = 1.0;
+#endif
+		o.uvgrab.xy = (float2(o.vertex.x, o.vertex.y*scale) + o.vertex.w) * 0.5;
+		o.uvgrab.zw = o.vertex.zw;
+		o.uvbump = TRANSFORM_TEX(v.texcoord, _BumpMap);
+		UNITY_TRANSFER_FOG(o,o.vertex);
+		return o;
 	}
 
-	void surf(Input IN, inout SurfaceOutput o) {
+	sampler2D _GrabTexture;
+	float4 _GrabTexture_TexelSize;
+	sampler2D _BumpMap;
+	sampler2D _MainTex;
 
-		float3 distort = tex2D(_DistortTex, IN.uv_DistortTex) * float3(IN.color.r,IN.color.g,IN.color.b);
-		float2 offset = distort * _Refraction * _GrabTexture_TexelSize.xy;
-		IN.screenPos.xy = offset * IN.screenPos.z + IN.screenPos.xy;
-		float4 refrColor = tex2Dproj(_GrabTexture, IN.screenPos);
-		o.Alpha = refrColor.a;
-		o.Emission = refrColor.rgb;
+	half4 frag(v2f i) : SV_Target
+	{
+		// calculate perturbed coordinates
+		half2 bump = tex2D(_BumpMap, i.uvbump).rg; // we could optimize this by just reading the x & y without reconstructing the Z
+		float2 offset = bump * _BumpAmt * _GrabTexture_TexelSize.xy;
+#ifdef UNITY_Z_0_FAR_FROM_CLIPSPACE //to handle recent standard asset package on older version of unity (before 5.5)
+		i.uvgrab.xy = offset * UNITY_Z_0_FAR_FROM_CLIPSPACE(i.uvgrab.z) + i.uvgrab.xy;
+#else
+		i.uvgrab.xy = offset * i.uvgrab.z + i.uvgrab.xy;
+#endif
+
+		half4 col = tex2Dproj(_GrabTexture, UNITY_PROJ_COORD(i.uvgrab));
+		UNITY_APPLY_FOG(i.fogCoord, col);
+		return col;
 	}
-	ENDCG
+		ENDCG
 	}
+	}
+
+	}
+
 }
