@@ -32,7 +32,7 @@ public class GameController : MonoBehaviour {
     GameStats _score;
     public static GameStats score { get { return instance._score; } }
 
-    public float speed = 2;
+    public float sphereRespawnCooldown = 2;
 
     int _active;
     public int active { get { return _active; } set { _active = value; } }
@@ -138,11 +138,11 @@ public class GameController : MonoBehaviour {
     }
 
     IEnumerator Spawn() {
-        while (true) {
-            yield return new WaitForSeconds(speed);
+        while(true) {
+            yield return new WaitForSeconds(sphereRespawnCooldown);
             if (!paused) {
                 score.SpawnedSphere();
-                GameObject g = (GameObject)Instantiate(GlobalManager.defaultSphere, randomPositionInSphere, new Quaternion());
+                GameObject g = Instantiate(GlobalManager.defaultSphere, randomPositionInSphere, new Quaternion());
                 SphereStats s = g.GetComponent<SphereStats>();
                 activeSpheres.Add(s);
                 int value = 100;
@@ -151,7 +151,7 @@ public class GameController : MonoBehaviour {
                     List<AbilityInfo> ab = new List<AbilityInfo>(abilities);
                     float spawnValue = totalSpawnValue;
 
-                    while (ab.Count > 0) {
+                    while (ab.Count > 0 && score.power > value) {
                         if (Random.value <= abilityChance) {
                             value += 50;
                             Ability a = GetRandomAbility(ab, ref spawnValue);
@@ -168,7 +168,8 @@ public class GameController : MonoBehaviour {
                 }
                 score.AddPowerInstant(-value);
             }
-        }
+        };
+        
     }
 
     IEnumerator RestartIn() {
@@ -180,7 +181,7 @@ public class GameController : MonoBehaviour {
     void Restart() {
         ChangeSeed();
         destroyed = 0;
-        speed = 2;
+        sphereRespawnCooldown = 2;
         _score = new GameStats(this, transform.root.Find("/canvas"), 0);
     }
 
