@@ -6,7 +6,7 @@ public class FollowShadow : MonoBehaviour {
     Transform Follow;
 
     void Start() {
-        Follow = gameObject.transform.parent.FindChild("Invisible").transform;
+        Follow = gameObject.transform.parent.Find("Invisible").transform;
         Sprite = GetComponent<SpriteRenderer>();
     }
 
